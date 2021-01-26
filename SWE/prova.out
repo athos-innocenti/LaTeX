@@ -1,0 +1,29 @@
+\BOOKMARK [0][-]{chapter.1}{Introduzione}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Progettazione}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Diagramma UML}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Use Case Diagram}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Sequence Diagram}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{Realizzazione}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Classi}{chapter.3}% 7
+\BOOKMARK [2][-]{subsection.3.1.1}{Pharmacy}{section.3.1}% 8
+\BOOKMARK [2][-]{subsection.3.1.2}{Pharmacist}{section.3.1}% 9
+\BOOKMARK [2][-]{subsection.3.1.3}{Warehouse}{section.3.1}% 10
+\BOOKMARK [2][-]{subsection.3.1.4}{Medicine}{section.3.1}% 11
+\BOOKMARK [2][-]{subsection.3.1.5}{Client}{section.3.1}% 12
+\BOOKMARK [2][-]{subsection.3.1.6}{ProxyPaymentHandler}{section.3.1}% 13
+\BOOKMARK [2][-]{subsection.3.1.7}{RealPaymentHandler}{section.3.1}% 14
+\BOOKMARK [2][-]{subsection.3.1.8}{Ordination}{section.3.1}% 15
+\BOOKMARK [2][-]{subsection.3.1.9}{Receipt}{section.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.1.10}{Reservation}{section.3.1}% 17
+\BOOKMARK [1][-]{section.3.2}{Classi Astratte}{chapter.3}% 18
+\BOOKMARK [2][-]{subsection.3.2.1}{PaymentHandler}{section.3.2}% 19
+\BOOKMARK [1][-]{section.3.3}{Design Patterns}{chapter.3}% 20
+\BOOKMARK [2][-]{subsection.3.3.1}{Singleton}{section.3.3}% 21
+\BOOKMARK [2][-]{subsection.3.3.2}{Observer}{section.3.3}% 22
+\BOOKMARK [2][-]{subsection.3.3.3}{Proxy}{section.3.3}% 23
+\BOOKMARK [0][-]{chapter.4}{Test}{}% 24
+\BOOKMARK [1][-]{section.4.1}{ClientTest}{chapter.4}% 25
+\BOOKMARK [1][-]{section.4.2}{PharmacyTest}{chapter.4}% 26
+\BOOKMARK [1][-]{section.4.3}{WarehouseTest}{chapter.4}% 27
+\BOOKMARK [1][-]{section.4.4}{MedicineTest}{chapter.4}% 28
+\BOOKMARK [1][-]{section.4.5}{ProxyPaymentHandlerTest}{chapter.4}% 29
