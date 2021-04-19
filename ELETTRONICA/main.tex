@@ -2,14 +2,16 @@
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath, amsfonts, amssymb, amsthm}
-\usepackage{graphicx}
+\usepackage{graphicx, appendix, geometry}
+\geometry{a4paper, top=2cm, bottom=3cm, left=2cm, right=2cm, bindingoffset=5mm}
 
 \author{Athos Innocenti}
 \title{\Huge Elettronica}\date{}\author{}
 \begin{document}
 \maketitle
 \tableofcontents
-\chapter{Semiconduttori}
+
+\chapter{Semiconduttori e Diodi}
 I \textbf{semiconduttori} sono materiali parzialmente conduttori cioè hanno una conducibilità più alta degli \textit{isolanti} (materiali \textit{dielettrici} in cui gli elettroni sono fissi in un reticolo quindi sono incapaci di muoversi e per questo non scorre corrente), ma minore dei \textit{conduttori} (tutti i \textit{metalli} nei quali, se si applica un potenziale, scorre corrente perché ci sono elettroni liberi disponibili all'interno del materiale). Tendenzialmente i semiconduttori sono degli isolanti, ma sotto opportune condizioni si comportano come conduttori. In questi materiali gli atomi sono legati tra loro tramite legami \textbf{covalenti} come nel caso dei materiali isolanti, con i quali condividono anche la dipendenza della conducibilità dalla \textit{temperatura}.
 \begin{figure}[h]
 \centering
@@ -139,32 +141,90 @@ Oltre al diodo Zener e ai diodi pn al silicio che si usano per controllare il ve
         \includegraphics[scale=0.35,angle=0]{diodo_spegnimento.png}
         \caption{$V_{D}$ e $I_{D}$ di un diodo normale allo spegnimento}
     \end{figure}
-    \\Questo comporta che quando si vuole spegnere il diodo, quindi $V_{D}$ diventa negativa perché si fa una polarizzazione inversa, esso si spegne lentamente, cioè $I_{D}$ scende lentamente ala valore previsto nel caso statico (invece si accende facilmente non appena viene polarizzato) perché ha accumulato cariche nella parte p che lo tengono ancora acceso. La corrente $I_{D}$ passa dall'essere positiva all'essere negativa per un certo tempo, fintanto che gli elettroni accumulati non vengono liberati. Indipendentemente dalla polarizzazione, passa comunque corrente. Tutto questo non succede nel diodo Shottky in cui, poiché la carica netta nella parte p non esiste, non esiste un accumulo di cariche bloccate nelle lacune e questo fa sì che quando il diodo passa in polarizzazione inversa, si spegne immediatamente cioè si comporta dinamicamente come un diodo ideale.
+    Questo comporta che quando si vuole spegnere il diodo, quindi $V_{D}$ diventa negativa perché si fa una polarizzazione inversa, esso si spegne lentamente, cioè $I_{D}$ scende lentamente ala valore previsto nel caso statico (invece si accende facilmente non appena viene polarizzato) perché ha accumulato cariche nella parte p che lo tengono ancora acceso. La corrente $I_{D}$ passa dall'essere positiva all'essere negativa per un certo tempo, fintanto che gli elettroni accumulati non vengono liberati. Indipendentemente dalla polarizzazione, passa comunque corrente. Tutto questo non succede nel diodo Shottky in cui, poiché la carica netta nella parte p non esiste, non esiste un accumulo di cariche bloccate nelle lacune e questo fa sì che quando il diodo passa in polarizzazione inversa si spegne immediatamente, cioè si comporta dinamicamente come un diodo ideale.
 \end{enumerate}
-\section{Esercizi}
-Calcolare la corrente che scorre nel seguente circuito
+
+\chapter{BJT}
+Il \textbf{BJT} viene così chiamato perché è un transistor bipolare, cioè composto da due poli. È un dispositivo a tre \textit{terminali} formato due due giunzioni: una giunzione np e una pn. I tre terminali sono: l'\textbf{emettitore} E, che costituisce la prima regione n a sinistra; la \textbf{base} B, corrispondente all'unica regione p presente e collocata nel mezzo; e infine il \textbf{collettore} C che invece è la seconda regione n collocata sulla destra del BJT.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.3,angle=0]{diodi_es1.png}
+    \includegraphics[scale=0.35,angle=0]{bjt_iniziale.png}
+    \caption{Composizione di un BJT di tipo \textit{npn}}
 \end{figure}
-%Calcolare $\frac{V_{out}}{Light_{in}}$
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[scale=0.3,angle=0]{diodi_es2.png}
-%\end{figure}
-%Calcolare $\frac{V_{out}}{Light_{in}}$
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[scale=0.3,angle=0]{diodi_es3.png}
-%\end{figure}
-\chapter{BJT}
+
+Dalla rappresentazione schematica il BJT sembra un dispositivo simmetrico ma in realtà non lo è. Un aspetto importante è che la base è \textit{più stretta} dell'emettitore e del collettore, fondamentale per il suo funzionamento. Se fosse effettivamente costruito collegando due diodi in modo tale che le due zone p si tocchino, il dispositivo ottenuto non sarebbe un transistor perché due diodi così disposti, per l'equazione \eqref{giunzione_pn}, non producono nessun effetto perché
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25,angle=0]{bjt_simbolo.png}
+    \caption{Simbolo del BJT}
+\end{figure}
+
 \section{BJT pnp}
+
 \section{BJT speciali}
-\section{Esercizi}
+
 \chapter{MOS}
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
 \chapter{Microcontrollori}
+
+\begin{appendices}
+
+\chapter{Esercizi Diodi}
+\begin{enumerate}
+    \item Calcolare la corrente che scorre nel seguente circuito:
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.3,angle=0]{diodi_es1.png}
+    \end{figure}
+    \\Il circuito è costituito da una sola \textbf{maglia}, il che significa che nel circuito scorre una sola corrente che è la stessa per tutti i dispositivi che lo compongono. Considerando i due nodi alle due estremità del generatore di tensione, la differenza di potenziale tra questi due nodi è esattamente quella erogata dal generatore, cioè $V_{DC} = 10\,V$. Questa tensione deve essere uguale alla tensione tra le due estremità del cammino passante per il diodo $D1$ e la resistenza $R1$ (avente una tensione ai suoi estremi indicata con $V_{R1}$):
+    \begin{equation}
+        V_{DC} = V_{D1} + V_{R1}
+        \label{tensione_circuito1_1}
+    \end{equation}
+    Osservando ora $D1$ si nota che è polarizzato direttamente perché sull'anodo è applicato il potenziale positivo del generatore di tensione e sul catodo un potenziale negativo. Si sa che la tensione di un diodo polarizzato direttamente può essere considerata all'incirca constante e dipende dalla tipologia di diodo: per un diodo al silicio si può supporre una tensione di circa $0,7\,V$, per un diodo LED la tensione varia in base al colore emesso.\\Supponendo che $D1$ sia un LED rosso si ottiene $V_{D1} = 1,5\,V$, quindi la \eqref{tensione_circuito1_1} diventa:
+    \begin{equation}
+        10\,V = 1,5\,V + V_{R1}
+        \label{tensione_circuito1_2}
+    \end{equation}
+    Infine, $R1$ è una resistenza quindi vale la legge $V_{R1} = R1 \cdot I$, dove \textit{I} è la corrente che scorre nella resistenza che è la stessa che scorre nel diodo e quella che esce dal generatore, cioè è la corrente dell'intero circuito. Dunque la \eqref{tensione_circuito1_2} diventa:
+    \begin{equation*}
+        10\,V = 1,5\,V + (R1 \cdot I)
+    \end{equation*}
+    Si può quindi calcolare la corrente che scorre nel circuito come:
+    \begin{equation*}
+        I = \frac{10\,V - 1,5\,V}{R1} = \frac{10\,V - 1,5\,V}{1000\,Ohm} = 8,5 \cdot 10^{-3}\,A
+    \end{equation*}
+    \newpage
+    \item Calcolare $\frac{V_{out}}{Light_{in}}$ per il seguente circuito:
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[scale=0.3,angle=0]{diodi_es2.png}
+    \end{figure}
+    \\Si sa che il fotodiodo lavora polarizzato inversamente e, se arriva un fotone, scorre una corrente che va dal catodo all'anodo. Consultando il datasheet del fotodiodo è possibile sapere la corrente che esce dal fotodiodo $I_{out}$ in rapporto ad una certa densità di potenza luminosa in ingresso $P_{in}$ generalmente espressa in $mWcm^{-2}$. Si prende per esempio una corrente uscente dal fotodiodo di $1 \frac{mA}{mWcm^{-2}}$. Questa corrente passa attraverso la resistenza $R1$, il che significa che:
+    \begin{equation*}
+        V_{out} = R1 \cdot I = 1000\,Ohm \cdot 1\,\frac{mA}{mWcm^{-2}} = 1\,\frac{V}{mWcm^{-2}}
+    \end{equation*}
+    Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $0,1\,mV$ e $0,15\,mV$. Per fa sì che il circuito conservi un comportamento lineare $V_{out}$ deve essere piccola, perché la tensione inversa applica al fotodiodo è la tensione del generatore $V_{DC} = 10\,V$ meno la tensione che cade ai capi della resistenza $R1$. Quindi minora sarà la tensione della resistenza e meno bias negativo ci sarà sul fotodiodo che andrà a modificare la caratteristica del foto rilevatore. Questo circuito risulta quindi essere poco sensibile e poco lineare perché la polarizzazione del fotodiodo cambia con la corrente di uscita che va a modificare la sua linearità. Per migliorarlo si considera il circuito nell'esercizio successivo.
+    \item Calcolare $\frac{V_{out}}{Light_{in}}$ nel seguente circuito:
+    \begin{figure}[h]
+        \centering
+       \includegraphics[scale=0.3,angle=0]{diodi_es3.png}
+    \end{figure}
+    \\L'amplificatore operazionale è composto da una uscita rappresentante l'uscita di un generatore di tensione e da due ingressi, uno in positivo e uno in negativo. Quando si chiude il circuito in retroazione con un'apposita rete (in questo caso la resistenza $R1$) sono valide due equazioni:
+    \begin{enumerate}
+        \item $V_{-} = V_{+}$: la tensione dei due terminali 2 e 3 è la stessa; non c'è differenza di potenziale perché l'amplificatore operazionale in anello aperto (cioè eliminando la retroazione data dalla resistenza $R1$) amplifica con un valore ideale infinito la differenza tra i due ingressi 2 e 3 esponendola in uscita. Quando invece l'amplificatore viene chiuso in retroazione tramite $R1$, l'uscita si stabilizza e valgono queste due equazioni.
+        \item $I_{-} = I_{+} = 0$: i due nodi di ingresso + e - non assorbono corrente
+    \end{enumerate}
+    Sfruttando queste due equazioni è possibile risolvere il circuito. L'ingresso positivo 3 dell'amplificatore operazionale ha un valore di tensione fisso che in questo caso è $V_{3} = 0\,V$, inoltre sempre nel piedino 3 non scorre corrente cioè $I_{3} = 0\,A$. Dalla prima equazione segue che $V_{2} = 0\,V$. Il fotodiodo, trovandosi tra la $V_{+}$ del generatore e la $V_{2}$ dell'amplificatore operazionale ha una tensione inversa $V_{D} = V_{DC} = 10\,V$ indipendentemente dalla corrente che scorre nel fotodiodo perché tale corrente non può andare nel piedino 2 perché l'amplificatore operazionale non accetta corrente in ingresso (infatti $I_{-} = 0\,A$), dunque per costruzione del circuito andrà nel ramo contente la resistenza in retroazione $R1$ andando quindi verso l'uscita dell'amplificatore. Per calcolare $V_{out}$ devo risalire ad un punto di potenziale noto che è il nodo tra il fotodiodo e $R1$ (corrisponde anche al nodo sottostante tra il fotodiodo e il piedino 2) in cui si sa che $V = V_{2} = 0\,V$, dunque $V_{out} = V_{2} \,-\, ( R1 \cdot I_{D}) = 0\,V \,-\, (100k\,Ohm \cdot I_{D}) = - 100k\,Ohm \cdot I_{D}$. Ma $I_{D}$, come nell'esercizio precedente si prendere pari a $1 \frac{mA}{mWcm^{-2}}$, dunque:
+    \begin{equation*}
+        V_{out} = - 100k\,Ohm \cdot 1 \frac{mA}{mWcm^{-2}} = - 100\,\frac{V}{mWcm^{-2}}
+    \end{equation*}
+    Questo circuito, rispetto a quello nell'esercizio precedente, guadagna circa 100 volte. Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $-10\,V$ e $-15\,V$. Il meno è dovuto al fatto che si sta utilizzando l'amplificatore operazionale in \textit{configurazione invertente}. Per risolvere questo problema si può aggiungere un secondo stadio in uscita all'amplificatore che guadagna a sua volta $-1\,V$ così da riportare la tensione in positivo, oppure al posto di porre $V_{3} = V_{+} = 0\,V$ si possono mettere due resistenze tra generatore e il piedino 3 eliminando la messa a terra così da creare una tensione $V_{offset}$ in modo da ottenere $V_{2} = V_{3} = V_{offset}$ e  $V_{D} = V_{DC} - V_{offset}$ e l'uscita sarà $V_{out} = V_{offset} - qualcosa$. Si può fare in modo che alla fine torni positiva e alla massima intensità luminosa l'uscita arrivi a $0\,V$. Il vantaggio di questo circuito è che, indipendentemente dalla tensione di uscita, il nodo dell'anodo del fotodiodo rimane ad una tensione costante e quindi il fotodiodo rimane polarizzato ad una tensione costante non soffrendo di non linearità.
+\end{enumerate}
+\chapter{Esercizi BJT}
+\chapter{Esercizi MOS}
+\end{appendices}
 \end{document}
