@@ -150,26 +150,27 @@ Il \textbf{BJT} viene così chiamato perché è un transistor bipolare, cioè co
     \centering
     \includegraphics[scale=0.4,angle=0]{bjt_iniziale.png}
     \caption{Composizione di un BJT di tipo \textit{npn}}
+    \label{bjt}
 \end{figure}
 
 Dalla rappresentazione schematica il BJT sembra un dispositivo simmetrico ma in realtà non lo è. Un aspetto importante è che la base è \textit{più stretta} dell'emettitore e del collettore, fondamentale per il suo funzionamento. Se fosse effettivamente costruito collegando due diodi in modo tale che le due zone p si tocchino, il dispositivo ottenuto non sarebbe un transistor perché due diodi così disposti, per l'equazione \eqref{giunzione_pn}, non producono nessun effetto perché non può scorrere corrente dall'emettitore al collettore in quanto è bloccata dal diodo np (emettitore - base) in quanto sarebbe polarizzato inversamente e analogamente non può scorrere corrente dal collettore all'emettitore perché bloccata dal diodo pn (base - collettore) polarizzato inversamente. Lo stesso vale nel caso di un BJT di tipo \textit{pnp}.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.3,angle=0]{bjt_simbolo.png}
-    \caption{Simbolo circuitale del BJT}
-    \label{bjt}
+    \caption{Simbolo circuitale del BJT \textit{npn}}
 \end{figure}
 
-Nel simbolo circuitale del BJT (figura \ref{bjt}) la freccia indica la giunzione tra la base e l'emettitore. Nel caso del diodo classico a due terminali si prende \textit{positiva} la tensione dell'anodo e \textit{negativa} quella del catodo (quindi la tensione del diodo viene considerata positiva quando la tensione dell'anodo è positiva, ovvero il diodo è polarizzato direttamente); per il BJT si definiscono tre tensioni:
+Nel simbolo circuitale del BJT la freccia indica la giunzione tra la base e l'emettitore. Nel caso del diodo classico a due terminali si prende \textit{positiva} la tensione dell'anodo e \textit{negativa} quella del catodo (quindi la tensione del diodo viene considerata positiva quando la tensione dell'anodo è positiva, ovvero il diodo è polarizzato direttamente); per il BJT si definiscono tre tensioni:
 \begin{itemize}
-    \item[$V_{be}$]: la tensione tra l'emettitore e la base che formano una giunzione pn. È \textit{positiva} quando la base è positiva rispetto all'emettitore. Quindi $V_{be} > 0$ significa che la giunzione tra emettitore e base è polarizzata \textit{direttamente}
-    \item[$V_{bc}$]: la tensione tra la base e il collettore, è \textit{positiva} quando $V_{b} > V_{c}$
-    \item[$V_{ce}$]: la tensione tra collettore ed emettitore, è \textit{positiva} quando $V_{c} > V_{e}$
+    \item[$V_{be}$]: la tensione tra l'emettitore e la base che formano una giunzione pn. È \textit{positiva} quando la base è positiva rispetto all'emettitore perché $V_{be}$ è la differenza tra il potenziale (o tensione) della base $V_{b}$ (dove punta la freccia in figura \ref{tensioni_bjt}) e il potenziale dell'emettitore $V_{e}$ (dove parte la freccia). Quindi $V_{be} > 0$ significa che la giunzione tra emettitore e base è polarizzata \textit{direttamente}
+    \item[$V_{bc}$]: la tensione tra la base e il collettore, è \textit{positiva} quando $V_{b} > V_{c}$ perché definita come differenza tra i potenziali $V_{b}$ e $V_{c}$
+    \item[$V_{ce}$]: la tensione tra collettore ed emettitore, è \textit{positiva} quando $V_{c} > V_{e}$ perché definita come differenza tra i potenziali $V_{c}$ e $V_{e}$
 \end{itemize}
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{bjt_tensioni.png}
-    \caption{Tensioni nel BJT}
+    \caption{Tensioni nel BJT \textit{npn}}
+    \label{tensioni_bjt}
 \end{figure}
 Analogamente si hanno anche tre correnti, una per ognuno dei tre terminali del BJT:
 \begin{itemize}
@@ -180,65 +181,162 @@ Analogamente si hanno anche tre correnti, una per ognuno dei tre terminali del B
 Vale il principio di Kirchhoff per cui $I_{c} + I_{b} = I_{e}$.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4,angle=0]{bjt_correnti.png}
-    \caption{Correnti nel BJT}
+    \includegraphics[scale=0.35,angle=0]{bjt_correnti.png}
+    \caption{Correnti nel BJT \textit{npn}}
 \end{figure}
 
+\section{Regioni operative}
 Il BJT è un dispositivo che può lavorare in \textit{quattro} modalità chiamate \textbf{regioni operative}: la regione di \textbf{cutoff} o \textbf{interdizione} in cui semplicemente il dispositivo è \textit{spento} e non sta facendo niente; la regione \textbf{attiva diretta}; la regione di \textbf{saturazione} e la regione \textbf{attiva inversa}. In tutte le regioni eccetto quella di cutoff il dispositivo fa qualcosa.
 
 Si dice che il BJT è un generatore di corrente \textbf{controllato in corrente}, cioè le regioni di funzionamento sono determinate dalle correnti e/o dalle tensioni; in particolare ciò che guida il dispositivo è la corrente che entra in base $I_{b}$.
-\begin{itemize}
-    \item \textbf{Regione di cutoff}: il transistor è spento, cioè non passa corrente dal collettore all'emettitore. In questo caso \textit{entrambe} le giunzioni pn, BE tra la base e l'emettitore e BC tra la base e il collettore, sono polarizzate \textit{inversamente}, cioè sono in \textit{reverse bias}. Questo significa che:
-    \begin{equation*}
-        V_{be} < V_{th} \text{ \, \, } V_{bc} < 0
-    \end{equation*}
-    con $V_{th}$ la tensione di soglia (anche detta potenziale di base). Per avere polarizzazione inversa tra base e collettore, il collettore deve avere un potenziale più alto rispetto al potenziale di base. Questo succede finché il collettore non arriva ad avere un potenziale al massimo inferiore di $0,5\,V$ rispetto alla tensione di base, quindi o è una tensione molto elevata oppure è una tensione vicina alla tensione di base $V_{th}$ ma non sotto $0,5\,V$ rispetto a $V_{th}$ altrimenti si polarizzerebbe inversamente. Per le correnti, nella regione di cutoff si ha:
-    \begin{equation*}
-        I_{b} = 0\,A \text{ \, \, } I_{c} = 0\,A
-    \end{equation*}
-    In realtà più che $0\,A$ sarà uguale ad una piccola corrente di perdita $I_{0}$ che è la corrente inversa della giunzione pn che si sta considerando.
-    \begin{figure}[h]
-        \centering
-        \includegraphics[scale=0.4,angle=0]{bjt_cutoff.png}
-        \caption{Regione di cutoff}
-    \end{figure}
-    \\I grafici dei transistors hanno normalmente $V_{ce}$ nelle ascisse, $I_{c}$ nelle ordinate e le curve vengono disegnate al variare della \textit{variabile di controllo} che è $I_{b}$. Nella regione di cutoff si ha, come detto, $I_{b} = 0\,A$ e $I_{c} \approx I_{0}$ che è una corrente molto piccola.
-    \item \textbf{Regione attiva diretta}: la giunzione BE tra la base e l'emettitore è polarizzata \textit{direttamente} quindi:
-    \begin{equation*}
-        V_{be} > V_{th} \text{ \, \, } I_{b} > 0
-    \end{equation*}
-    La giunzione BC tra la base e il collettore è invece in polarizzazione \textit{inversa}:
-    \begin{equation*}
-        V_{bc} < 0
-    \end{equation*}
-    cioè la tensione di collettore è alta, maggiore della tensione di base. Sotto queste condizioni ($I_{b} > 0 $ e $V_{bc} < 0$) il dispositivo si comporta come un transistor, cioè come un generatore di corrente controllato in corrente:
-    \begin{equation*}
-        I_{c} = h_{fe} \cdot I_{b}
-    \end{equation*}
-    dove $h_{fe}$ è una costante il cui valore è normalmente molto maggiore di zero (dell'ordine delle decine o centinaia) ed è chiamata \textbf{guadagno in corrente} del transistor. Dunque, la polarizzazione diretta della giunzione BE fa sì che scorra corrente dalla base all'emettitore (ovvero elettroni dall'emettitore alla base) e la polarizzazione inversa della giunzione BC alza il potenziale del collettore facendo sì che scorra una corrente molto maggiore dal collettore all'emettitore.
-    \begin{figure}[h]
-        \centering
-        \includegraphics[scale=0.4,angle=0]{bjt_attiva_diretta.png}
-        \caption{Regione attiva diretta}
-    \end{figure}
-    \item \textbf{Regione di saturazione}: sia la giunzione tra la base e l'emettitore che quella tra la base e il collettore sono \textit{entrambe} in  polarizzazione \textit{diretta}. A differenza del caso precedente in cui la tensione del collettore era molto elevata (cioè $V_{bc} < 0$) e poteva scorrere molta corrente che era proprio la corrente $I_{c}$
-    \begin{figure}[h]
-        \centering
-        \includegraphics[scale=0.4,angle=0]{bjt_saturazione.png}
-        \caption{Regione di saturazione}
-    \end{figure}
-    \item \textbf{Regione attiva inversa}
-    \begin{figure}[h]
-        \centering
-        \includegraphics[scale=0.4,angle=0]{bjt_attiva_inversa.png}
-        \caption{Regione di saturazione}
-    \end{figure}
-\end{itemize}
+
+\subsection{Cutoff}
+Nella regione di cutoff il transistor è spento, non passa corrente dal collettore all'emettitore. In questo caso \textit{entrambe} le giunzioni pn, BE tra la base e l'emettitore e BC tra la base e il collettore, sono polarizzate \textit{inversamente}, cioè sono in \textit{reverse bias}. Questo significa che:
+\begin{equation*}
+    V_{be} < V_{th} \text{ \, \, } V_{bc} < 0
+\end{equation*}
+con $V_{th}$ la tensione di soglia (anche detta potenziale di base). Per avere polarizzazione inversa tra base e collettore, il collettore deve avere un potenziale $V_{c}$ più alto rispetto al potenziale di base $V_{b}$. Questo succede finché il collettore non arriva ad avere un potenziale al massimo inferiore di $0,5\,V$ rispetto alla tensione di base, quindi o è una tensione molto elevata oppure è una tensione vicina alla tensione di base $V_{th}$ ma non sotto $0,5\,V$ rispetto a $V_{th}$ altrimenti si polarizzerebbe direttamente. Per le correnti, nella regione di cutoff si ha:
+\begin{equation*}
+    I_{b} = 0\,A \text{ \, \, } I_{c} = 0\,A
+\end{equation*}
+In realtà più che $0\,A$ sarà uguale ad una piccola corrente di perdita $I_{0}$ che è la corrente inversa della giunzione pn che si sta considerando.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bjt_cutoff.png}
+    \caption{Regione di cutoff}
+\end{figure}
+
+I grafici dei transistors hanno normalmente $V_{ce}$ nelle ascisse, $I_{c}$ nelle ordinate e le curve vengono disegnate al variare della \textit{variabile di controllo} che è $I_{b}$. Nella regione di cutoff si ha, come detto, $I_{b} = 0\,A$ e $I_{c} \approx I_{0}$ che è una corrente molto piccola.
+\subsection{Attiva diretta}
+Nella regione attiva diretta la giunzione BE tra la base e l'emettitore è polarizzata \textit{direttamente} quindi:
+\begin{equation*}
+    V_{be} > V_{th} \text{ \, \, } I_{b} > 0
+\end{equation*}
+La giunzione BC tra la base e il collettore è invece in polarizzazione \textit{inversa}:
+\begin{equation*}
+    V_{bc} < 0
+\end{equation*}
+cioè il potenziale del collettore è alto, maggiore di quello della base. Sotto queste condizioni ($I_{b} > 0 $ e $V_{bc} < 0$) il dispositivo si comporta come un transistor, cioè come un generatore di corrente controllato in corrente:
+\begin{equation}
+    I_{c} = h_{fe} \cdot I_{b}
+    \label{corrente_attiva_diretta}
+\end{equation}
+dove $h_{fe}$ è una costante il cui valore è normalmente molto maggiore di zero (dell'ordine delle decine o centinaia) ed è chiamata \textbf{guadagno in corrente} del transistor. Dunque, la polarizzazione diretta della giunzione BE fa sì che scorra corrente dalla base all'emettitore (ovvero elettroni dall'emettitore alla base) e la polarizzazione inversa della giunzione BC alza il potenziale del collettore facendo sì che scorra una corrente molto maggiore dal collettore all'emettitore.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bjt_attiva_diretta.png}
+    \caption{Regione attiva diretta}
+    \label{attiva_diretta}
+\end{figure}
+
+Si è detto inizialmente che la base del BJT è più stretta rispetto agli altri due terminali. Polarizzando direttamente BE si crea un potenziale positivo nella base $V_{b} > 0$ e negativo nell'emettitore $V_{e} < 0$, quindi scorre corrente dalla base verso l'emettitore ed elettroni dall'emettitore alla base. Inoltre, la tensione del collettore è molto maggiore di quella di base $V_{c} >> V_{b}$ quindi la giunzione pn BC è polarizzata inversamente. Normalmente la giunzione BC sarebbe un diodo, quindi non ci sarebbero elettroni disponibili nella regione p della base per andare nella regione n del collettore perché tra le due c'è una regione di svuotamento e c'è una differenza di potenziale. Il fatto che la base sia molto stretta, che il potenziale del collettore sia molto elevato e che l'emettitore stia emettendo elettroni verso la base fa sì che nel momento in cui un elettrone passa dall'emettitore alla base tale elettrone diventa disponibile (nella zona p c'è scarsità di elettroni) e, grazie al potenziale molto elevato dal collettore, viene attirato e trasportato nella regione del collettore e da lì risale nella corrente arrivando fino al collettore stesso. Quindi gli elettroni della giunzione BE, che erano destinati a rientrare verso la base come avviene in una qualsiasi giunzione pn, in realtà prima di ricombinarsi vengono catturati dal campo elettrico del collettore che li strappa dalla ricombinazione così da saltare la base e andare direttamente nella regione n del collettore. In un transistor la base viene quindi fatta sottile per evitare la ricombinazione degli elettroni nella base in modo che vadano invece nel collettore.
+
+Tutto questo processo è \textit{ragionevolmente efficiente} il che vuol dire che una percentuale molto elevata degli elettroni (per esempio 99 elettroni su 100) provenienti dall'emettitore salta la base per andare nell'emettitore e solo una piccola percentuale si ferma nella base, ovvero:
+\begin{equation*}
+    \frac{I_{c}}{I_{b}} \approx 99
+\end{equation*}
+cioè 99 elettroni vanno nel collettore e 1 nella base. Il guadagno in corrente del transistor è:
+\begin{equation*}
+    \frac{I_{e}}{I_{b}} \approx 100
+\end{equation*}
+Se il guadagno del transistor fosse 50 significa che 2 elettroni rimangono in base e 98 vanno nel collettore. I guadagni medi dei transistor sono molto elevati.
+
+Tutto questo processo però finisce nel momento in cui non c'è più un sufficiente potenziale nel collettore per attirare gli elettroni. A quel punto gli elettroni rimangono all'interno della base, si ricombinano e si passa alla saturazione. 
+
+Per una tensione del collettore abbastanza elevata (quindi per $V_{ce}$ grande) la corrente del collettore $I_{c}$ è \textit{lineare} (regione attiva diretta - figura \ref{attiva_diretta}), ma nel momento in cui il potenziale del collettore diventa piccolo la corrente del collettore tende a zero (regione di saturazione - figura \ref{saturazione}). Sotto un certo livello di tensione del collettore, che si prende intorno ai $ 0,2 - 0,3\,V$, si considera il dispositivo come in saturazione.
+
+\subsection{Saturazione}
+Nella regione di saturazione sia la giunzione tra la base e l'emettitore che quella tra la base e il collettore sono \textit{entrambe} in  polarizzazione \textit{diretta}. A differenza del caso precedente in cui il potenziale del collettore era molto elevato e per questo $V_{bc} < 0$ e poteva scorrere molta corrente secondo l'equazione \eqref{corrente_attiva_diretta}, adesso si abbassa il potenziale del collettore a circa $ 0,2 - 0,3\,V$ quindi inferiore al potenziale della base. Quindi la giunzione BC è polarizzata direttamente perché la tensione del collettore è circa $0,2\,V$, quella della base è di $0,8\,V$ e dunque $V_{bc} = 0,6\,V$. Tutto questo comporta che la corrente del collettore diminuisce e diventa minore strettamente della massima possibile in regione attiva diretta, cioè:
+\begin{equation*}
+    I_{c} < h_{fe} \cdot I_{b}
+\end{equation*}
+Si dice che il transistor \textit{ha saturato} cioè la tensione del collettore $V_{c}$ è diventata così bassa che non è più in grado di far scorrere le cariche. Per il resto, si ha:
+\begin{equation*}
+    V_{be} > V_{th} \text{ \, \, } V_{ce} < V_{ce-sat} \text{ \, \, } I_{b} > 0
+\end{equation*}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.37,angle=0]{bjt_saturazione.png}
+    \caption{Regione di saturazione}
+    \label{saturazione}
+\end{figure}
+
+\subsection{Attiva inversa}
+Nella regione attiva inversa la giunzione BC tra la base e il collettore è polarizzata \textit{direttamente}, mentre la giunzione BE tra la base e l'emettitore è polarizzata \textit{inversamente}. È sostanzialmente come nella regione attiva diretta ma con ruoli scambiati per il collettore e l'emettitore. Questo comporta che:
+\begin{equation*}
+    V_{be} < 0 \text{ \, \, } V_{ce} < V_{th}
+\end{equation*}
+Tuttavia in questa situazione si ha:
+\begin{equation*}
+    I_{e} \approx -\,I_{b}
+\end{equation*}
+cioè il guadagno in corrente del transistor è:
+\begin{equation*}
+    \frac{I_{e}}{I_{b}} \leq 1
+\end{equation*}
+questo perché il collettore \textit{non è bravo} come l'emettitore ad emettere elettroni e, viceversa, l'emettitore \textit{non è bravo} come il collettore a collezionare elettroni. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bjt_attiva_inversa.png}
+    \caption{Regione attiva inversa}
+\end{figure}
+
+\section{Layout fisico}
+Il BJT non è un dispositivo con una struttura simmetrica tra i tre terminali che lo compongono, ovvero non ha la struttura rappresentata in figura \ref{bjt}. In realtà, la sua realizzazione (effettuata su dei \textit{wafer}, sottili fette di materiale semiconduttore) prevede la creazione di sacche di drogante sia di tipo p che di tipo n.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.3,angle=0]{bjt_layout.png}
+    \caption{Layout fisico di un BJT \textit{npn}}
+\end{figure}
+\\La regione n+ in basso serve semplicemente per la \textit{metallizzazione} del collettore. Il transistor vero e proprio è costituito da: l'emettitore (normalmente drogato \textbf{n+} dove il + sta a significare che è \textit{molto} drogato), la base (sottile, circonda l'emettitore, è drogata p) e il collettore (drogato n, circonda tutto l'emettitore). In questa configurazione l'emettitore, piccolo ma molto drogato, è facilmente generatore di elettroni e quando emette elettroni questi sono facilmente catturati dal collettore. Viceversa, se si polarizza in \text{attiva inversa} il dispositivo, il collettore può emettere elettroni ma, essendo un silicio drogato di tipo n e non n+, ne emette pochi e, per di più, ha una disposizione sfavorevole a causa della quale i pochi elettroni emessi hanno pochissima probabilità di essere catturati dall'emettitore mentre è molto più probabile che si ricombinino in base. È questo il motivo (asimmetria sia di drogaggio - n+ contro n - che di geometria) per cui il guadagno in regione attiva inversa è molto più piccolo del guadagno in regione attiva diretta.
 
 \section{BJT pnp}
+È il dispositivo perfettamente \textit{complementare} rispetto al BJT npn visto finora perché si ottiene scambiando i drogaggi: in questo transistor la base è drogata di tipo n mentre emettitore e collettore sono entrambi drogati di tipo p.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45,angle=0]{bjt_pnp.png}
+    \caption{Struttura di un BJT di tipo \textit{pnp}}
+\end{figure}
 
+Nell'essere complementare al BJT npn si vanno a considerare le stesse equazioni del BJT pnp ma si usa una notazione di \textit{segno opposto} per le tre tensioni e correnti che caratterizzano il dispositivo.
+
+Per le tensioni si considera \textit{positiva} la giunzione BE tra la base e l'emettitore quando il potenziale dell'emettitore è maggiore di quello della base ($V_{be} = V_{e} - V_{b}$ la freccia va dalla base all'emettitore), si considera \textit{positiva} la giunzione BC tra la base e il collettore quando il potenziale del collettore è maggiore di quella della base ($V_{bc} = V_{c} - V_{b}$ la freccia va dalla base al collettore), infine si considera \textit{positiva} la giunzione EC tra emettitore e collettore quando il potenziale dell'emettitore è maggiore di quello del collettore ($V_{ce} = V_{e} - V_{c}$ la freccia va dal collettore all'emettitore).
+
+Per le correnti si considera \textit{positiva} la corrente entrante nell'emettitore e di conseguenza \textit{negative} le correnti uscenti dalla base e dal collettore.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bjt_pnp_simbolo.png}
+    \caption{Simbolo circuitale di un BJT \textit{pnp}}
+\end{figure}
+
+Le regioni operative sono le stesse del BJT npn: nella regione \textit{attiva diretta} la giunzione BE è polarizzata \textit{direttamente} cioè la tensione della base è più bassa di quella dell'emettitore e il collettore ha una tensione molto più bassa rispetto a base ed emettitore (infatti nel simbolo circuitale si dispongono i tre terminali per potenziale sempre più basso spostandosi dall'alto verso il basso - così la corrente andrà dall'alto verso il basso).
+
+Nel BJT npn si parla di elettroni come portatori di carica, nel transistor pnp invece si parla di lacune che fungono da portatori di carica.
+
+A livello statistico per definire il guadagno si deve tenere conto della \textbf{mobilità dei portatori}, ovvero quanto i portatori (che sono generati dall'emettitore) si muovono facilmente all'interno del materiale. Lacune ed elettroni non hanno la stessa mobilità, in particolare le lacune si muovono con una mobilità che è circa la \textit{metà} di quella con cui si muovono gli elettroni. Quindi dati due dispositivi geometricamente uguali ma con drogaggi tutti simmetricamente opposti, uno che sfrutta il moto degli elettroni come portatori di carica e l'altro che sfrutta il moto delle lacune, il dispositivo che sfrutta il moto delle lacune in genere sperimenta un guadagno in corrente che è circa la \textit{metà} di quello del dispositivo che sfrutta il modo degli elettroni. In questo caso, i transistor pnp hanno come portatori le lacune (essendo l'emettitore drogato p) che, muovendosi più lentamente, tendono più facilmente a ricombinarsi quando passano nella base e quindi il guadagno del dispositivo è minore rispetto a quello che si potrebbe ottenere con un transistor npn.\\\\
+
+Riassumendo, per entrambi le tipologie di transistor bipolari si identificano quattro regioni operative:
+\begin{enumerate}
+    \item \textit{Cutoff}: la giunzione base - emettitore è interdetta quindi non passa corrente né nella giunzione BE né in quella BC
+    \item \textit{Attiva diretta}: la giunzione BE è polarizzata direttamente, quindi scorre corrente, mentre la giunzione BC è polarizzata inversamente. Il potenziale del collettore è molto elevato in valore assoluto e quindi il dispositivo si comporta come una sorgente di corrente controllata in corrente, dove il controllo è effettuato dalla corrente della base $I_{b}$, la sorgente di corrente è la corrente del collettore $I_{c}$ e il guadagno in corrente è $h_{fe}$
+    \item \textit{Saturazione}: si ottiene abbassando progressivamente il valore assoluto del potenziale del collettore. Non c'è più possibilità di generare in modo costante tutta la corrente generata in regione attiva diretta, la corrente quindi diminuisce e la tensione può scendere fino ad un valore che generalmente è detta \textbf{tensione di saturazione} che vale $V_{ce-sat} \approx 0,2,\,V - 0,3\,V$. Il transistor non è più in grado di assorbire corrente
+    \item \textit{Attiva inversa}: la giunzione BE è polarizzata inversamente e la giunzione BC è polarizzata direttamente. Si ottengono valori di guadagno di corrente molto bassi e minori o uguali di 1, passa poca corrente
+\end{enumerate}
 \section{BJT speciali}
+Un particolare dispositivo appartenente alal famiglia dei dispositivo optoelettronici insieme al fotodiodo è il \textbf{fototransistor}. Questo dispositivo è generalmente un transistor di tipo \textit{npn} con la particolarità che il terminale di base è \textit{assente}. Per polarizzare \textit{direttamente} la giunzione BE tra la base e l'emettitore si deve iniettare una \textbf{fotocorrente} invece di una corrente vera e propria. Per farlo vengono mandati dei fotoni sulla base del dispositivo e, una volta illuminata, per effetto dei fotoni vengono generate coppie elettrone-lacuna e queste coppie, se il collettore ha un potenziale sufficientemente elevato, generano una fotocorrente che scorre dalla base all'emettitore e che a sua volta si traduce in una molto maggiore corrente che scorre dal collettore all'emettitore. Questo significa che se $V_{c}$ è sufficientemente grande, il fototransistor è \textit{sempre} in regione \textit{attiva diretta}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5,angle=0]{phototransistor.png}
+    \caption{Simbolo circuitale di un fototransistor}
+\end{figure}
 
+Il vantaggio di questo dispositivo, che è sicuramente più complesso di un fotodiodo, è che si ha sempre un dispositivo a due terminali (come detto la base è assente) però la corrente che scorre in questo dispositivo è $h_{fe}$ volte la corrente che scorre nel relativo fotodiodo; il tutto a parità di luce incidente.
+
+Viene utilizzato attaccando una resistenza al collettore (indicata con $R_{c}$) così da ottenere la tensione di polarizzazione del collettore $V_{cc}$, l'emettitore si mette a massa e la tensione di uscita $V_{out}$\, è quella del collettore. Sapendo che $I_{c} = h_{fe} \cdot I_{b}$ e che $I_{b}$ è proporzionale a $P_{in}$, la potenza luminosa in ingresso, si ottiene:
+\begin{equation*}
+    V_{out} = V_{cc} - ( R_{c} \cdot h_{fe} \cdot I_{b})
+\end{equation*}
+dove il termine $h_{fe} \cdot I_{b}$ viene visto come un unico termine, cioè $I_{c}$, che è ricavabile dal datasheet del fototransistor ed è generalmente centinaia di volte più grande dell'analogo per un fotodiodo. Oppure si può mettere la resistenza collegata non con il collettore ma con l'emettitore; in questo caso $V_{out}$ è la tensione dell'emettitore e vale $V_{out} =  R_{e} \cdot P_{in} \cdot G$ con \textit{G} il guadagno del fototransistor. Questi dispositivi si trovano all'interno dei telecomandi, dispositivi che in genere lavorano con gli infrarossi.
 \chapter{MOS}
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
@@ -301,6 +399,20 @@ Si dice che il BJT è un generatore di corrente \textbf{controllato in corrente}
     Questo circuito, rispetto a quello nell'esercizio precedente, guadagna circa 100 volte. Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $-10\,V$ e $-15\,V$. Il meno è dovuto al fatto che si sta utilizzando l'amplificatore operazionale in \textit{configurazione invertente}. Per risolvere questo problema si può aggiungere un secondo stadio in uscita all'amplificatore che guadagna a sua volta $-1\,V$ così da riportare la tensione in positivo, oppure al posto di porre $V_{3} = V_{+} = 0\,V$ si possono mettere due resistenze tra generatore e il piedino 3 eliminando la messa a terra così da creare una tensione $V_{offset}$ in modo da ottenere $V_{2} = V_{3} = V_{offset}$ e  $V_{D} = V_{DC} - V_{offset}$ e l'uscita sarà $V_{out} = V_{offset} - qualcosa$. Si può fare in modo che alla fine torni positiva e alla massima intensità luminosa l'uscita arrivi a $0\,V$. Il vantaggio di questo circuito è che, indipendentemente dalla tensione di uscita, il nodo dell'anodo del fotodiodo rimane ad una tensione costante e quindi il fotodiodo rimane polarizzato ad una tensione costante non soffrendo di non linearità.
 \end{enumerate}
 \chapter{Esercizi BJT}
+\begin{enumerate}
+    \item Calcolare la tensione di uscita $V_{out}$ del seguente circuito:
+    \begin{figure}[h]
+        \centering
+       \includegraphics[scale=0.3,angle=0]{bjt_es1.png}
+    \end{figure}
+    
+    \item Calcolare il valore delle resistenze $R1$ e $R2$ nel seguente circuito in modo da avere $20\,mA$ nel LED e il transistor $Q1$ in saturazione:
+    \begin{figure}[h]
+        \centering
+       \includegraphics[scale=0.3,angle=0]{bjt_es2.png}
+    \end{figure}
+    
+\end{enumerate}
 \chapter{Esercizi MOS}
 \end{appendices}
 \end{document}
