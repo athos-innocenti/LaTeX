@@ -313,7 +313,7 @@ Le regioni operative sono le stesse del BJT npn: nella regione \textit{attiva di
 
 Nel BJT npn si parla di elettroni come portatori di carica, nel transistor pnp invece si parla di lacune che fungono da portatori di carica.
 
-A livello statistico per definire il guadagno si deve tenere conto della \textbf{mobilità dei portatori}, ovvero quanto i portatori (che sono generati dall'emettitore) si muovono facilmente all'interno del materiale. Lacune ed elettroni non hanno la stessa mobilità, in particolare le lacune si muovono con una mobilità che è circa la \textit{metà} di quella con cui si muovono gli elettroni. Quindi dati due dispositivi geometricamente uguali ma con drogaggi tutti simmetricamente opposti, uno che sfrutta il moto degli elettroni come portatori di carica e l'altro che sfrutta il moto delle lacune, il dispositivo che sfrutta il moto delle lacune in genere sperimenta un guadagno in corrente che è circa la \textit{metà} di quello del dispositivo che sfrutta il modo degli elettroni. In questo caso, i transistor pnp hanno come portatori le lacune (essendo l'emettitore drogato p) che, muovendosi più lentamente, tendono più facilmente a ricombinarsi quando passano nella base e quindi il guadagno del dispositivo è minore rispetto a quello che si potrebbe ottenere con un transistor npn.\\\\
+A livello statistico per definire il guadagno si deve tenere conto della \textbf{mobilità dei portatori}, ovvero quanto i portatori (che sono generati dall'emettitore) si muovono facilmente all'interno del materiale. Lacune ed elettroni non hanno la stessa mobilità, in particolare le lacune si muovono con una mobilità che è circa la \textit{metà} di quella con cui si muovono gli elettroni. Quindi dati due dispositivi geometricamente uguali ma con drogaggi tutti simmetricamente opposti, uno che sfrutta il moto degli elettroni come portatori di carica e l'altro che sfrutta il moto delle lacune, il dispositivo che sfrutta il moto delle lacune in genere sperimenta un guadagno in corrente che è circa la \textit{metà} di quello del dispositivo che sfrutta il modo degli elettroni. In questo caso, i transistor pnp hanno come portatori le lacune (essendo l'emettitore drogato p) che, muovendosi più lentamente, tendono più facilmente a ricombinarsi quando passano nella base e quindi il guadagno del dispositivo è minore rispetto a quello che si potrebbe ottenere con un transistor npn.\\
 
 Riassumendo, per entrambi le tipologie di transistor bipolari si identificano quattro regioni operative:
 \begin{enumerate}
@@ -322,8 +322,8 @@ Riassumendo, per entrambi le tipologie di transistor bipolari si identificano qu
     \item \textit{Saturazione}: si ottiene abbassando progressivamente il valore assoluto del potenziale del collettore. Non c'è più possibilità di generare in modo costante tutta la corrente generata in regione attiva diretta, la corrente quindi diminuisce e la tensione può scendere fino ad un valore che generalmente è detta \textbf{tensione di saturazione} che vale $V_{ce-sat} \approx 0,2,\,V - 0,3\,V$. Il transistor non è più in grado di assorbire corrente
     \item \textit{Attiva inversa}: la giunzione BE è polarizzata inversamente e la giunzione BC è polarizzata direttamente. Si ottengono valori di guadagno di corrente molto bassi e minori o uguali di 1, passa poca corrente
 \end{enumerate}
-\section{BJT speciali}
-Un particolare dispositivo appartenente alal famiglia dei dispositivo optoelettronici insieme al fotodiodo è il \textbf{fototransistor}. Questo dispositivo è generalmente un transistor di tipo \textit{npn} con la particolarità che il terminale di base è \textit{assente}. Per polarizzare \textit{direttamente} la giunzione BE tra la base e l'emettitore si deve iniettare una \textbf{fotocorrente} invece di una corrente vera e propria. Per farlo vengono mandati dei fotoni sulla base del dispositivo e, una volta illuminata, per effetto dei fotoni vengono generate coppie elettrone-lacuna e queste coppie, se il collettore ha un potenziale sufficientemente elevato, generano una fotocorrente che scorre dalla base all'emettitore e che a sua volta si traduce in una molto maggiore corrente che scorre dal collettore all'emettitore. Questo significa che se $V_{c}$ è sufficientemente grande, il fototransistor è \textit{sempre} in regione \textit{attiva diretta}.
+\section{Fototransistor}
+Un particolare dispositivo appartenente alla famiglia dei dispositivi optoelettronici insieme al fotodiodo è il \textbf{fototransistor}. Questo dispositivo è generalmente un transistor di tipo \textit{npn} con la particolarità che il terminale di base è \textit{assente}. Per polarizzare \textit{direttamente} la giunzione BE tra la base e l'emettitore si deve iniettare una \textbf{fotocorrente} invece di una corrente vera e propria. Per farlo vengono mandati dei fotoni sulla base del dispositivo e, una volta illuminata, per effetto dei fotoni vengono generate coppie elettrone-lacuna e queste coppie, se il collettore ha un potenziale sufficientemente elevato, generano una fotocorrente che scorre dalla base all'emettitore e che a sua volta si traduce in una molto maggiore corrente che scorre dal collettore all'emettitore. Questo significa che se $V_{c}$ è sufficientemente grande, il fototransistor è \textit{sempre} in regione \textit{attiva diretta}.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.5,angle=0]{phototransistor.png}
@@ -337,7 +337,43 @@ Viene utilizzato attaccando una resistenza al collettore (indicata con $R_{c}$) 
     V_{out} = V_{cc} - ( R_{c} \cdot h_{fe} \cdot I_{b})
 \end{equation*}
 dove il termine $h_{fe} \cdot I_{b}$ viene visto come un unico termine, cioè $I_{c}$, che è ricavabile dal datasheet del fototransistor ed è generalmente centinaia di volte più grande dell'analogo per un fotodiodo. Oppure si può mettere la resistenza collegata non con il collettore ma con l'emettitore; in questo caso $V_{out}$ è la tensione dell'emettitore e vale $V_{out} =  R_{e} \cdot P_{in} \cdot G$ con \textit{G} il guadagno del fototransistor. Questi dispositivi si trovano all'interno dei telecomandi, dispositivi che in genere lavorano con gli infrarossi.
+
 \chapter{MOS}
+Il \textbf{MOS} è un dispositivo appartenente alla famiglia dei \textbf{FET}, ovvero dei \textit{transistors ad effetto di campo}, realizzato con tecnologia \textbf{metallo}, \textbf{ossido} e \textbf{semiconduttore}. Come per i BJT, anche per i MOS esistono due varianti: gli \textbf{N-MOS} e i \textbf{P-MOS}, rispettivamente a portatori elettroni e a portatori lacune. A differenza dei BJT che sono dispositivi controllati in corrente, i MOS sono dispositivi \textbf{controllati in tensione}. È per questo motivo che sono dei FET, perché è il campo elettrico che determina il funzionamento di questi dispositivi.
+
+È un dispositivo a tre terminali, disposti come i tre terminali del transistor, e chiamati: \textbf{drain} (corrispondente al collettore del transistor), \textbf{gate} (corrispondente alla base) e \textbf{source} (corrispondente all'emettitore).
+
+Le tensioni tra i tre terminali e le correnti sono definite nello stesso modo dei BJT. In particolare, i versi e i segni in un N-MOS sono definiti come nei BJT di tipo npn mentre in un P-MOS come in quelli di tipo pnp.
+
+\section{N-MOS}
+Un \textbf{N-MOS} è anche chiamato \textbf{mosfet a canale n}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45,angle=0]{n_mos_simbolo.png}
+    \caption{Simbolo circuitale di un N-MOS}
+\end{figure}
+\\Le tensioni sono definite come segue:
+\begin{itemize}
+    \item[$V_{sd}$]: la tensione tra drain e source. È \textit{positiva} quando drain è positivo rispetto a source, cioè quando $V_{d} > V_{s}$ perché $V_{ds}$ è la differenza tra il potenziale del drain $V_d$ e quello del source $V_s$
+    \item[$V_{gs}$]: la tensione tra gain e source. È \textit{positiva} quando gate è positivo rispetto a source, cioè quando $V_{g} > V_{s}$
+    \item[$V_{dg}$]: la tensione tra drain e gate. È \textit{positiva} quando gate è positivo rispetto a drain, cioè quando $V_{g} > V_{d}$
+\end{itemize}
+Analogamente le tre correnti, una per ognuno dei tre terminali del MOS, sono:
+\begin{itemize}
+    \item[$I_{d}$]: la corrente del drain, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
+    \item[$I_{g}$]: la corrente del gate, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
+    \item[$I_{s}$]: la corrente del source, si prende \textit{positiva} quando è \textit{uscente} nel dispositivo
+\end{itemize}
+La particolarità dell' N-MOS è che la corrente del gate $I_{g}$ è \textit{sempre nulla} in tensione \textit{continua}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{n_mos_struttura.png}
+    \caption{Struttura di un N-MOS}
+\end{figure}
+\subsection{Regioni operative}
+\section{P-MOS}
+Anche chiamato \textbf{mosfet a canale p}
+\chapter{Circuiti logici digitali}
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
@@ -353,23 +389,23 @@ dove il termine $h_{fe} \cdot I_{b}$ viene visto come un unico termine, cioè $I
         \centering
         \includegraphics[scale=0.3,angle=0]{diodi_es1.png}
     \end{figure}
-    \\Il circuito è costituito da una sola \textbf{maglia}, il che significa che nel circuito scorre una sola corrente che è la stessa per tutti i dispositivi che lo compongono. Considerando i due nodi alle due estremità del generatore di tensione, la differenza di potenziale tra questi due nodi è esattamente quella erogata dal generatore, cioè $V_{DC} = 10\,V$. Questa tensione deve essere uguale alla tensione tra le due estremità del cammino passante per il diodo $D1$ e la resistenza $R1$ (avente una tensione ai suoi estremi indicata con $V_{R1}$):
+    \\Il circuito è costituito da una sola \textbf{maglia}, il che significa che nel circuito scorre una sola corrente che è la stessa per tutti i dispositivi che lo compongono. Considerando i due nodi alle due estremità del generatore di tensione, la differenza di potenziale tra questi due nodi è esattamente quella erogata dal generatore, cioè $V_{DC} = 10\,V$. Questa tensione deve essere uguale alla tensione tra le due estremità del cammino passante per il diodo $D_1$ e la resistenza $R_1$ (avente una tensione ai suoi estremi indicata con $V_{R_1}$):
     \begin{equation}
-        V_{DC} = V_{D1} + V_{R1}
+        V_{DC} = V_{D_1} + V_{R_1}
         \label{tensione_circuito1_1}
     \end{equation}
-    Osservando ora $D1$ si nota che è polarizzato direttamente perché sull'anodo è applicato il potenziale positivo del generatore di tensione e sul catodo un potenziale negativo. Si sa che la tensione di un diodo polarizzato direttamente può essere considerata all'incirca constante e dipende dalla tipologia di diodo: per un diodo al silicio si può supporre una tensione di circa $0,7\,V$, per un diodo LED la tensione varia in base al colore emesso.\\Supponendo che $D1$ sia un LED rosso si ottiene $V_{D1} = 1,5\,V$, quindi la \eqref{tensione_circuito1_1} diventa:
+    Osservando ora $D_1$ si nota che è polarizzato direttamente perché sull'anodo è applicato il potenziale positivo del generatore di tensione e sul catodo un potenziale negativo. Si sa che la tensione di un diodo polarizzato direttamente può essere considerata all'incirca constante e dipende dalla tipologia di diodo: per un diodo al silicio si può supporre una tensione di circa $0,7\,V$, per un diodo LED la tensione varia in base al colore emesso.\\Supponendo che $D_1$ sia un LED rosso si ottiene $V_{D_1} = 1,5\,V$, quindi la \eqref{tensione_circuito1_1} diventa:
     \begin{equation}
-        10\,V = 1,5\,V + V_{R1}
+        10\,V = 1,5\,V + V_{R_1}
         \label{tensione_circuito1_2}
     \end{equation}
-    Infine, $R1$ è una resistenza quindi vale la legge $V_{R1} = R1 \cdot I$, dove \textit{I} è la corrente che scorre nella resistenza che è la stessa che scorre nel diodo e quella che esce dal generatore, cioè è la corrente dell'intero circuito. Dunque la \eqref{tensione_circuito1_2} diventa:
+    Infine, $R_1$ è una resistenza quindi vale la legge $V_{R_1} = R_{1} \cdot I$, dove \textit{I} è la corrente che scorre nella resistenza che è la stessa che scorre nel diodo e quella che esce dal generatore, cioè è la corrente dell'intero circuito. Dunque la \eqref{tensione_circuito1_2} diventa:
     \begin{equation*}
-        10\,V = 1,5\,V + (R1 \cdot I)
+        10\,V = 1,5\,V + (R_1 \cdot I)
     \end{equation*}
     Si può quindi calcolare la corrente che scorre nel circuito come:
     \begin{equation*}
-        I = \frac{10\,V - 1,5\,V}{R1} = \frac{10\,V - 1,5\,V}{1000\,Ohm} = 8,5 \cdot 10^{-3}\,A
+        I = \frac{10\,V - 1,5\,V}{R_1} = \frac{10\,V - 1,5\,V}{1000\,\Omega} = 8,5 \cdot 10^{-3}\,A
     \end{equation*}
     \newpage
     \item Calcolare $\frac{V_{out}}{Light_{in}}$ per il seguente circuito:
@@ -377,24 +413,24 @@ dove il termine $h_{fe} \cdot I_{b}$ viene visto come un unico termine, cioè $I
         \centering
         \includegraphics[scale=0.3,angle=0]{diodi_es2.png}
     \end{figure}
-    \\Si sa che il fotodiodo lavora polarizzato inversamente e, se arriva un fotone, scorre una corrente che va dal catodo all'anodo. Consultando il datasheet del fotodiodo è possibile sapere la corrente che esce dal fotodiodo $I_{out}$ in rapporto ad una certa densità di potenza luminosa in ingresso $P_{in}$ generalmente espressa in $mWcm^{-2}$. Si prende per esempio una corrente uscente dal fotodiodo di $1 \frac{mA}{mWcm^{-2}}$. Questa corrente passa attraverso la resistenza $R1$, il che significa che:
+    \\Si sa che il fotodiodo lavora polarizzato inversamente e, se arriva un fotone, scorre una corrente che va dal catodo all'anodo. Consultando il datasheet del fotodiodo è possibile sapere la corrente che esce dal fotodiodo $I_{out}$ in rapporto ad una certa densità di potenza luminosa in ingresso $P_{in}$ generalmente espressa in $mWcm^{-2}$. Si prende per esempio una corrente uscente dal fotodiodo di $1 \frac{mA}{mWcm^{-2}}$. Questa corrente passa attraverso la resistenza $R_1$, il che significa che:
     \begin{equation*}
-        V_{out} = R1 \cdot I = 1000\,Ohm \cdot 1\,\frac{mA}{mWcm^{-2}} = 1\,\frac{V}{mWcm^{-2}}
+        V_{out} = R_1 \cdot I = 1000\,\Omega \cdot 1\,\frac{mA}{mWcm^{-2}} = 1\,\frac{V}{mWcm^{-2}}
     \end{equation*}
-    Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $0,1\,mV$ e $0,15\,mV$. Per fa sì che il circuito conservi un comportamento lineare $V_{out}$ deve essere piccola, perché la tensione inversa applica al fotodiodo è la tensione del generatore $V_{DC} = 10\,V$ meno la tensione che cade ai capi della resistenza $R1$. Quindi minora sarà la tensione della resistenza e meno bias negativo ci sarà sul fotodiodo che andrà a modificare la caratteristica del foto rilevatore. Questo circuito risulta quindi essere poco sensibile e poco lineare perché la polarizzazione del fotodiodo cambia con la corrente di uscita che va a modificare la sua linearità. Per migliorarlo si considera il circuito nell'esercizio successivo.
+    Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $0,1\,mV$ e $0,15\,mV$. Per fa sì che il circuito conservi un comportamento lineare $V_{out}$ deve essere piccola, perché la tensione inversa applica al fotodiodo è la tensione del generatore $V_{DC} = 10\,V$ meno la tensione che cade ai capi della resistenza $R_1$. Quindi minora sarà la tensione della resistenza e meno bias negativo ci sarà sul fotodiodo che andrà a modificare la caratteristica del foto rilevatore. Questo circuito risulta quindi essere poco sensibile e poco lineare perché la polarizzazione del fotodiodo cambia con la corrente di uscita che va a modificare la sua linearità. Per migliorarlo si considera il circuito nell'esercizio successivo.
     \item Calcolare $\frac{V_{out}}{Light_{in}}$ nel seguente circuito:
     \begin{figure}[h]
         \centering
        \includegraphics[scale=0.3,angle=0]{diodi_es3.png}
     \end{figure}
-    \\L'amplificatore operazionale è composto da una uscita rappresentante l'uscita di un generatore di tensione e da due ingressi, uno in positivo e uno in negativo. Quando si chiude il circuito in retroazione con un'apposita rete (in questo caso la resistenza $R1$) sono valide due equazioni:
+    \\L'amplificatore operazionale è composto da una uscita rappresentante l'uscita di un generatore di tensione e da due ingressi, uno in positivo e uno in negativo. Quando si chiude il circuito in retroazione con un'apposita rete (in questo caso la resistenza $R_1$) sono valide due equazioni:
     \begin{enumerate}
-        \item $V_{-} = V_{+}$: la tensione dei due terminali 2 e 3 è la stessa; non c'è differenza di potenziale perché l'amplificatore operazionale in anello aperto (cioè eliminando la retroazione data dalla resistenza $R1$) amplifica con un valore ideale infinito la differenza tra i due ingressi 2 e 3 esponendola in uscita. Quando invece l'amplificatore viene chiuso in retroazione tramite $R1$, l'uscita si stabilizza e valgono queste due equazioni.
+        \item $V_{-} = V_{+}$: la tensione dei due terminali 2 e 3 è la stessa; non c'è differenza di potenziale perché l'amplificatore operazionale in anello aperto (cioè eliminando la retroazione data dalla resistenza $R_1$) amplifica con un valore ideale infinito la differenza tra i due ingressi 2 e 3 esponendola in uscita. Quando invece l'amplificatore viene chiuso in retroazione tramite $R_1$, l'uscita si stabilizza e valgono queste due equazioni.
         \item $I_{-} = I_{+} = 0$: i due nodi di ingresso + e - non assorbono corrente
     \end{enumerate}
-    Sfruttando queste due equazioni è possibile risolvere il circuito. L'ingresso positivo 3 dell'amplificatore operazionale ha un valore di tensione fisso che in questo caso è $V_{3} = 0\,V$, inoltre sempre nel piedino 3 non scorre corrente cioè $I_{3} = 0\,A$. Dalla prima equazione segue che $V_{2} = 0\,V$. Il fotodiodo, trovandosi tra la $V_{+}$ del generatore e la $V_{2}$ dell'amplificatore operazionale ha una tensione inversa $V_{D} = V_{DC} = 10\,V$ indipendentemente dalla corrente che scorre nel fotodiodo perché tale corrente non può andare nel piedino 2 perché l'amplificatore operazionale non accetta corrente in ingresso (infatti $I_{-} = 0\,A$), dunque per costruzione del circuito andrà nel ramo contente la resistenza in retroazione $R1$ andando quindi verso l'uscita dell'amplificatore. Per calcolare $V_{out}$ devo risalire ad un punto di potenziale noto che è il nodo tra il fotodiodo e $R1$ (corrisponde anche al nodo sottostante tra il fotodiodo e il piedino 2) in cui si sa che $V = V_{2} = 0\,V$, dunque $V_{out} = V_{2} \,-\, ( R1 \cdot I_{D}) = 0\,V \,-\, (100k\,Ohm \cdot I_{D}) = - 100k\,Ohm \cdot I_{D}$. Ma $I_{D}$, come nell'esercizio precedente si prendere pari a $1 \frac{mA}{mWcm^{-2}}$, dunque:
+    Sfruttando queste due equazioni è possibile risolvere il circuito. L'ingresso positivo 3 dell'amplificatore operazionale ha un valore di tensione fisso che in questo caso è $V_{3} = 0\,V$, inoltre sempre nel piedino 3 non scorre corrente cioè $I_{3} = 0\,A$. Dalla prima equazione segue che $V_{2} = 0\,V$. Il fotodiodo, trovandosi tra la $V_{+}$ del generatore e la $V_{2}$ dell'amplificatore operazionale ha una tensione inversa $V_{D} = V_{DC} = 10\,V$ indipendentemente dalla corrente che scorre nel fotodiodo perché tale corrente non può andare nel piedino 2 perché l'amplificatore operazionale non accetta corrente in ingresso (infatti $I_{-} = 0\,A$), dunque per costruzione del circuito andrà nel ramo contente la resistenza in retroazione $R_1$ andando quindi verso l'uscita dell'amplificatore. Per calcolare $V_{out}$ devo risalire ad un punto di potenziale noto che è il nodo tra il fotodiodo e $R1$ (corrisponde anche al nodo sottostante tra il fotodiodo e il piedino 2) in cui si sa che $V = V_{2} = 0\,V$, dunque $V_{out} = V_{2} \,-\, ( R_1 \cdot I_{D}) = 0\,V \,-\, (100k\,\Omega \cdot I_{D}) = - 100k\,\Omega \cdot I_{D}$. Ma $I_{D}$, come nell'esercizio precedente si prendere pari a $1 \frac{mA}{mWcm^{-2}}$, dunque:
     \begin{equation*}
-        V_{out} = - 100k\,Ohm \cdot 1 \frac{mA}{mWcm^{-2}} = - 100\,\frac{V}{mWcm^{-2}}
+        V_{out} = - 100k\,\Omega \cdot 1 \frac{mA}{mWcm^{-2}} = - 100\,\frac{V}{mWcm^{-2}}
     \end{equation*}
     Questo circuito, rispetto a quello nell'esercizio precedente, guadagna circa 100 volte. Sapendo che in media la luce solare è di $0,15\,mWcm^{-2}$, la tensione massima in uscita sarà circa tra $-10\,V$ e $-15\,V$. Il meno è dovuto al fatto che si sta utilizzando l'amplificatore operazionale in \textit{configurazione invertente}. Per risolvere questo problema si può aggiungere un secondo stadio in uscita all'amplificatore che guadagna a sua volta $-1\,V$ così da riportare la tensione in positivo, oppure al posto di porre $V_{3} = V_{+} = 0\,V$ si possono mettere due resistenze tra generatore e il piedino 3 eliminando la messa a terra così da creare una tensione $V_{offset}$ in modo da ottenere $V_{2} = V_{3} = V_{offset}$ e  $V_{D} = V_{DC} - V_{offset}$ e l'uscita sarà $V_{out} = V_{offset} - qualcosa$. Si può fare in modo che alla fine torni positiva e alla massima intensità luminosa l'uscita arrivi a $0\,V$. Il vantaggio di questo circuito è che, indipendentemente dalla tensione di uscita, il nodo dell'anodo del fotodiodo rimane ad una tensione costante e quindi il fotodiodo rimane polarizzato ad una tensione costante non soffrendo di non linearità.
 \end{enumerate}
@@ -405,13 +441,85 @@ dove il termine $h_{fe} \cdot I_{b}$ viene visto come un unico termine, cioè $I
         \centering
        \includegraphics[scale=0.3,angle=0]{bjt_es1.png}
     \end{figure}
-    
-    \item Calcolare il valore delle resistenze $R1$ e $R2$ nel seguente circuito in modo da avere $20\,mA$ nel LED e il transistor $Q1$ in saturazione:
+    \\Si sa che il guadagno in corrente di $Q_1$ vale $h_{fe} = 50$ e che la tensione in ingresso (applicata sul nodo IN) vale $V_{in} = 1,15\,V$. La tensione di uscita si definisce considerando il fatto che nella resistenza di collettore $R_{c}$ scorre la corrente di collettore $I_{c}$ e tutto questo genera una tensione, dunque:
+    \begin{equation*}
+        V_{out} = V_{c} - (R_{c} \cdot I_{c}) = 5\,V - (R_{c} \cdot I_{c})
+    \end{equation*}
+    Si deve stabilire quanto vale $I_{c}$. Siccome $V_{in} = 1,15\,V$  è maggiore di $0,6 - 0,7\,V$, la giunzione tra la base e l'emettitore è polarizzata \textit{direttamente} e questo comporta che il transistor si trova o in saturazione oppure in regione attiva diretta. Supponendo che si trovi in regione attiva diretta la corrente del collettore varrà $I_{c} = h_{fe} \cdot I_{b}$ quindi:
+    \begin{equation}
+        V_{out} = V_{c} - [R_{c} \cdot (h_{fe} \cdot I_{b})]
+        \label{v_out}
+    \end{equation}
+    e $V_{out}$ (la tensione del collettore) dovrà essere maggiore di $0,2\,V$. Si può quindi verificare a posteriori se l'ipotesi di regione attiva diretta è verificata o meno. Sapendo che $V_{in} = 1,15\,V$ e $V_{b} \approx 0,7\,V$, la tensione che cade sulla resistenza di base $R_{b}$ vale
+    \begin{equation*}
+        V_{R_{b}} = 1,15\,V - 0,7\,V = 0,45\,V = 450\,mV
+    \end{equation*} 
+    dunque la corrente di base è la corrente che scorre nella resistenza di base $R_b$ e vale
+    \begin{equation*}
+        I_{b} = I_{R_{b}} = \frac{V_{R_b}}{R_b} = \frac{0,45\,V}{450\,\Omega} = 1\cdot 10^{-3}\,A = 1\,mA
+    \end{equation*}
+    A questo punto sfruttando la \eqref{v_out} si può calcolare la tensione di uscita:
+    \begin{equation*}
+        V_{out} = 5\,V - [640\,\Omega \cdot (50 \cdot 1\cdot 10^{-3}\,A)] = -\,27\,V
+    \end{equation*}
+    ma questo è impossibile perché in attiva diretta $V_{out}$ deve essere maggiore di $0,2\,V$ quindi l'ipotesi fatta di trovarsi in regione attiva diretta non è valida: il transistor si trova in \textit{saturazione}. Trovandosi in saturazione si ottiene:
+    \begin{equation*}
+        V_{out} = V_{c-sat} = 0,2\,V
+    \end{equation*}
+    Si può anche calcolare la corrente di saturazione che scorre dal collettore all'emettitore e che è minore della corrente che si avrebbe in attiva diretta $I_{c} = h_{fe} \cdot I_{b} = 50 \cdot 10^{-3}\,A$ come
+    \begin{equation*}
+        I_{c} = \frac{V_{R_c}}{R_{c}} = \frac{5\,V - 0,2\,V}{640\,\Omega} = 7,5\,mA
+    \end{equation*}
+    quindi è solo 7 volte superiore alla corrente di base $I_{b} = 1\,mA$.
+    \item Se la resistenza del collettore nel circuito precedente vale $R_{c} = 50\,\Omega$, ci si aspetta che cadrà meno tensione su $R_c$ e quindi sarà più facile utilizzare il transistor in regione attiva. La corrente di base resta invariata, dunque $I_{b} = 1\,mA$.  Supponendo che il transistor si trovi in regione attiva diretta la corrente del collettore varrà ancora
+    \begin{equation*}
+        I_{c} = h_{fe} \cdot I_{b} = 50 \cdot 1 \cdot 10^{-3}\,A = 50\,mA
+    \end{equation*}
+    e al tensione di uscita sarà:
+    \begin{equation*}
+        V_{out} = V_{ce} = V_{c} - (R_{c} \cdot I_{c}) = 5\,V - (50\,\Omega \cdot 50\,mA) = 2,5\,V
+    \end{equation*}
+    che è maggiore di $0,2\,V$ quindi il transistor permane effettivamente in regione \textit{attiva diretta}, la tensione di collettore è funzione della corrente d'ingresso e di conseguenza la tensione di uscita è funzione \textit{lineare} della corrente di collettore quindi della corrente di base. Si ha effettivamente un dispositivo controllato in corrente che è un amplificatore di corrente e di tensione con guadagno in corrente $h_{fe}$ e guadagno in tensione $-\frac{R_c}{R_b} \cdot h_{fe}$ ricavabile dal fatto che, trascurando $V_{c} = 5\,V$, la tensione di uscita vale:
+    \begin{align*}
+        V_{out} &= -\,R_{c} \cdot I_{c} = -\,R_{c} \cdot h_{fe} \cdot I_{b}\\ &= -\,R_{c} \cdot h_{fe} \cdot \frac{V_{in - 0,7\,V}}{R_{b}}\\
+        &= -\frac{R_c}{R_b} \cdot h_{fe} \cdot (V_{in} - 0,7\,V)
+    \end{align*}
+    \item Calcolare il valore delle resistenze $R_1$ e $R_2$ nel seguente circuito in modo da accendere il LED in rosso con una corrente di $20\,mA$ e il transistor $Q_1$ sia in saturazione:
     \begin{figure}[h]
         \centering
        \includegraphics[scale=0.3,angle=0]{bjt_es2.png}
     \end{figure}
-    
+    \\Si sa che $Q_1$ è un BJT di tipo \textit{npn} con guadagno in corrente $h_{fe} = 50$. La tensione della base del transistor quando il led è spento è di $0\,V$ e quando si accende è di $5\,V$. Quando si vuole accendere il LED e quindi usare il transistor come interruttore (come un dispositivo digitale), quest'ultimo deve essere tenuto nella regione di \textit{cutoff} o di \textit{saturazione} senza mai mandarlo in attiva diretta perché in quella regione funzionerebbe come un amplificatore, mentre in saturazione è un dispositivo non lineare; cioè è come se fosse un normale interruttore chiuso con tensione ai capi dell'interruttore è $=0,2\,V$. Non ci sarebbe nessun problema ad usare il transistor in attiva diretta o inversa ma il guadagno in corrente $h_{fe}$ non è facilmente predicibile e non è molto stabile (sul datasheet ne vengono indicati il valore minimo, massimo e medio) sia a livello di parametro costruttivo sia a livello di temperatura (se il transistor si scalda o raffredda $h_{fe}$ varia). Se si deve usare il transistor per accendere un LED e far scorrere una corrente nota, come in questo caso, si deve usarlo in \textit{saturazione} perché si è certi che la tensione di saturazione è $0,2\,V$ mentre in regione lineare non si ha la certezza che il suo guadagno in corrente sia 50. Per usarlo in saturazione si deve fare in modo che:
+    \begin{equation*}
+        I_{c} = 20\,mA < h_{fe} \cdot I_{b}
+    \end{equation*}
+    ovvero che, per $h_{fe_{min}} = 50$
+    \begin{equation}
+        I_{b} > \frac{20\,mA}{h_{fe}} = \frac{20\,mA}{50} = 0,4\,mA
+        \label{condizione_r2}
+    \end{equation}
+    Trovandosi in saturazione la giunzione tra la base e l'emettitore è polarizzata \textit{direttamente} (perché l'emettitore è a massa e la tensione della base è positiva e vale $5\,V$), quindi $V_{b} = 0,7\,V$. Volendo accendere il LED, al capo sinistro di $R_2$ si una tensione di $5\,V$, quindi
+    \begin{equation*}
+        V_{R_2} = 5\,V - 0,7\,V = 4,3\,V
+    \end{equation*}
+    Dovendo valere $V_{R_2} = R_{2} \cdot I_{b}$ con $I_{b} > 0,4\,mA$ secondo la \eqref{condizione_r2}, si ottiene:
+    \begin{equation*}
+        R_{2} \leq \frac{4,3\,V}{0,4\,mA} = 11\,k\Omega
+    \end{equation*}
+    Se il transistor è in saturazione, la tensione del collettore è $V_{c} = 0,2\,V$. Sapendo che al capo in alto è applicata una tensione di $5\,V$ e che nel ramo sono presenti la resistenza $R_1$ e il diodo $D_1$, deve valere:
+    \begin{equation}
+        V_{R_1} + V_{D_1} = 5\,V - 0,2\,V = 4,8\,V
+        \label{condizione_r1}
+    \end{equation}
+    Inoltre, si vuole che il LED emetta luce rossa, quindi $V_{D_1} = 1,5\,V$. Sostituendo nella \eqref{condizione_r1} si ottiene
+    \begin{equation*}
+        V_{R_1} = 4,8\,V - V_{D_1} = 4,8\,V - 1,5\,V = 3,3\,V
+    \end{equation*}
+    Sapendo infine che il LED e $R_1$ sono attraversati da una corrente di $20\,mA$ e dovendo valere $V_{R_1} = R_{1} \cdot I_{R_1}$ si ottiene
+    \begin{equation*}
+        R_{1} = \frac{V_{R_1}}{I_{R_1}} = \frac{3,3\,V}{20\,mA} = 165\,\Omega
+    \end{equation*}
+    Se per esempio si avesse $h_{fe} = 50$ non cambierebbe niente perché si sta lavorando in saturazione, quindi rimarrebbe sia $V_{ce} = 0,2\,V$ sia $V_{R_1} = 3,3\,V$. Invece per $h_{fe} = 10$ si passerebbe in regione lineare e la corrente che scorre nel LED sarà diversa.
 \end{enumerate}
 \chapter{Esercizi MOS}
 \end{appendices}
