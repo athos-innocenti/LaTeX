@@ -188,7 +188,7 @@ Vale il principio di Kirchhoff per cui $I_{c} + I_{b} = I_{e}$.
 \section{Regioni operative}
 Il BJT è un dispositivo che può lavorare in \textit{quattro} modalità chiamate \textbf{regioni operative}: la regione di \textbf{cutoff} o \textbf{interdizione} in cui semplicemente il dispositivo è \textit{spento} e non sta facendo niente; la regione \textbf{attiva diretta}; la regione di \textbf{saturazione} e la regione \textbf{attiva inversa}. In tutte le regioni eccetto quella di cutoff il dispositivo fa qualcosa.
 
-Si dice che il BJT è un generatore di corrente \textbf{controllato in corrente}, cioè le regioni di funzionamento sono determinate dalle correnti e/o dalle tensioni; in particolare ciò che guida il dispositivo è la corrente che entra in base $I_{b}$.
+Si dice che il BJT è un \textbf{generatore di corrente controllato in corrente}, cioè le regioni di funzionamento sono determinate dalle correnti e/o dalle tensioni; in particolare ciò che guida il dispositivo è la corrente che entra in base $I_{b}$.
 
 \subsection{Cutoff}
 Nella regione di cutoff il transistor è spento, non passa corrente dal collettore all'emettitore. In questo caso \textit{entrambe} le giunzioni pn, BE tra la base e l'emettitore e BC tra la base e il collettore, sono polarizzate \textit{inversamente}, cioè sono in \textit{reverse bias}. Questo significa che:
@@ -355,14 +355,14 @@ Un \textbf{N-MOS} è anche chiamato \textbf{mosfet a canale n}. È un dispositiv
 \\Le tensioni sono definite come segue:
 \begin{itemize}
     \item[$V_{sd}$]: la tensione tra drain e source. È \textit{positiva} quando drain è positivo rispetto a source, cioè quando $V_{d} > V_{s}$ perché $V_{ds}$ è la differenza tra il potenziale del drain $V_d$ e quello del source $V_s$
-    \item[$V_{gs}$]: la tensione tra gain e source. È \textit{positiva} quando gate è positivo rispetto a source, cioè quando $V_{g} > V_{s}$
+    \item[$V_{gs}$]: la tensione tra gate e source. È \textit{positiva} quando gate è positivo rispetto a source, cioè quando $V_{g} > V_{s}$
     \item[$V_{dg}$]: la tensione tra drain e gate. È \textit{positiva} quando gate è positivo rispetto a drain, cioè quando $V_{g} > V_{d}$
 \end{itemize}
 Analogamente le tre correnti, una per ognuno dei tre terminali del MOS, sono:
 \begin{itemize}
     \item[$I_{d}$]: la corrente del drain, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
     \item[$I_{g}$]: la corrente del gate, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
-    \item[$I_{s}$]: la corrente del source, si prende \textit{positiva} quando è \textit{uscente} nel dispositivo
+    \item[$I_{s}$]: la corrente del source, si prende \textit{positiva} quando è \textit{uscente} dal dispositivo
 \end{itemize}
 La particolarità di un N-MOS è che la corrente del gate $I_{g}$ è \textit{sempre nulla} in tensione \textit{continua}. Questo aspetto è fondamentale per i dispositivi a basso consumo perché un dispositivo che consuma poco è un dispositivo nel quale, possibilmente, non ci sono correnti che scorrono continuamente. Tenere acceso un circuito logico composto da tanti transistors BJT necessita di polarizzare le loro basi con delle correnti (seppur minime), quindi consuma corrente. Al contrario, un circuito logico realizzato con dispositivi MOS ha la capacità di non consumare corrente quando non ci sono transizioni o di consumarne poca quando ce ne sono poche.
 \begin{figure}[h]
@@ -405,27 +405,103 @@ Continuando ad aumentare la tensione di gate $V_{gs}$, questa finirà per supera
 Il dispositivo N-MOS è caratterizzato da tre possibili regioni di funzionamento: la regione di \textbf{cutoff}, la regione \textbf{lineare} e la regione di \textbf{saturazione}.
 
 \subsection{Cutoff}
-Nella regione di cutoff o di interdizione la tensione tra gate e source non ha ancora raggiunto il valore di soglia, cioè $V_{gt} < V_{t}$.
+Nella regione di cutoff o \textbf{di interdizione} la tensione tra gate e source non ha ancora raggiunto la tensione di soglia:
+\begin{equation*}
+    V_{gs} < V_{t}
+\end{equation*}
+In questa situazione non ci sono portatori di elettroni nel canale e questo comporta che \textit{non} c'è conduzione tra drain e source.
+
+Per tensioni $V_{gs}$ molto basse, minori della tensione di soglia $V_{t} = 2\,V$, il dispositivo sta lavorando in una regione in cui la corrente di drain $I_{d}$ è \textit{nulla}, come si vede nel grafico di sinistra. Non passa corrente tra drain e source, il che significa che il dispositivo è spento.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.42,angle=0]{n_mos_cutoff.png}
     \caption{Regione di cutoff}
 \end{figure}
+\\Il grafico di destra ha la tensione $V_{ds}$ sull'asse \textit{x} e la corrente di drain $I_{d}$ sull'asse \textit{y} (in condizione statica è anche la corrente di source $I_{s}$). Nel grafico di sinistra invece, è rappresentato l'andamento della tensione di saturazione $I_{d-sat}$ rispetto alla tensione tra gate e source $V_{gs}$.
+
 \subsection{Lineare}
+Nella regione lineare il dispositivo MOS inizia a condurre perché la tensione del gate supera la tensione di soglia:
+\begin{equation*}
+    V_{gs} > V_{t}
+\end{equation*}
+Per ogni tensione di gate si identifica una specifica curva nel grafico di destra. Tutte le curve tendono a salire seguendo un andamento simile; in particolare: più alta è la tensione di gate e più la curva è ripida e alta. Con correnti di drain ragionevolmente basse, cioè
+\begin{equation*}
+    I_{d} < I_{d-sat}
+\end{equation*}
+ci si trova a lavorare in una regione prossima all'asse \textit{y} con tensioni $V_{gs}$ comprese tra $0\,V$ e circa $5\,V$. In questa regione il dispositivo ha un andamento \textit{lineare} con un comportamento che ricorda quello di una \textit{resistenza}; ovvero la corrente $I_{d}$ è \textit{direttamente proporzionale} alla tensione $V_{ds}$ con costante di proporzionalità chiamata \textbf{resistenza di canale} il cui valore è specificato all'interno del datasheet del dispositivo MOS. Ovviamente, la resistenza di canale è inversamente proporzionale, secondo una qualche legge, alla tensione di gate. Non a caso, a valori alti di $V_{gs}$ corrispondono curve più rapide che rappresentano resistenza basse.
+
+Superato un certo valore massimo di corrente $I_{d-sat}$, le curve tendono a diventare parallele all'asse x fermandosi su certo valore per la corrente di drain $I_{d}$.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.42,angle=0]{n_mos_lineare.png}
     \caption{Regione lineare}
 \end{figure}
+
 \subsection{Saturazione}
+Questa situazione si verifica nel momento in cui la tensione di gate $V_{gs}$ ha superato la tensione di soglia e, per un qualsiasi valore della tensione di drain $V_{ds}$ maggiore di un certo valore, la corrente di drain $I_{d}$ non aumenta più ma si ferma al valore di saturazione $I_{d-sat}$.
+
+Di fatto, il dispositivo si comporta come un \textbf{generatore costante di corrente comandato in tensione}; dalla tensione di gate $V_{gs}$. Maggiore è la tensione di gate e maggiore è la corrente di saturazione.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{n_mos_saturazione.png}
     \caption{Regione di saturazione}
 \end{figure}
+\subsection{Confronto con il BJT}
+La regione di saturazione del BJT è quella regione che corrisponde alla regione lineare di un MOS. Al contrario, la regione attiva diretta (anche chiamata regione lineare) del BJT corrisponde alla regione di saturazione del MOS. Nel caso del MOSFET si parla di saturazione in riferimento alla sua capacità di far passare corrente: sfruttando la tensione di gate $V_{gs}$ sono stati inseriti un certo numero di portatori ma se la differenza di potenziale $V_{ds}$ viene aumentata molto i portatori vengono tutti strappati dal canale che di fatto viene chiuso perché gli vengono tolti gli elettroni di conduzione. Il drain ha tensione positiva che può essere maggiore della tensione di gate, quindi lavora nel verso opposto a come lavora il source cioè, data una certa tensione $V_{gs}$ il source immette elettroni di conduzione mentre il drain, che è a tensione positiva, li toglie quando la sua tensione è maggiore di zero.
+
 \section{Corrente}
+Esiste una relazione ben precisa tra le tensioni di gate e drain e la corrente di drain che è definita tramite un'equazione di secondo grado chiamata \textbf{equazione del MOSFET}:
+\begin{equation*}
+    I_{d} = K\,[2(V_{gs} - V_{t})V_{ds} - V_{ds}^2]
+\end{equation*}
+È una \textit{parabola} in $V_{ds}$ con concavità rivolta verso il basso e con coefficiente lineare $2K(V_{gs} - V_{t})$ legato alla tensione di gate. Questa equazione è valida per $V_{gs} > V_{t}$, corrispondente alla regione lineare del dispositivo, e solo fino al \textit{vertice} della parabola che corrisponde al valore massimo di $I_{d}$, cioè al valore di saturazione $I_{d-sat}$. Non a caso se $V_{gs} < V_{t}$ ci si trova nella regione di cutoff del MOS in cui la corrente di drain è nulla e il dispositivo è spento. Il valore di saturazione è definito come:
+\begin{equation}
+    I_{d-sat} = K(V_{gs} - V_{t})^2
+    \label{id_sat}
+\end{equation}
+che, come si nota nel grafico di sinistra nelle tre foto precedenti, ha un andamento \textit{parabolico} a partire dalla tensione di soglia $V_t$ mentre è \textit{nulla} per $V_{gs} < V_{t}$. L'ascissa del vertice della parabola corrisponde al punto in cui $V_{ds} = V_{gs} - V_{t}$. Dunque nel grafico che ha per ordinata la corrente di drain $I_{d}$ (quello a destra) il vertice della parabola ha ascissa $V_{ds} + V_{t}$ e coordinata $K(V_{gs} - V_{t})^2$.
+
+Per tutte le tensioni $V_{ds} \geq V_{gs} - V_{t}$ ci si trova in saturazione: la corrente $I_{d}$ è costante identicamente pari alla corrente di saturazione $I_{d-sat}$ definita tramite la \eqref{id_sat}. Riassumendo:
+\begin{equation*}
+I_{d} = \left\{
+\begin{array}{ll}
+0 &\text{se } V_{gs} < V_{t}\\
+K\,[2(V_{gs} - V_{t})V_{ds} - V_{ds}^2] &\text{se } V_{gs} > V_{t} \text{ e } V_{gs} < V_{ds} + V_{t}\\
+K(V_{gs} - V_{t})^2 & \text{se } V_{ds} \geq V_{gs} - V_{t} 
+\end{array}\right.
+\end{equation*}
+L'andamento della corrente $I_{d}$ è esattamente quello rappresentato dalle curve nel grafico di destra nelle tre figure precedenti. Questi grafici sono resi disponibili all'interno del datasheet del dispositivo.
+
+Queste curve variano al variare del parametro $V_{gs} - V_{t}$ che di fatto controlla il valore massimo di corrente che si può raggiungere e il punto in cui è possibile raggiungerlo. È questo il motivo per cui si dice che un N-MOS è un dispositivo controllato in tensione: perché il suo funzionamento è dettato dal parametro $V_{gs} - V_{t}$ che funge da variabile di controllo tramite la quale è possibile definire la corrente $I_{d}$ al variare della tensione $V_{ds}$.
+
+La costante \textit{K} è definita come:
+\begin{equation*}
+    K = \frac{1}{2}\mu C_{ox}\frac{W}{L}
+\end{equation*}
+
 \section{P-MOS}
-Anche chiamato \textbf{mosfet a canale p}
+Anche chiamato \textbf{mosfet a canale p}, è il dispositivo \textit{complementare} ad un N-MOS. Il canale di un P-MOS sarà quindi caratterizzato da lacune e non più da elettroni. Dal punto di vista circuitale è analogo ala transistor di tipo \textit{pnp}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{p_mos_simbolo.png}
+    \caption{Simbolo circuitale del P-MOS}
+\end{figure}
+\\Per quanto riguarda le tensioni:
+\begin{itemize}
+    \item[$V_{sd}$]: la tensione tra drain e source. Il source si suppone essere sempre \textit{positivo} mentre il drain si suppone essere sicuramente \textit{negativo} rispetto al source
+    \item[$V_{gs}$]: la tensione tra gate e source. Il gate è \textit{negativo} rispetto al source
+    \item[$V_{dg}$]: la tensione tra drain e gate
+\end{itemize}
+Le tre correnti sono così definite:
+\begin{itemize}
+    \item[$I_{s}$]: la corrente del source, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
+    \item[$I_{d}$]: la corrente del drain, si prende \textit{positiva} quando è \textit{uscente} dal dispositivo
+    \item[$I_{g}$]: la corrente del gate
+\end{itemize}
+Applicando una tensione $V_{gs}$ sul gate..
+
+\section{N-MOS reale}
+
 \chapter{Circuiti logici digitali}
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
@@ -576,7 +652,7 @@ Anche chiamato \textbf{mosfet a canale p}
 \end{enumerate}
 \chapter{Esercizi MOS}
 \begin{enumerate}
-    \item Valutare il valore di k in base alle seguenti curve:
+    \item Valutare il valore del parametro \textit{K} in base alle seguenti curve:
     \begin{figure}[h]
         \centering
        \includegraphics[scale=0.4,angle=0]{n_mos_es1.png}
