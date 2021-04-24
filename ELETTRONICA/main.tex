@@ -346,10 +346,10 @@ Il \textbf{MOS} è un dispositivo appartenente alla famiglia dei \textbf{FET}, o
 Le tensioni tra i tre terminali e le correnti sono definite nello stesso modo dei BJT. In particolare, i versi e i segni in un N-MOS sono definiti come nei BJT di tipo npn mentre in un P-MOS come in quelli di tipo pnp.
 
 \section{N-MOS}
-Un \textbf{N-MOS} è anche chiamato \textbf{mosfet a canale n}.
+Un \textbf{N-MOS} è anche chiamato \textbf{mosfet a canale n}. È un dispositivo controllato in tensione nel senso che è la tensione di gate $V_{gs}$ a controllarne il funzionamento.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.45,angle=0]{n_mos_simbolo.png}
+    \includegraphics[scale=0.5,angle=0]{n_mos_simbolo.png}
     \caption{Simbolo circuitale di un N-MOS}
 \end{figure}
 \\Le tensioni sono definite come segue:
@@ -364,13 +364,66 @@ Analogamente le tre correnti, una per ognuno dei tre terminali del MOS, sono:
     \item[$I_{g}$]: la corrente del gate, si prende \textit{positiva} quando è \textit{entrante} nel dispositivo
     \item[$I_{s}$]: la corrente del source, si prende \textit{positiva} quando è \textit{uscente} nel dispositivo
 \end{itemize}
-La particolarità dell' N-MOS è che la corrente del gate $I_{g}$ è \textit{sempre nulla} in tensione \textit{continua}.
+La particolarità di un N-MOS è che la corrente del gate $I_{g}$ è \textit{sempre nulla} in tensione \textit{continua}. Questo aspetto è fondamentale per i dispositivi a basso consumo perché un dispositivo che consuma poco è un dispositivo nel quale, possibilmente, non ci sono correnti che scorrono continuamente. Tenere acceso un circuito logico composto da tanti transistors BJT necessita di polarizzare le loro basi con delle correnti (seppur minime), quindi consuma corrente. Al contrario, un circuito logico realizzato con dispositivi MOS ha la capacità di non consumare corrente quando non ci sono transizioni o di consumarne poca quando ce ne sono poche.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{n_mos_struttura.png}
     \caption{Struttura di un N-MOS}
 \end{figure}
-\subsection{Regioni operative}
+\\Un MOSFET a canale n è composto da una zona in silicio con drogaggio di tipo p sulla quale sono presenti due zone drogate n+ utilizzate per favorire la \textbf{metallizzazione} con l'esterno e in corrispondenza di queste due zone drogate n+ sono presenti i terminali source e drain.
+
+La metallizzazione è necessaria perché gli scambi tra il dispositivo e l'esterno avvengono tramite i contatti esterni in alluminio e per far sì che avvenga la comunicazione tra dispositivo ed esterno si deve permettere di avere una giunzione che non sia \textit{raddrizzante}, ovvero che non sia una giunzione di tipo pn. Un materiale n+ (sopratutto se è molto n+), messo in contatto con l'alluminio che è un metallo, permette di creare una giunzione detta \textbf{ohmica} che non è raddrizzante.
+
+È poi presente uno strato di \textbf{ossido} di dimensioni molto limitate (frazioni del micron) che viene utilizzato nell'industria dei semiconduttori come materiale \textit{isolante} e viene generalmente realizzato in \textit{biossido di silicio} oppure in \textit{nitruro di silicio}, entrambi forme vetrose del silicio altamente isolanti. Quindi questo strato di ossido ha un aspetto vetroso e una rigidità dielettrica, cioè un potere isolante, come quella del vetro (molto isolante). Su questo strato di ossido è poggiato un metallo che costituite il terzo terminale: il gate.
+
+La sequenza di materiali: semiconduttore di tipo p, ossido e metallo definisce proprio la struttura MOS caratteristica di questi dispositivi.
+
+Dal gate in metallo al semiconduttore di tipo p \textit{non} può scorrere corrente perché tra di loro è presente lo strato di ossido isolante. È questo il motivo per cui, in condizione di tensione continua, la corrente del gate è sempre nulla: perché non scorre corrente continua dal gate alla zona p. 
+
+Tuttavia, questa struttura è a sua volta una struttura di materiali conduttori separati da un isolante a facce piane e parallele (nello specifico un conduttore e un semiconduttore paralleli e separati da uno strato isolante), cioè è un \textbf{condensatore} e questo comporta che, variando la tensione ai capi del condensatore o passando in tensione \textit{alternata}, ci saranno delle cariche che scorreranno, ovvero sui transitori ci sarà effettivamente della corrente che servirà per caricare e scaricare la \textit{capacità equivalente} del gate.
+
+\section{Funzionamento}
+Per costruzione, in condizioni stazionarie tra source e drain non può passare corrente perché i due terminali sono collegati tramite due giunzioni pn simmetriche disposte come in un BJT di tipo npn, cioè due diodi opposti uno dei quali è sempre polarizzato inversamente. Rispetto alla struttura transistor, la zona p, chiamata \textbf{canale}, non è stretta e questo comporta che la separazione tra le due zone n è molto pronunciata.
+
+Un N-MOS inizia a funzionare nel momento in cui si va ad applicare una tensione di gate \textit{positiva} cioè $V_{gs} > 0$ rispetto al resto del circuito (in particolare rispetto al materiale di tipo p). Ciò che succede quando si applica una tensione positiva al gate è esattamente che succede all'interno di un condensatore: sulla piastra soggetta al potenziale positivo, corrispondente al gate, si accumulano le cariche positive, mentre sulla piastra opposta, la porzione del semiconduttore di tipo p a contatto con lo strato di ossido, vengono attratte cariche negative. Queste cariche negative accumulate vanno ad occupare gli spazi disponibili delle lacune che quindi vengono riempite con portatori di elettroni (come succedeva nella giunzione pn) e si crea una \textbf{regione di svuotamento}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{n_mos_svuotamento.png}
+    \caption{Accumulo della cariche negative}
+\end{figure}
+\\Essendosi creata un regione di svuotamento, le cariche sono tutte bloccate dentro le lacune libere e questo comporta che non si possano avere fenomeni di scorrimento di cariche: ci si trova ancora in una situazione di stazionarietà.
+
+Continuando ad aumentare la tensione di gate $V_{gs}$, questa finirà per superare un certo valore di soglia $V_t$. Quando $V_{gs} > V_t$ il campo elettrico che si forma all'interno del condensatore è così elevato che riesce a tirare ulteriori elettroni prendendoli dalle due zone a drogaggio n+ e portandoli nella zona p nella quale si erano già accumulate delle cariche negative.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{n_mos_canale.png}
+    \caption{Accumulo della cariche negative}
+\end{figure}
+\\Questi ulteriori elettroni (provenienti sopratutto dal source perché si sta applicando una differenza di potenziale $V_{gs} = V_{g} - V_s$ tra gate e source per utilizzare il source come connessione al terzo terminale: il drain) sono tutti elettroni \textit{liberi}, cioè sono elettroni in eccesso rispetto a quelli che avevo riempito il reticolo cristallino inserendosi nelle lacune per creare la regione di svuotamento e si vanno a disporre al di sotto del gate. A questo punto si è creato un \textbf{canale conduttivo } di elettroni tra source e drain, cioè una zona che sarebbe l'equivalente di una zona drogata n+ perché ha un eccesso notevole di elettroni. Se ora si va ad applicare un potenziale al drain, il canale conduttivo che si è creato permette lo scorrimento di corrente tra source e drain. Tanto maggiore è la tensione $V_{gs}$ tra gate e source, tanti più elettroni saranno disponibili nel canale conduttivo e tanto migliore la sarà la conduzione tra source e drain.
+
+\section{Regioni operative}
+Il dispositivo N-MOS è caratterizzato da tre possibili regioni di funzionamento: la regione di \textbf{cutoff}, la regione \textbf{lineare} e la regione di \textbf{saturazione}.
+
+\subsection{Cutoff}
+Nella regione di cutoff o di interdizione la tensione tra gate e source non ha ancora raggiunto il valore di soglia, cioè $V_{gt} < V_{t}$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.42,angle=0]{n_mos_cutoff.png}
+    \caption{Regione di cutoff}
+\end{figure}
+\subsection{Lineare}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.42,angle=0]{n_mos_lineare.png}
+    \caption{Regione lineare}
+\end{figure}
+\subsection{Saturazione}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{n_mos_saturazione.png}
+    \caption{Regione di saturazione}
+\end{figure}
+\section{Corrente}
 \section{P-MOS}
 Anche chiamato \textbf{mosfet a canale p}
 \chapter{Circuiti logici digitali}
@@ -522,5 +575,13 @@ Anche chiamato \textbf{mosfet a canale p}
     Se per esempio si avesse $h_{fe} = 50$ non cambierebbe niente perché si sta lavorando in saturazione, quindi rimarrebbe sia $V_{ce} = 0,2\,V$ sia $V_{R_1} = 3,3\,V$. Invece per $h_{fe} = 10$ si passerebbe in regione lineare e la corrente che scorre nel LED sarà diversa.
 \end{enumerate}
 \chapter{Esercizi MOS}
+\begin{enumerate}
+    \item Valutare il valore di k in base alle seguenti curve:
+    \begin{figure}[h]
+        \centering
+       \includegraphics[scale=0.4,angle=0]{n_mos_es1.png}
+    \end{figure}
+    \\Ue uaiò bella sta curva
+\end{enumerate}
 \end{appendices}
 \end{document}
