@@ -369,6 +369,7 @@ La particolarità di un N-MOS è che la corrente del gate $I_{g}$ è \textit{sem
     \centering
     \includegraphics[scale=0.4,angle=0]{n_mos_struttura.png}
     \caption{Struttura di un N-MOS}
+    \label{struttura_nmos}
 \end{figure}
 \\Un MOSFET a canale n è composto da una zona in silicio con drogaggio di tipo p sulla quale sono presenti due zone drogate n+ utilizzate per favorire la \textbf{metallizzazione} con l'esterno e in corrispondenza di queste due zone drogate n+ sono presenti i terminali source e drain.
 
@@ -398,6 +399,7 @@ Continuando ad aumentare la tensione di gate $V_{gs}$, questa finirà per supera
     \centering
     \includegraphics[scale=0.4,angle=0]{n_mos_canale.png}
     \caption{Accumulo della cariche negative}
+    \label{svuotamento}
 \end{figure}
 \\Questi ulteriori elettroni (provenienti sopratutto dal source perché si sta applicando una differenza di potenziale $V_{gs} = V_{g} - V_s$ tra gate e source per utilizzare il source come connessione al terzo terminale: il drain) sono tutti elettroni \textit{liberi}, cioè sono elettroni in eccesso rispetto a quelli che avevo riempito il reticolo cristallino inserendosi nelle lacune per creare la regione di svuotamento e si vanno a disporre al di sotto del gate. A questo punto si è creato un \textbf{canale conduttivo } di elettroni tra source e drain, cioè una zona che sarebbe l'equivalente di una zona drogata n+ perché ha un eccesso notevole di elettroni. Se ora si va ad applicare un potenziale al drain, il canale conduttivo che si è creato permette lo scorrimento di corrente tra source e drain. Tanto maggiore è la tensione $V_{gs}$ tra gate e source, tanti più elettroni saranno disponibili nel canale conduttivo e tanto migliore la sarà la conduzione tra source e drain.
 
@@ -470,13 +472,18 @@ K\,[2(V_{gs} - V_{t})V_{ds} - V_{ds}^2] &\text{se } V_{gs} > V_{t} \text{ e } V_
 K(V_{gs} - V_{t})^2 & \text{se } V_{ds} \geq V_{gs} - V_{t} 
 \end{array}\right.
 \end{equation*}
-L'andamento della corrente $I_{d}$ è esattamente quello rappresentato dalle curve nel grafico di destra nelle tre figure precedenti. Questi grafici sono resi disponibili all'interno del datasheet del dispositivo.
+L'andamento di $I_{d}$ è esattamente quello rappresentato dalle curve nel grafico di destra nelle tre figure precedenti. Questi grafici sono disponibili all'interno del datasheet del dispositivo.
 
 Queste curve variano al variare del parametro $V_{gs} - V_{t}$ che di fatto controlla il valore massimo di corrente che si può raggiungere e il punto in cui è possibile raggiungerlo. È questo il motivo per cui si dice che un N-MOS è un dispositivo controllato in tensione: perché il suo funzionamento è dettato dal parametro $V_{gs} - V_{t}$ che funge da variabile di controllo tramite la quale è possibile definire la corrente $I_{d}$ al variare della tensione $V_{ds}$.
 
-La costante \textit{K} è definita come:
+La costante \textit{K} è definita secondo l'equazione:
 \begin{equation*}
     K = \frac{1}{2}\mu C_{ox}\frac{W}{L}
+\end{equation*}
+Dipende dalla mobilità dei portatori $\mu$ e dai parametri geometrici del dispositivo \textit{W} e \textit{L} che sono rispettivamente la larghezza e la lunghezza del canale, entrambe controllate dal gate.
+È \textit{direttamente proporzionale} alla mobilità dei portatori $\mu$ che, nel caso di un N-MOS, corrisponde alla mobilità degli elettroni mentre in un P-MOS corrisponde a quella delle lacune.
+Per definizione, tanto più largo è il canale e tanto maggiore sarà \textit{K}, cioè tanto maggiore sarà la corrente che potrà passare nel canale. Viceversa, tanto più lungo è il canale e tanto minore sarà \textit{K} perché i portatori dovranno spostarsi per un tratto più lungo impiegando quindi uno sforzo maggiore (il canale può essere visto come una resistenza). A parità di condizioni, confrontando il K di un MOS a canale n e di uno a canale p, si ha che: \begin{equation*}
+    K_{b} \approx 2K_{p}
 \end{equation*}
 
 \section{P-MOS}
@@ -498,9 +505,33 @@ Le tre correnti sono così definite:
     \item[$I_{d}$]: la corrente del drain, si prende \textit{positiva} quando è \textit{uscente} dal dispositivo
     \item[$I_{g}$]: la corrente del gate
 \end{itemize}
-Applicando una tensione $V_{gs}$ sul gate..
+Applicando inizialmente una tensione di gate $V_{gs}$ (negativa per definizione) minore, cioè \textit{più negativa}, di una tensione di soglia negativa $V_{gs} < - |V_{t}|$, si crea una \textbf{regione di svuotamento} (come in figura \ref{svuotamento}) del tutto complementare a quella che si forma all'interno di un N-MOS. Questa complementarietà è dovuta al fatto che dentro un P-MOS è presente una vasta zona in silicio drogato di tipo n sulla quale sono presenti due piccole zone drogate p+ in corrispondenza di source e drain. La zona a drogaggio n è poi in contatto con uno strato di ossido isolante sopra il quale è collocato il gate in metallo. La presenza della zona drogata n (e non p come in un N-MOS) comporta che dentro di essa, in corrispondenza della regione di svuotamento, si vanno ad accumulare delle lacune che formano una carica positiva nel semiconduttore mentre se ne crea una negativa nel gate.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45,angle=0]{p_mos_struttura.png}
+    \caption{Struttura di un P-MOS}
+\end{figure}
+
+Diminuendo ancora di più la tensione di gate, quando sarà sufficientemente negativa sarà in grado di attrarre ulteriori lacune dalle due zone p+ adiacenti, queste lacune si disporranno al di sotto della regione di svuotamento e, essendo lacune libere, potranno fungere da portatori di carica. Potrà quindi scorrere corrente tra i terminali drain e source. Tuttavia in questa corrente saranno le lacune a muoversi ma esse hanno una mobilità che è circa la metà di quella degli elettroni (come già detto parlando dei BJT) e questo fa sì che le prestazioni di un P-MOS siano generalmente \textit{minori} rispetto a quelle di un N-MOS. A parità di funzionamento, il P-MOS porta metà corrente rispetto a quella portata da un N-MOS.\\
+
+Riassumendo, per entrambi le tipologie di MOSFET si identificano tre regioni operative:
+\begin{enumerate}
+    \item \textit{Cutoff}: non c'è conduzione tra source e drain perché $|V_{gs}| < |V_{t}|$ implica che non può scorrere corrente all'interno del canale
+    \item \textit{Regione lineare}: in questo caso $|V_{gs}| > |V_{t}|$ e $|I_{d}| < |I_{d-sat}|$. Finché non si raggiunge la corrente limite $I_{d-sat}$ dettata dalla tensione $V_{gs}$, si ha un andamento inizialmente lineare e poi più marcatamente parabolico della corrente. In queste condizioni il dispositivo si comporta come un resistore controllato in tensione
+    \item \textit{Saturazione}: in questo caso $|I_{d}| = |I_{d-sat}|$. Si è raggiunto il valore limite della corrente definito tramite l'equazione \eqref{id_sat}. La corrente non cresce più, quindi l'uscita è costante indipendentemente dalla tensione applicata sul drain. In queste condizioni il dispositivo si comporta come un generatore di corrente costante controllato in tensione
+\end{enumerate}
 
 \section{N-MOS reale}
+Nella realtà fisica, un dispositivo N-MOS è \textbf{asimmetrico} per costruzione. In particolare, la metallizzazione del source tramite l'impiego dell'alluminio mette in \textit{cortocircuito} anche una parte del semiconduttore drogato p, quindi il source e il \textbf{body} del diodo sono collegati insieme: una certa zona del semiconduttore di tipo p (la parte bassa della zona p riportata in figura \ref{struttura_nmos}) ha lo stesso potenziale del source. Questo comporta che si viene a creare un diodo, chiamato \textbf{body diode}, tra il drain e il source messo in cortocircuito con il semiconduttore di tipo p. Questo diodo è presente nella maggior parte dei MOSFET. È questo il motivo per cui, in condizioni normali, per avere il comportamento finora descritto, si deve avere il potenziale di drain \textit{maggiore} di quello di source perché se così non fosse il diodo body si polarizzerebbe \textit{direttamente} e scorrerebbe corrente dal source al drain senza nessun controllo da parte del gate, cioè indipendentemente dalla tensione di gate.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{n_mos_reale.png}
+    \caption{Body diode}
+\end{figure}
+\\ Nel caso di un P-MOS si deve invece fare in modo che il drain sia sempre più \textit{negativo} del source.
+
+\section{Impiego dei MOS}
+Normalmente si utilizzano sia i P-MOS che gli N-MOS. Nelle logiche C-MOS sono presenti le due tipologie accompagnate da alcuni accorgimenti per garantire che entrambe abbiano la stessa prestazione. Nell'elettronica di potenza, in cui si utilizzano questi dispositivi come interruttori o per svolgere compiti gravosi in termini di potenza richiesta, si cerca di sfruttare al meglio gli N-MOS grazie alle loro prestazioni nettamente migliori in modo del tutto analogo al contesto dei BJT in cui si tendono a preferire quelli di tipo npn.
 
 \chapter{Circuiti logici digitali}
 \chapter{RTL e TTL}
@@ -657,7 +688,26 @@ Applicando una tensione $V_{gs}$ sul gate..
         \centering
        \includegraphics[scale=0.4,angle=0]{n_mos_es1.png}
     \end{figure}
-    \\Ue uaiò bella sta curva
+    \\Si sa che la corrente di saturazione è definita dall'equazione
+    \begin{equation}
+        I_{d-sat} = K(V_{gs} - V_{t})^2
+        \label{sat}
+    \end{equation}
+    Nel caso in questione la tensione limite è già fornita e si sa che $V_{t} = 2\,V$. A partire dal grafico di sinistra, che ha per ascissa la tensione $V_{gs}$ e per ordinata la corrente di saturazione $I_{d-sat}$, è possibile determinare la corrente di saturazione corrispondente ad un determinato valore della tensione di gate. Dalla \eqref{sat}, che è diventata una relazione ad una sola incognita, si può quindi ricavare il valore della costante \textit{K} come:
+    \begin{equation*}
+        K = \frac{I_{d-sat}}{(V_{gs} - V_{t})^2}
+    \end{equation*}
+    Per esempio, per $V_{gs} = 8\,V$ corrisponde una corrente di saturazione $I_{d-sat} = 10\,mA$ dunque $K = 2,8 \cdot 10^{-4}$.
+    
+    Se $V_{t}$ non fosse nota, si avrebbero due incognite nella \eqref{sat}. Per poter risolvere il problema si dovrebbe quindi risolvere un sistema di due equazioni in due incognite sfruttando la definizione di $I_{d-sat}$ e le coppie $(V_{gs}$, $I_{d}$) ricavabili nel grafico di destra. Per esempio, per $V_{gs} = 4\,V$ corrisponde una corrente di saturazione $I_{d-sat} = 1\,mA$ e, come detto prima, per $V_{gs} = 8\,V$ corrisponde una corrente di saturazione $I_{d-sat} = 10\,mA$ dunque:
+    \begin{equation*}
+    \left\{
+    \begin{array}{l}
+    10\,mA = K(8\,V - V_{t})^2\\
+    1\,mA = K(4\,V - V_{t})^2
+\end{array}\right.
+\end{equation*}
+
 \end{enumerate}
 \end{appendices}
 \end{document}
