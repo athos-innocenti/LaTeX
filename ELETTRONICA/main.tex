@@ -141,7 +141,7 @@ Oltre al diodo Zener e ai diodi pn al silicio che si usano per controllare il ve
         \includegraphics[scale=0.45,angle=0]{diodo_spegnimento.png}
         \caption{$V_{D}$ e $I_{D}$ di un diodo normale allo spegnimento}
     \end{figure}
-    Questo comporta che quando si vuole spegnere il diodo, quindi $V_{D}$ diventa negativa perché si fa una polarizzazione inversa, esso si spegne lentamente, cioè $I_{D}$ scende lentamente ala valore previsto nel caso statico (invece si accende facilmente non appena viene polarizzato) perché ha accumulato cariche nella parte p che lo tengono ancora acceso. La corrente $I_{D}$ passa dall'essere positiva all'essere negativa per un certo tempo, fintanto che gli elettroni accumulati non vengono liberati. Indipendentemente dalla polarizzazione, passa comunque corrente. Tutto questo non succede nel diodo Shottky in cui, poiché la carica netta nella parte p non esiste, non esiste un accumulo di cariche bloccate nelle lacune e questo fa sì che quando il diodo passa in polarizzazione inversa si spegne immediatamente, cioè si comporta dinamicamente come un diodo ideale.
+    \\Questo comporta che quando si vuole spegnere il diodo, quindi $V_{D}$ diventa negativa perché si fa una polarizzazione inversa, esso si spegne lentamente, cioè $I_{D}$ scende lentamente ala valore previsto nel caso statico (invece si accende facilmente non appena viene polarizzato) perché ha accumulato cariche nella parte p che lo tengono ancora acceso. La corrente $I_{D}$ passa dall'essere positiva all'essere negativa per un certo tempo, fintanto che gli elettroni accumulati non vengono liberati. Indipendentemente dalla polarizzazione, passa comunque corrente. Tutto questo non succede nel diodo Shottky in cui, poiché la carica netta nella parte p non esiste, non esiste un accumulo di cariche bloccate nelle lacune e questo fa sì che quando il diodo passa in polarizzazione inversa si spegne immediatamente, cioè si comporta dinamicamente come un diodo ideale.
 \end{itemize}
 
 \chapter{BJT}
@@ -528,12 +528,54 @@ Nella realtà fisica, un dispositivo N-MOS è \textbf{asimmetrico} per costruzio
     \includegraphics[scale=0.4,angle=0]{n_mos_reale.png}
     \caption{Body diode}
 \end{figure}
-\\ Nel caso di un P-MOS si deve invece fare in modo che il drain sia sempre più \textit{negativo} del source.
+\\Al contrario, in un MOS a canale p si deve fare in modo che il drain sia sempre più \textit{negativo} del source.
+
+Indipendentemente dalla tipologia di MOS, come nel caso dei diodi e transistor, ci sono delle limitazioni riguardo le tensioni che possono essere applicate al drain e se queste non sono rispettate il dispositivo si romperà. Questo perché se la tensione applicata al drain è troppo elevata (maggiore della \textbf{tensione di breakdown}), il campo elettrico che si crea tra drain e source è così elevato da perforare il canale. In questo scenario le curve di corrente $I_{d}$ impennano rapidamente verso l'alto e questo di fatto rappresenta la rottura del dispositivo.
 
 \section{Impiego dei MOS}
-Normalmente si utilizzano sia i P-MOS che gli N-MOS. Nelle logiche C-MOS sono presenti le due tipologie accompagnate da alcuni accorgimenti per garantire che entrambe abbiano la stessa prestazione. Nell'elettronica di potenza, in cui si utilizzano questi dispositivi come interruttori o per svolgere compiti gravosi in termini di potenza richiesta, si cerca di sfruttare al meglio gli N-MOS grazie alle loro prestazioni nettamente migliori in modo del tutto analogo al contesto dei BJT in cui si tendono a preferire quelli di tipo npn.
+Normalmente si utilizzano sia i P-MOS che gli N-MOS. Nelle logiche C-MOS sono presenti le due tipologie accompagnate da alcuni accorgimenti per garantire che entrambe abbiano la stessa prestazione. Nell'elettronica di potenza, in cui si utilizzano questi dispositivi come interruttori o per svolgere compiti gravosi in termini di potenza richiesta, si cerca di sfruttare al meglio gli N-MOS grazie alle loro prestazioni nettamente migliori in modo del tutto analogo al contesto dei BJT in cui si tendono a preferire quelli di tipo npn. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{mos_interruttore.png}
+    \caption{Body diode}
+\end{figure}
+\\Nel seguente circuito, il MOS a canale n viene utilizzato come interruttore per gestire il carico soggetto ad una tensione $V_{cc}$ e composto da una resistenza $R_{d}$ e da un LED $D$ da accendere. Il carico è collegato al drain, il source viene messo a $0\,V$ mentre il gain riceve un segnale in ingresso. Quando la tensione applicata sul gate è maggiore della tensione di soglia $V_{t}$, si attiverà il canale del gate tra source e drain trasformandolo in una opportuna resistenza. Se per esempio il gate è soggetto ad una tensione di $5\,V$ e la tensione di soglia del MOS è $V_{t} = 2\,V$, si può sostituire il MOS con la corrispettiva \textit{resistenza di canale} $R_{n-mos}$ il cui valore è fornito dal datasheet del dispositivo. A questo punto si deve determinare la corrente che scorre nel circuito e poi controllare che valga $I_{d} < I_{d-sat}$, se è vero significa che il MOS si sta effettivamente comportando come una resistenza, come se fosse un interruttore. Se invece $I_{d} > I_{d-sat}$, l'ipotesi di resistenza di canale decade e la corrente sarà limitata alla corrente di saturazione $I_{d} = I_{d-sat}$.
 
 \chapter{Circuiti logici digitali}
+I \textbf{circuiti logici digitali} sono tutti quei circuiti in cui l'informazione è \textbf{quantizzata} in soli due possibili livelli chiamati \textbf{stati digitali}: alto e basso, vero o falso, 0 o 1. Alla base di tutto c'è l'\textbf{algebra di Boole}, l'aritmetica binaria. L'impiego di solo due livelli possibili permette di semplificare il trasferimento dell'informazione da un dispositivo all'altro perché il ricevente è in grado di discriminare facilmente i due stati.
+
+\section{Operatori booleani}
+Per poter effettuare delle operazioni logiche si sfrutta l' algebra booleana tramite la quale si definiscono gli \textbf{operatori booleani}.
+\begin{itemize}
+    \item\textbf{NOT}: indicato con una linea sopra l'operando che deve essere negato
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.4,angle=0]{logica_not.png}
+        \caption{Simbolo circuitale del NOT}
+    \end{figure}
+    %\begin{tabular}{c|c}
+    %     A & $\overline{A}$\\
+    %     0 &1\\
+    %     1 &0
+    %\end{tabular}
+    \item\textbf{AND}: indicato come il prodotto tra i due operandi
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.4,angle=0]{logica_and.png}
+        \caption{Simbolo circuitale dell' AND}
+    \end{figure}
+    \item\textbf{OR}: indicato come la somma tra i due operandi
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.4,angle=0]{logica_or.png}
+        \caption{Simbolo circuitale dell' OR}
+    \end{figure}
+\end{itemize}
+
+\section{Universalità}
+
+\section{Parametri delle famiglie logiche}
+
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
