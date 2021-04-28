@@ -127,22 +127,23 @@ In base a come sono costruiti diodo e circuito, il breakdown può essere \textit
 \includegraphics[scale=0.15,angle=0]{diodo_zener.png}
 \caption{Simbolo del diodo Zener}
 \end{figure}
-\\In passato venivano usati per controllare la tensione ed è l'unico diodo che sopporta il breakdown inverso ma bisogna inserire una \textit{resistenza di limitazione}.
-\\\\Nel contesto dell'elettronica digitale, in logica binaria, per una tensione $V_{D}$ compresa tra $0\,V$ e $0,7\,V$ si considera una corrente di $0\,A$ mentre oltre gli $0,7\,V$ si considera una corrente di $1\,A$, cioè infinita. Per tensioni negative, per $V_{D}$ compresa tra $0\,V$ e la tensione di breakdown si considera una corrente di $0\,A$ e oltre la tensione di breakdown si considera corrente infinitamente negativa. Nella realtà però il diodo è un dispositivo analogico caratterizzato da non avere cambi repentini di intensità di corrente.
+\\In passato venivano usati per controllare la tensione ed è l'unico diodo che sopporta il breakdown inverso ma bisogna inserire una \textit{resistenza di limitazione}.\\
+
+Nel contesto dell'elettronica digitale, in logica binaria, per una tensione $V_{D}$ compresa tra $0\,V$ e $0,7\,V$ si considera una corrente di $0\,A$ mentre oltre gli $0,7\,V$ si considera una corrente di $1\,A$, cioè infinita. Per tensioni negative, per $V_{D}$ compresa tra $0\,V$ e la tensione di breakdown si considera una corrente di $0\,A$ e oltre la tensione di breakdown si considera corrente infinitamente negativa. Nella realtà però il diodo è un dispositivo analogico caratterizzato da non avere cambi repentini di intensità di corrente.
 
 \section{Diodi speciali}
 Oltre al diodo Zener e ai diodi pn al silicio che si usano per controllare il verso di scorrimento della corrente, ci sono altre tipologie di diodi costruibili sfruttando ancora le proprietà dei materiali semiconduttori.
-\begin{itemize}
-    \item \textbf{Fotodiodo}: è un dispositivo optoelettronico, cioè un dispositivo che sfrutta il dualismo tra energia e lunghezza d'onda (cioè tra fotone e l'energia che esso porta) per far sì che nel dispositivo a semiconduttore la luce che incide sul dispositivo stesso possa produrre degli effetti. A differenza di altri dispositivi optoelettronici che sono neri per non modificare il loro funzionamento a causa della luce, il fotodiodo è \textit{trasparente}. Il principio di funzionamento è del tutto analogo a quello della cella fotovoltaica: viene emessa corrente quando della luce incide sul fotodiodo. Per usarlo lo si polarizza in inversa e se della luce lo colpisce, se il fotone colpisce la regione di svuotamento, l'energia associata al fotone $e = \hbar \cdot \nu$ (con $\nu$ l'inverso della lunghezza d'onda) è in grado di prendere un elettrone nel reticolo cristallino e portarlo dalla \textbf{banda di valenza} nella \textbf{banda di conduzione} così che l'elettrone si stacca dalla sua lacuna, si crea una coppia elettone-lacuna liberi che è in grado di seguire il campo elettrico che si è creato tramite il quale la corrente scorre verso l'anodo, e si ha un passaggio di corrente. Quindi il diodo, che di base in polarizzazione inversa non conduce corrente, quando viene illuminato da una luce che abbia sufficiente energia per poter far passare gli elettroni dalla banda di valenza a quella di conduzione riesce a condurre corrente anche in condizioni di polarizzazione inversa. Si può usare per rilevare una radiazione luminosa incidente (per esempio in un telecomando a raggi infrarossi) oppure nei pannelli fotovoltaici in cui il pannello non è altro che un grande diodo pn al silicio e quando su di esso incide della luce solare diventa lui stesso un generatore di corrente con la corrente positiva uscente dall'anodo e la tensione che si genera ai capi del diodo che è sicuramente \textit{minore o uguale} della tensione di soglia del diodo stesso. Se la tensione che si genera fosse maggiore di $0,7\,V$ il diodo si polarizzerebbe direttamente e al suo interno vorrebbe scorrere una corrente contraria, dall'anodo al catodo. Normalmente una diodo al silicio per applicazioni fotovoltaiche genera tra gli $0,5$ e gli $0,6$ volt.
-    \item \textbf{LED}: anche questo è un dispositivo optoelettronico che sostanzialmente ha un funzionamento opposto a quello del fotodiodo. È un dispositivo costruito in modo tale che quando viene polarizzato direttamente sia facile che nella regione di svuotamento si vadano a ricombinare elettroni e lacune; cioè è costruito in modo tale che gli elettroni che sono in banda di conduzione possano cadere in banda di valenza, così da poter liberare un fotone. La lunghezza d'onda del fotone liberato è \textit{inversamente proporzionale} all'energia (quindi la frequenza della radiazione luminosa emessa è direttamente proporzionale all'energia), quindi ad un salto energetico molto alto (barriera di potenziale alta) corrisponderà una lunghezza d'onda molto bassa cioè l'emissione del diodo si sposta verso gli ultravioletti; al contrario, se la barriera di potenziale è bassa l'emissione si sposta verso gli infrarossi. Accanto agli infrarossi c'è il \textit{rosso}, accanto agli ultravioletti c'è il \textit{viola}, nel mezzo partendo dal viola ci sono il blu, il verde, il giallo, l'arancione e infine il rosso. Dunque la lunghezza d'onda della luce emessa dal LED è esattamente determinata dalla sua distanza tra la banda di valenza e quella di conduzione, e a sua volta quella distanza è proporzionata dalla tensione che cade sul diodo, per questo il diodo LED è un diodo che normalmente ha una tensione di soglia \textit{molto alta}, soprattutto nel visibile e nell'ultravioletto. Inoltre, la tensione che cade ai capi del diodo, proprio perché è fatto per avere una barriera di potenziale grande, è tendenzialmente $> 1,5\,V$: per i LED \textit{rossi} è tipicamente $1,5\,V$, per i \textit{verdi} circa $1,8\,V$, per quelli \textit{blu} circa $2,2\,V$, per i diodi \textit{ultravioletti} è intorno ai $3\,V$, per i diodi \textit{infrarossi}, in particolare quelli nel vicino infrarosso, è circa $1,2\,V$. In ogni caso, la caduta di potenziale è proporzionata all'energia dell'emissione luminosa e tanto più l'emissione luminosa si sposta verso gli ultravioletti, tanto più è energetica e quindi tanto maggiore è la caduta di potenziale ai capi del diodo.
-    \item \textbf{Diodo Shottky}: diodo particolare in cui la giunzione pn è fatta da un \textit{metallo} (per esempio l'\textit{alluminio} che è un materiale di $III^{a}$ colonna) nella zona p e da un \textit{semiconduttore} nella zona n. Questo accoppiamento fa sì che la regione di svuotamento si estenda solo nel lato del semiconduttore, nel metallo non esiste la regione di svuotamento perché la strutta molecolare di un metallo è il \textbf{mare di elettroni} in cui gli elettroni sono sempre liberi di muoversi: non si crea la regione di svuotamento ma il campo elettrico si. Questa caratteristica permette di avere una tensione di soglia \textit{minore} di quella di un diodo al silicio perché di fatto la regione di svuotamento è la metà di quella che si avrebbe normalmente. Come detto, mentre scorre corrente in un diodo normale si accumulano cariche minoritarie nella parte p.
+\begin{description}
+    \item[Fotodiodo] È un dispositivo optoelettronico, cioè un dispositivo che sfrutta il dualismo tra energia e lunghezza d'onda (cioè tra fotone e l'energia che esso porta) per far sì che nel dispositivo a semiconduttore la luce che incide sul dispositivo stesso possa produrre degli effetti. A differenza di altri dispositivi optoelettronici che sono neri per non modificare il loro funzionamento a causa della luce, il fotodiodo è \textit{trasparente}. Il principio di funzionamento è del tutto analogo a quello della cella fotovoltaica: viene emessa corrente quando della luce incide sul fotodiodo. Per usarlo lo si polarizza in inversa e se della luce lo colpisce, se il fotone colpisce la regione di svuotamento, l'energia associata al fotone $e = \hbar \cdot \nu$ (con $\nu$ l'inverso della lunghezza d'onda) è in grado di prendere un elettrone nel reticolo cristallino e portarlo dalla \textbf{banda di valenza} nella \textbf{banda di conduzione} così che l'elettrone si stacca dalla sua lacuna, si crea una coppia elettone-lacuna liberi che è in grado di seguire il campo elettrico che si è creato tramite il quale la corrente scorre verso l'anodo, e si ha un passaggio di corrente. Quindi il diodo, che di base in polarizzazione inversa non conduce corrente, quando viene illuminato da una luce che abbia sufficiente energia per poter far passare gli elettroni dalla banda di valenza a quella di conduzione riesce a condurre corrente anche in condizioni di polarizzazione inversa. Si può usare per rilevare una radiazione luminosa incidente (per esempio in un telecomando a raggi infrarossi) oppure nei pannelli fotovoltaici in cui il pannello non è altro che un grande diodo pn al silicio e quando su di esso incide della luce solare diventa lui stesso un generatore di corrente con la corrente positiva uscente dall'anodo e la tensione che si genera ai capi del diodo che è sicuramente \textit{minore o uguale} della tensione di soglia del diodo stesso. Se la tensione che si genera fosse maggiore di $0,7\,V$ il diodo si polarizzerebbe direttamente e al suo interno vorrebbe scorrere una corrente contraria, dall'anodo al catodo. Normalmente una diodo al silicio per applicazioni fotovoltaiche genera tra gli $0,5$ e gli $0,6$ volt.
+    \item[LED - Light Emitting Diode] Anche questo è un dispositivo optoelettronico che sostanzialmente ha un funzionamento opposto a quello del fotodiodo. È un dispositivo costruito in modo tale che quando viene polarizzato direttamente sia facile che nella regione di svuotamento si vadano a ricombinare elettroni e lacune; cioè è costruito in modo tale che gli elettroni che sono in banda di conduzione possano cadere in banda di valenza, così da poter liberare un fotone. La lunghezza d'onda del fotone liberato è \textit{inversamente proporzionale} all'energia (quindi la frequenza della radiazione luminosa emessa è direttamente proporzionale all'energia), quindi ad un salto energetico molto alto (barriera di potenziale alta) corrisponderà una lunghezza d'onda molto bassa cioè l'emissione del diodo si sposta verso gli ultravioletti; al contrario, se la barriera di potenziale è bassa l'emissione si sposta verso gli infrarossi. Accanto agli infrarossi c'è il \textit{rosso}, accanto agli ultravioletti c'è il \textit{viola}, nel mezzo partendo dal viola ci sono il blu, il verde, il giallo, l'arancione e infine il rosso. Dunque la lunghezza d'onda della luce emessa dal LED è esattamente determinata dalla sua distanza tra la banda di valenza e quella di conduzione, e a sua volta quella distanza è proporzionata dalla tensione che cade sul diodo, per questo il diodo LED è un diodo che normalmente ha una tensione di soglia \textit{molto alta}, soprattutto nel visibile e nell'ultravioletto. Inoltre, la tensione che cade ai capi del diodo, proprio perché è fatto per avere una barriera di potenziale grande, è tendenzialmente $> 1,5\,V$: per i LED \textit{rossi} è tipicamente $1,5\,V$, per i \textit{verdi} circa $1,8\,V$, per quelli \textit{blu} circa $2,2\,V$, per i diodi \textit{ultravioletti} è intorno ai $3\,V$, per i diodi \textit{infrarossi}, in particolare quelli nel vicino infrarosso, è circa $1,2\,V$. In ogni caso, la caduta di potenziale è proporzionata all'energia dell'emissione luminosa e tanto più l'emissione luminosa si sposta verso gli ultravioletti, tanto più è energetica e quindi tanto maggiore è la caduta di potenziale ai capi del diodo.
+    \item[Diodo Shottky] Diodo particolare in cui la giunzione pn è fatta da un \textit{metallo} (per esempio l'\textit{alluminio} che è un materiale di $III^{a}$ colonna) nella zona p e da un \textit{semiconduttore} nella zona n. Questo accoppiamento fa sì che la regione di svuotamento si estenda solo nel lato del semiconduttore, nel metallo non esiste la regione di svuotamento perché la strutta molecolare di un metallo è il \textbf{mare di elettroni} in cui gli elettroni sono sempre liberi di muoversi: non si crea la regione di svuotamento ma il campo elettrico si. Questa caratteristica permette di avere una tensione di soglia \textit{minore} di quella di un diodo al silicio perché di fatto la regione di svuotamento è la metà di quella che si avrebbe normalmente. Come detto, mentre scorre corrente in un diodo normale si accumulano cariche minoritarie nella parte p.
     \begin{figure}[ht]
         \centering
         \includegraphics[scale=0.45,angle=0]{diodo_spegnimento.png}
         \caption{$V_{D}$ e $I_{D}$ di un diodo normale allo spegnimento}
     \end{figure}
     \\Questo comporta che quando si vuole spegnere il diodo, quindi $V_{D}$ diventa negativa perché si fa una polarizzazione inversa, esso si spegne lentamente, cioè $I_{D}$ scende lentamente ala valore previsto nel caso statico (invece si accende facilmente non appena viene polarizzato) perché ha accumulato cariche nella parte p che lo tengono ancora acceso. La corrente $I_{D}$ passa dall'essere positiva all'essere negativa per un certo tempo, fintanto che gli elettroni accumulati non vengono liberati. Indipendentemente dalla polarizzazione, passa comunque corrente. Tutto questo non succede nel diodo Shottky in cui, poiché la carica netta nella parte p non esiste, non esiste un accumulo di cariche bloccate nelle lacune e questo fa sì che quando il diodo passa in polarizzazione inversa si spegne immediatamente, cioè si comporta dinamicamente come un diodo ideale.
-\end{itemize}
+\end{description}
 
 \chapter{BJT}
 Il \textbf{BJT} viene così chiamato perché è un transistor bipolare, cioè composto da due poli. È un dispositivo a tre \textit{terminali} formato due due giunzioni: una giunzione np e una pn. I tre terminali sono: l'\textbf{emettitore} E, che costituisce la prima regione n a sinistra; la \textbf{base} B, corrispondente all'unica regione p presente e collocata nel mezzo; e infine il \textbf{collettore} C che invece è la seconda regione n collocata sulla destra del BJT.
@@ -316,12 +317,12 @@ Nel BJT npn si parla di elettroni come portatori di carica, nel transistor pnp i
 A livello statistico per definire il guadagno si deve tenere conto della \textbf{mobilità dei portatori}, ovvero quanto i portatori (che sono generati dall'emettitore) si muovono facilmente all'interno del materiale. Lacune ed elettroni non hanno la stessa mobilità, in particolare le lacune si muovono con una mobilità che è circa la \textit{metà} di quella con cui si muovono gli elettroni. Quindi dati due dispositivi geometricamente uguali ma con drogaggi tutti simmetricamente opposti, uno che sfrutta il moto degli elettroni come portatori di carica e l'altro che sfrutta il moto delle lacune, il dispositivo che sfrutta il moto delle lacune in genere sperimenta un guadagno in corrente che è circa la \textit{metà} di quello del dispositivo che sfrutta il modo degli elettroni. In questo caso, i transistor pnp hanno come portatori le lacune (essendo l'emettitore drogato p) che, muovendosi più lentamente, tendono più facilmente a ricombinarsi quando passano nella base e quindi il guadagno del dispositivo è minore rispetto a quello che si potrebbe ottenere con un transistor npn.\\
 
 Riassumendo, per entrambi le tipologie di transistor bipolari si identificano quattro regioni operative:
-\begin{enumerate}
-    \item \textit{Cutoff}: la giunzione base - emettitore è interdetta quindi non passa corrente né nella giunzione BE né in quella BC
-    \item \textit{Attiva diretta}: la giunzione BE è polarizzata direttamente, quindi scorre corrente, mentre la giunzione BC è polarizzata inversamente. Il potenziale del collettore è molto elevato in valore assoluto e quindi il dispositivo si comporta come una sorgente di corrente controllata in corrente, dove il controllo è effettuato dalla corrente della base $I_{b}$, la sorgente di corrente è la corrente del collettore $I_{c}$ e il guadagno in corrente è $h_{fe}$
-    \item \textit{Saturazione}: si ottiene abbassando progressivamente il valore assoluto del potenziale del collettore. Non c'è più possibilità di generare in modo costante tutta la corrente generata in regione attiva diretta, la corrente quindi diminuisce e la tensione può scendere fino ad un valore che generalmente è detta \textbf{tensione di saturazione} che vale $V_{ce-sat} \approx 0,2,\,V - 0,3\,V$. Il transistor non è più in grado di assorbire corrente
-    \item \textit{Attiva inversa}: la giunzione BE è polarizzata inversamente e la giunzione BC è polarizzata direttamente. Si ottengono valori di guadagno di corrente molto bassi e minori o uguali di 1, passa poca corrente
-\end{enumerate}
+\begin{description}
+    \item[Cutoff] la giunzione base - emettitore è interdetta quindi non passa corrente né nella giunzione BE né in quella BC
+    \item[Attiva diretta] la giunzione BE è polarizzata direttamente, quindi scorre corrente, mentre la giunzione BC è polarizzata inversamente. Il potenziale del collettore è molto elevato in valore assoluto e quindi il dispositivo si comporta come una sorgente di corrente controllata in corrente, dove il controllo è effettuato dalla corrente della base $I_{b}$, la sorgente di corrente è la corrente del collettore $I_{c}$ e il guadagno in corrente è $h_{fe}$
+    \item[Saturazione] si ottiene abbassando progressivamente il valore assoluto del potenziale del collettore. Non c'è più possibilità di generare in modo costante tutta la corrente generata in regione attiva diretta, la corrente quindi diminuisce e la tensione può scendere fino ad un valore che generalmente è detta \textbf{tensione di saturazione} che vale $V_{ce-sat} \approx 0,2,\,V - 0,3\,V$. Il transistor non è più in grado di assorbire corrente
+    \item[Attiva inversa] la giunzione BE è polarizzata inversamente e la giunzione BC è polarizzata direttamente. Si ottengono valori di guadagno di corrente molto bassi e minori o uguali di 1, passa poca corrente
+\end{description}
 \section{Fototransistor}
 Un particolare dispositivo appartenente alla famiglia dei dispositivi optoelettronici insieme al fotodiodo è il \textbf{fototransistor}. Questo dispositivo è generalmente un transistor di tipo \textit{npn} con la particolarità che il terminale di base è \textit{assente}. Per polarizzare \textit{direttamente} la giunzione BE tra la base e l'emettitore si deve iniettare una \textbf{fotocorrente} invece di una corrente vera e propria. Per farlo vengono mandati dei fotoni sulla base del dispositivo e, una volta illuminata, per effetto dei fotoni vengono generate coppie elettrone-lacuna e queste coppie, se il collettore ha un potenziale sufficientemente elevato, generano una fotocorrente che scorre dalla base all'emettitore e che a sua volta si traduce in una molto maggiore corrente che scorre dal collettore all'emettitore. Questo significa che se $V_{c}$ è sufficientemente grande, il fototransistor è \textit{sempre} in regione \textit{attiva diretta}.
 \begin{figure}[h]
@@ -453,9 +454,9 @@ La regione di saturazione del BJT è quella regione che corrisponde alla regione
 
 \section{Corrente}
 Esiste una relazione ben precisa tra le tensioni di gate e drain e la corrente di drain che è definita tramite un'equazione di secondo grado chiamata \textbf{equazione del MOSFET}:
-\begin{equation*}
+\begin{equation}
     I_{d} = K\,[2(V_{gs} - V_{t})V_{ds} - V_{ds}^2]
-\end{equation*}
+\end{equation}
 È una \textit{parabola} in $V_{ds}$ con concavità rivolta verso il basso e con coefficiente lineare $2K(V_{gs} - V_{t})$ legato alla tensione di gate. Questa equazione è valida per $V_{gs} > V_{t}$, corrispondente alla regione lineare del dispositivo, e solo fino al \textit{vertice} della parabola che corrisponde al valore massimo di $I_{d}$, cioè al valore di saturazione $I_{d-sat}$. Non a caso se $V_{gs} < V_{t}$ ci si trova nella regione di cutoff del MOS in cui la corrente di drain è nulla e il dispositivo è spento. Il valore di saturazione è definito come:
 \begin{equation}
     I_{d-sat} = K(V_{gs} - V_{t})^2
@@ -477,9 +478,9 @@ L'andamento di $I_{d}$ è esattamente quello rappresentato dalle curve nel grafi
 Queste curve variano al variare del parametro $V_{gs} - V_{t}$ che di fatto controlla il valore massimo di corrente che si può raggiungere e il punto in cui è possibile raggiungerlo. È questo il motivo per cui si dice che un N-MOS è un dispositivo controllato in tensione: perché il suo funzionamento è dettato dal parametro $V_{gs} - V_{t}$ che funge da variabile di controllo tramite la quale è possibile definire la corrente $I_{d}$ al variare della tensione $V_{ds}$.
 
 La costante \textit{K} è definita secondo l'equazione:
-\begin{equation*}
+\begin{equation}
     K = \frac{1}{2}\mu C_{ox}\frac{W}{L}
-\end{equation*}
+\end{equation}
 Dipende dalla mobilità dei portatori $\mu$ e dai parametri geometrici del dispositivo \textit{W} e \textit{L} che sono rispettivamente la larghezza e la lunghezza del canale, entrambe controllate dal gate.
 È \textit{direttamente proporzionale} alla mobilità dei portatori $\mu$ che, nel caso di un N-MOS, corrisponde alla mobilità degli elettroni mentre in un P-MOS corrisponde a quella delle lacune.
 Per definizione, tanto più largo è il canale e tanto maggiore sarà \textit{K}, cioè tanto maggiore sarà la corrente che potrà passare nel canale. Viceversa, tanto più lungo è il canale e tanto minore sarà \textit{K} perché i portatori dovranno spostarsi per un tratto più lungo impiegando quindi uno sforzo maggiore (il canale può essere visto come una resistenza). A parità di condizioni, confrontando il K di un MOS a canale n e di uno a canale p, si ha che: \begin{equation*}
@@ -514,12 +515,12 @@ Applicando inizialmente una tensione di gate $V_{gs}$ (negativa per definizione)
 
 Diminuendo ancora di più la tensione di gate, quando sarà sufficientemente negativa sarà in grado di attrarre ulteriori lacune dalle due zone p+ adiacenti, queste lacune si disporranno al di sotto della regione di svuotamento e, essendo lacune libere, potranno fungere da portatori di carica. Potrà quindi scorrere corrente tra i terminali drain e source. Tuttavia in questa corrente saranno le lacune a muoversi ma esse hanno una mobilità che è circa la metà di quella degli elettroni (come già detto parlando dei BJT) e questo fa sì che le prestazioni di un P-MOS siano generalmente \textit{minori} rispetto a quelle di un N-MOS. A parità di funzionamento, il P-MOS porta metà corrente rispetto a quella portata da un N-MOS.\\
 
-Riassumendo, per entrambi le tipologie di MOSFET si identificano tre regioni operative:
-\begin{enumerate}
-    \item \textit{Cutoff}: non c'è conduzione tra source e drain perché $|V_{gs}| < |V_{t}|$ implica che non può scorrere corrente all'interno del canale
-    \item \textit{Regione lineare}: in questo caso $|V_{gs}| > |V_{t}|$ e $|I_{d}| < |I_{d-sat}|$. Finché non si raggiunge la corrente limite $I_{d-sat}$ dettata dalla tensione $V_{gs}$, si ha un andamento inizialmente lineare e poi più marcatamente parabolico della corrente. In queste condizioni il dispositivo si comporta come un resistore controllato in tensione
-    \item \textit{Saturazione}: in questo caso $|I_{d}| = |I_{d-sat}|$. Si è raggiunto il valore limite della corrente definito tramite l'equazione \eqref{id_sat}. La corrente non cresce più, quindi l'uscita è costante indipendentemente dalla tensione applicata sul drain. In queste condizioni il dispositivo si comporta come un generatore di corrente costante controllato in tensione
-\end{enumerate}
+Riassumendo, per entrambi le tipologie di MOSFET, si quella a canale n che quella a canale p, si identificano tre regioni operative:
+\begin{description}
+    \item[Cutoff] non c'è conduzione tra source e drain perché $|V_{gs}| < |V_{t}|$ implica che non può scorrere corrente all'interno del canale
+    \item[Regione lineare] in questo caso $|V_{gs}| > |V_{t}|$ e $|I_{d}| < |I_{d-sat}|$. Finché non si raggiunge la corrente limite $I_{d-sat}$ dettata dalla tensione $V_{gs}$, si ha un andamento inizialmente lineare e poi più marcatamente parabolico della corrente. In queste condizioni il dispositivo si comporta come un resistore controllato in tensione
+    \item[Saturazione] in questo caso $|I_{d}| = |I_{d-sat}|$. Si è raggiunto il valore limite della corrente definito tramite l'equazione \eqref{id_sat}. La corrente non cresce più, quindi l'uscita è costante indipendentemente dalla tensione applicata sul drain. In queste condizioni il dispositivo si comporta come un generatore di corrente costante controllato in tensione
+\end{description}
 
 \section{N-MOS reale}
 Nella realtà fisica, un dispositivo N-MOS è \textbf{asimmetrico} per costruzione. In particolare, la metallizzazione del source tramite l'impiego dell'alluminio mette in \textit{cortocircuito} anche una parte del semiconduttore drogato p, quindi il source e il \textbf{body} del diodo sono collegati insieme: una certa zona del semiconduttore di tipo p (la parte bassa della zona p riportata in figura \ref{struttura_nmos}) ha lo stesso potenziale del source. Questo comporta che si viene a creare un diodo, chiamato \textbf{body diode}, tra il drain e il source messo in cortocircuito con il semiconduttore di tipo p. Questo diodo è presente nella maggior parte dei MOSFET. È questo il motivo per cui, in condizioni normali, per avere il comportamento finora descritto, si deve avere il potenziale di drain \textit{maggiore} di quello di source perché se così non fosse il diodo body si polarizzerebbe \textit{direttamente} e scorrerebbe corrente dal source al drain senza nessun controllo da parte del gate, cioè indipendentemente dalla tensione di gate.
@@ -545,37 +546,135 @@ Normalmente si utilizzano sia i P-MOS che gli N-MOS. Nelle logiche C-MOS sono pr
 I \textbf{circuiti logici digitali} sono tutti quei circuiti in cui l'informazione è \textbf{quantizzata} in soli due possibili livelli chiamati \textbf{stati digitali}: alto e basso, vero o falso, 0 o 1. Alla base di tutto c'è l'\textbf{algebra di Boole}, l'aritmetica binaria. L'impiego di solo due livelli possibili permette di semplificare il trasferimento dell'informazione da un dispositivo all'altro perché il ricevente è in grado di discriminare facilmente i due stati.
 
 \section{Operatori booleani}
-Per poter effettuare delle operazioni logiche si sfrutta l' algebra booleana tramite la quale si definiscono gli \textbf{operatori booleani}.
+Per poter effettuare delle operazioni logiche si sfrutta l'algebra booleana tramite la quale si definiscono gli \textbf{operatori booleani}.
 \begin{itemize}
-    \item\textbf{NOT}: indicato con una linea sopra l'operando che deve essere negato
+    \item\textbf{AND}: indicato con una linea sopra l'operando che deve essere negato.
     \begin{figure}[h]
-        \centering
-        \includegraphics[scale=0.4,angle=0]{logica_not.png}
-        \caption{Simbolo circuitale del NOT}
+    \centering
+    \includegraphics[scale=0.5,angle=0]{logica_not.png}
+    \caption{Simbolo circuitale del NOT}
     \end{figure}
-    %\begin{tabular}{c|c}
-    %     A & $\overline{A}$\\
-    %     0 &1\\
-    %     1 &0
-    %\end{tabular}
-    \item\textbf{AND}: indicato come il prodotto tra i due operandi
+    \\La sua tabella di verità è la seguente:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|c}
+        \em A & $\overline{A}$\\\hline
+        0 &1\\
+        1 &0
+        \end{tabular}
+        \caption{Tabella di verità del NOT}
+    \end{table}
+    \item\textbf{AND}: indicato come il prodotto tra i due operandi, è la moltiplicazione binaria.
     \begin{figure}[h]
         \centering
-        \includegraphics[scale=0.4,angle=0]{logica_and.png}
-        \caption{Simbolo circuitale dell' AND}
+        \includegraphics[scale=0.5,angle=0]{logica_and.png}
+        \caption{Simbolo circuitale dell'AND}
     \end{figure}
-    \item\textbf{OR}: indicato come la somma tra i due operandi
+    \\L'uscita dell'AND è vera solo se tutti gli ingressi sono veri. La sua tabella di verità è:
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{c c |c}
+        \em A &\em B &$A \cdot B$\\\hline
+        0 &0 &0\\
+        0 &1 &0\\
+        1 &0 &0\\
+        1 &1 &1
+        \end{tabular}
+        \caption{Tabella di verità dell' AND}
+    \end{table}
+    \item\textbf{OR}: indicato come la somma tra i due operandi, è la somma logica.
     \begin{figure}[h]
         \centering
-        \includegraphics[scale=0.4,angle=0]{logica_or.png}
+        \includegraphics[scale=0.5,angle=0]{logica_or.png}
         \caption{Simbolo circuitale dell' OR}
     \end{figure}
+    \\L'uscita dell'AND è vera se almeno uno degli ingressi è vero. La sua tabella di verità è la seguente:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c c |c}
+        \em A &\em B &$A + B$\\\hline
+        0 &0 &0\\
+        0 &1 &1\\
+        1 &0 &1\\
+        1 &1 &1
+        \end{tabular}
+        \caption{Tabella di verità dell' OR}
+    \end{table}
+\end{itemize}
+\subsection{Leggi di De Morgan}
+Le \textbf{leggi di De Morgan} sono leggi relative alla logica booleana utilizzate per l'analisi di circuiti logici e stabiliscono relazioni di equivalenza tra gli operatori logici AND e OR. I due teoremi sono duali tra loro:
+\begin{itemize}
+    \item Riscrivendo l'operazione di disgiunzione logica come
+    \begin{equation*}
+        A + B = \overline{\overline{A} \cdot \overline{B}}
+    \end{equation*}
+    si ricava la prima legge di De Morgan secondo la quale:
+    \begin{equation}
+        \overline{A + B} = \overline{A} \cdot \overline{B}
+    \end{equation}
+    dove $\overline{A + B}$ è la negazione dell'operazione logica OR che viene chiamata \textbf{NOR}.
+    \item Considerando la congiunzione logica come
+    \begin{equation*}
+        A \cdot B = \overline{\overline{A} + \overline{B}}
+    \end{equation*}
+    si ricava la seconda legge di De Morgan, duale alle prima:
+    \begin{equation}
+        \overline{A \cdot B} = \overline{A} + \overline{B}
+    \end{equation}
+    con $\overline{A \cdot B}$ la negazione logica dell'AND chiamata \textbf{NAND}.
 \end{itemize}
 
-\section{Universalità}
+\subsection{Universalità}
+Utilizzando i tre operatori logici AND, OR e NOT è possibile descrivere tutte le funzioni logiche per un qualsiasi numero di ingressi e uscite. Questo perché tramite la formule di De Morgan si può passare da una forma logica di somma ad una di prodotto e viceversa e questo permette di scambiare tra di loro le porte logiche. Una qualsiasi funzione booleana può essere espressa come prodotto di somme o come somma di prodotti e negazioni.
+
+In particolare, per sintetizzare una qualsiasi funzione logica ci sono essenzialmente tre possibili gruppi di porte logiche da utilizzare:
+\begin{enumerate}
+    \item La porta NOT e almeno una porta tra AND, OR, NAND e NOR
+    \item La sola porta NOR questo perché mettendo in cortocircuito i due terminali di ingresso alla porta si ottiene una porta NOT
+    \item La sola porta NAND per lo stesso motivo detto sopra
+\end{enumerate}
+Se per esempio si considera la porta NOR, la sua tabella di verità è la seguente:
+\begin{table}[ht]
+        \centering
+        \begin{tabular}{c c |c}
+        \em A &\em B &$\overline{A + B}$\\\hline
+        0 &0 &1\\
+        0 &1 &0\\
+        1 &0 &0\\
+        1 &1 &0
+        \end{tabular}
+    \end{table}
+\\Imponendo ora il corto tra i due ingressi \textit{A} e \textit{B} deve valere il vincolo aggiuntivo $A = B$ quindi si considerano solo la prima e l'ultima riga della tabella precedente:
+\begin{table}[ht]
+        \centering
+        \begin{tabular}{c c |c}
+        \em A &\em B &$\overline{A + B}$\\\hline
+        0 &0 &1\\
+        1 &1 &0
+        \end{tabular}
+\end{table}
+\\che non è altro che la tabella di verità della NOT.
+
+Quindi per potere sintetizzare ogni possibile funzione logica, cioè ogni possibile dispositivo digitale, è sufficiente essere in grado di sintetizzare una funzione tra NAND e NOR. Tutto il resto si ottiene costruendo circuiti logici sempre più complessi sopra il dispositivo inizialmente costruito che sintetizza una NAND o una NOR.
 
 \section{Parametri delle famiglie logiche}
+Quando si parla di \textbf{famiglia logica} si intende un certo insieme di dispositivi che sfruttano la medesima tecnologia, per esempio i transistor bipolari oppure i MOSFET complementari.
 
+All'interno di una famiglia logica ci si può aspettare che i dispositivi comunichino tra loro mediante segnali logici (alto o basso) che, nel mondo elettronico, si traducono in \textbf{tensioni}. Si distinguerà dunque una tensione alta da una tensione bassa che corrisponderà ad uno dei due livelli logici: alto e basso, vero e falso.
+
+Il dispositivo ricevente dovrà essere in grado di discriminare il segnale in ingresso tra i due possibili livelli logici. Per farlo, la tensione deve poter essere discriminata e questo lo si può fare senza imprecisioni se si dispone di un certo margine sulla decisione.
+
+Il fatto che i dispositivi appartenenti alla medesima famiglia logica comunicano tra loro implica che questi dispositivi hanno degli ingressi e delle uscite. Inoltre ci sarà una certa corrente che scorre nei dispositivi in relazione ala fatto che su di essi vieni applicata una tensione in ingresso e sua volta definiscono una tensione di uscita.
+
+I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri statici}, che sono i parametri analizzati quando non c'è commutazioni di stati logici, e in \textbf{parametri dinamici}. I parametrici \textit{statici} sono i seguenti:
+\begin{description}
+    \item[Tensioni soglia di ingresso] $V_{iH}$ e $V_{iL}$
+    \item[Tensioni soglia di uscita] anche dette livelli logici, sono $V_{oH}$ e $V_{oL}$
+    \item[Corrente assorbita in ingresso] $I_{iH}$ e $I_{iL}$
+    \item[Margine di rumore] legato a quanto è robusta la famiglia logica
+    \item[Fan-out] 
+    \item[Potenza statica]
+\end{description}
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
