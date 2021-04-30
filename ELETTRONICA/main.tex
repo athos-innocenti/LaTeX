@@ -669,9 +669,10 @@ Il dispositivo ricevente dovrà essere in grado di discriminare il segnale in in
 
 Il fatto che i dispositivi appartenenti alla medesima famiglia logica comunicano tra loro implica che questi dispositivi hanno degli ingressi e delle uscite. Inoltre ci sarà una certa corrente che scorre nei dispositivi in relazione ala fatto che su di essi vieni applicata una tensione in ingresso e sua volta definiscono una tensione di uscita.
 
-I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri statici}, analizzati quando non ci sono commutazioni di stati logici, e in \textbf{parametri dinamici}. I parametrici \textit{statici} sono i seguenti:
+\subsection{Parametrici statici}
+I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri statici} e in \textbf{parametri dinamici}. I parametrici \textit{statici} sono analizzati quando non ci sono commutazioni di stati logici, cioè quando l'uscita o l'ingresso sono fermi, e sono i seguenti:
 \begin{description}
-    \item[Tensioni soglia di ingresso] $V_{iH}$ e $V_{iL}$
+    \item[Tensioni soglia di ingresso] $V_{iH}$ e $V_{iL}$ entrambi definiti su base statistica
     \item[Tensioni soglia di uscita] anche dette livelli logici, sono $V_{oH}$ e $V_{oL}$
     \item[Corrente assorbita in ingresso] $I_{iH}$ e $I_{iL}$
     \item[Margine di rumore] legato a quanto è robusta la famiglia logica
@@ -680,16 +681,59 @@ I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri 
 \end{description}
 Nello specifico:
 \begin{itemize}
-    \item[$V_{iH}$]: è un parametro di ingresso che definisce la \textit{minima} tensione di ingresso, applicata all'ingresso della porta logica, che è determinata come valore logico \textit{alto}. Quindi ogni tensione $V \geq V_{iH}$ è interpretata come lo stato logico alto, vero.
-    \item[$V_{iL}$]: anche questo è un parametro di ingresso che definisce la \textit{massima} tensione di ingresso che è determinata come valore logico \textit{basso}. Ogni tensione $V \leq V_{iL}$ è interpretata come lo stato logico basso, falso. Deve valere
+    \item[$V_{iH}$]: è un \textbf{parametro di ingresso} che definisce la \textit{minima} tensione di ingresso, applicata all'ingresso della porta logica, che è determinata come valore logico \textit{alto}. Quindi ogni tensione $V \geq V_{iH}$ è interpretata come lo stato logico alto, vero
+    \item[$V_{iL}$]: anche questo è un parametro di ingresso che definisce la \textit{massima} tensione di ingresso che è determinata come valore logico \textit{basso}. Ogni tensione $V \leq V_{iL}$ è interpretata come lo stato logico basso, falso.
+    
+    Deve valere
     \begin{equation}
         V_{iH} > V_{iL}
+    \label{soglia_ingresso}
     \end{equation}
-    perché se si intersecassero 
+    perché se si intersecassero esisterebbero delle tensioni per cui il livello logico risulterebbe \textit{indeterminato}, ovvero non si potrebbe distinguere tra alto e basso. Inoltre, non solo deve valere la \eqref{soglia_ingresso} ma l'intervallo che separa $V_{iL}$ da $V_{iH}$ deve essere il più \textit{piccolo} possibile. Il caso ideale è che le due tensioni coincidano in modo che ogni tensione maggiore della tensione soglia $V_{soglia} = V_{iL} = V_{iH}$ venga interpretata come vero e ogni tensione minore venga interpretata come falso. Tuttavia il caso ideale non è realizzabile perché il valore della tensione di soglia che discrimina tra vero e falso sarebbe destinato a cambiare nel tempo e nello spazio dei circuiti prodotti poiché è un valore determinato da una serie di aspetti dello specifico circuito quali: la tensione di alimentazione, la temperatura di funzionamento, l'invecchiamento del circuito e la variabilità di produzione. Per evitare questa variabilità della tensione soglia è preferibile definire statisticamente un intervallo di tensioni che non corrispondono a nessun livello logico. L'estensione di questo intervallo dipende dalla variabilità di produzione del circuito. Comunque, ogni porta logica nella sua singolarità avrà un proprio valore di soglia con il quale discriminerà tra livello logico alto e basso
+    \item[$V_{oH}$]: è un \textbf{parametro di uscita} che definisce la \textit{minima} tensione di uscita che è garantita quando il valore logico dell'uscita è \textit{alto}. Questo significa che per avere il livello logico alto nell'uscita, al variare di tutti i parametri citati in precedenza, la tensione di uscita dovrà essere \textit{almeno} pari a $V_{oH}$
+    \item[$V_{oL}$]: il secondo parametro di uscita che definisce la \textit{massima} tensione di uscita che è garantita quando il valore logico dell'uscita è \textit{basso}. Dunque, statisticamente, quando si presenta in uscita il livello logico basso la tensione di uscita dovrà essere \textit{al massimo} $V_{oL}$. Anche in questo caso deve valere
+    \begin{equation}
+        V_{oH} > V_{oL}
+    \end{equation}
+    e si vorrebbe $V_{oH}$ la più grande possibile e $V_{oL}$ la più bassa possibile per non avere incertezze nelle discriminazione del livello logico corrispondente
+    \item[$I_{iH}$]: è la corrente in ingresso alla porta logica quando il livello logico ricevuto è \textit{alto}. È quindi la corrente entrante determinata dalla tensione $V_{oH}$ applicata sull'uscita della porta logica da cui proviene il segnalo logico ricevuto
+    \item[$I_{iL}$]: è la corrente che passa dall'ingresso della porta logica quando il livello logico ricevuto è \textit{basso}. In realtà, per tensioni basse in ingresso si suppone che la corrente abbia un verso\textit{opposto}, ovvero uscente dall'ingresso della porta logica che ha ricevuto il segnale.
     
+    Questi due parametri di corrente sono importanti perché quando si costruisce un circuito logico si utilizzano sia BJT che MOS e, utilizzandoli come dispositivo di uscita con un certo numero di ingressi, la corrente in ingresso $I_{iH}$ o $I_{iL}$ sarà moltiplicata per il numero di ingressi connessi insieme. Dunque dovrà esserci un limite alle porte logiche connesse alla medesima uscita per non ottenere una corrente troppo elevata che manderebbe il transistor in saturazione o il MOS in regione lineare
+\end{itemize}
+Da tutti questi parametri si ricavano i cosiddetti \textbf{parametri derivati} che sono il \textit{margine di rumore}, indicato con \textit{NM}, il \textit{fan-out} e il \textit{consumo statico di potenza} indicato con \textit{P}:
+\begin{itemize}
+    \item[\textit{NM}]: quanto è resistente la famiglia logica a piccole imperfezioni (ovvero il \textbf{rumore elettrico}) dell'interconnessione tra ingresso e uscita di una porta logica e la successiva. È definito come:
+    \begin{equation}
+        \textit{NM} = min(\textit{NM}_{L},\, \textit{NM}_{H})
+    \end{equation}
+    dove i  due valori iniziali $\textit{NM}_{L}$ e $\textit{NM}_{H}$ sono chiamati rispettivamente \textbf{margine di rumore basso} e \textbf{margine di rumore alto}, e sono definiti come:
+    \begin{equation*}
+        \textit{NM}_{L} = V_{iL} - V_{oL} \text{ \, \, }  \textit{NM}_{H} = V_{oH} - V_{iH}
+    \end{equation*}
+    Sicuramente $\textit{NM}_{H} > 0$ perché non è altro che la differenza tra il minimo garantito in uscita e il minimo richiesto in ingresso (con $V_{iH} < V_{oH}$) e rappresenta il margine affinché non ci siano problemi di false commutazioni logiche; dunque è tutto il rumore elettrico che si può tollerare senza commettere un errore di valutazione del livello logico. Analogamente, $\textit{NM}_{L} > 0$ perché $V_{iL} > V_{oL}$ e anche in questo caso rappresenta il rumore elettrico che si può tollerare senza sbagliare la stima della funzione logica. Si tende sempre a cercare di bilanciare $\textit{NM}_{L}$ e $\textit{NM}_{H}$ in modo che non siano troppo distanti. Normalmente succede che le famiglie logiche bipolari (quelle costruite utilizzando BJT) sono un po' sbilanciate e quindi \textit{NM} ne risente. Al contrario, le famiglie logiche C-MOS sono costruite appositamente per essere simmetriche e quindi i due margini di rumore sono uguali e questo massimizza il margine di rumore generico
+    \item[Fan-out]: il massimo numero di ingressi che si possono collegare ad una singola uscita in modo da garantire il mantenimento del corretto risultato logico in uscita. È un numero pre-determinato perché la porta logica può assorbire una certa corrente in ingresso che deve essere sostenuta la porta logica di uscita. Dipende da quanta corrente l' uscita è in grado di guidare verso quanta corrente viene assorbita da ogni porta logica. Più grande è il fan-out e maggiore sarà il numero di porte in input che possono essere collegate insieme
+    \item[P]: la potenza dissipata dalla singola cella logica in condizioni \textit{statiche}, cioè quando la cella è ferma con la sua uscita alta o bassa. Poiché mediamente e statisticamente è vero che i livelli logici alto e basso, vero e falso, hanno la stessa probabilità, la potenza statica viene definita come:
+    \begin{equation}
+        P = \frac{P_{H} + P_{L}}{2}
+    \end{equation}
+    ovvero è la potenza media dei due casi. Questo valore può essere usato anche per stimare quante celle logiche possono essere raggruppate con quella specifica tecnologia all'interno del circuito integrato. Tanto più bassa è la potenza statica \textit{P} e tante più celle logiche si riusciranno a mettere nel medesimo circuito
 \end{itemize}
 
+\subsection{Parametri dinamici}
+I \textbf{parametri dinamici} sono tutti quei parametri che si verificano quando c'è un cambiamento dell'ingresso che si traduce sia in un cambiamento dell'uscita della porta logica sia in un cambiamento della configurazione del circuito elettronico che fa sì che si vada a consumare dell'energia durante questa transizione. I più importanti sono i seguenti:
+\begin{description}
+    \item[Tempo di propagazione] anche detto \textbf{propagation delay}, indica il tempo necessario ad un'informazione che è cambiata in ingresso per arrivare all'uscita. Il segnale elettronico ricevuto in ingresso deve attraversare una serie di circuiti elettrici prima di arrivare all'uscita; il tempo necessario ad attraversarli tutti è proprio il tempo di propagazione. Questo tempo potrebbe essere diverso a seconda che la transizione dell'uscita sia da alto a basso o da basso ad alto perché durante la propagazione potrebbero accadere cose diverse. In relazione a queste due possibilità si definiscono due diversi tempi di propagazione indicati rispettivamente con $t_{p_{HL}}$ e $t_{p_{LH}}$. Si cerca sempre di ridurlo per aumentare la frequenza d'uso dei dispositivi logici e inoltre, se un circuito ha un certo tempo di propagazione dall'ingresso all'uscita, l'ambiente in cui tale circuito è impiegato non può commutare stato ad una frequenza maggiore di quella del circuito perché se lo facesse non riuscirebbe a vedere il cambiamento della porta logica in quanto non è in grado di mostrare in uscita correttamente il suo valore aggiornato 
+    \item[Potenza di commutazione] anche chiamata \textbf{switching power} o più correttamente energia di commutazione, indica l'energia consumata quando il circuito commuta da uno stadio logico basso ad uno alto e viceversa. Si è visto che il gate di un MOSFET è un condensatore: per caricarlo si deve inserire della carica al suo interno, quindi si deve inserire della corrente e questo significa mettere dell'energia. Dunque per far cambiare stadio ad un MOSFET ci vuole energia, in particolare serve energia ogni volta che si deve smuovere il potenziale di punti che presentano delle capacità; tutto questo viene riassunto nella potenza di commutazione.
+    
+    Questo valore è diverso dalla potenza statica \textit{P} perché essa viene definita in condizioni statiche e rappresenta una corrente che scorre continuamente nel circuito. Al contrario, l'energia di commutazione si calcola solo durante la commutazione, è legata a quanto questa energia viene spesa come potenza a seconda di quante volte al secondo il circuito commuta. Dipende quindi dalla \textit{frequenza} con cui commuta il circuito: tante più commuterà al secondo e tanta più energia sarà richiesta: è una potenza che cresce \textit{linearmente} con la frequenza di utilizzo del circuito
+    \item[Prodotto ritardo-potenza - DP] è definito come il prodotto tra il tempo di propagazione del circuito ($t_{p_{HL}}$ o $t_{p_{LH}}$) e la potenza dissipata (si può fare sia con quella statica che con quella dinamica). Se si vuole che il circuito commuti velocemente si deve aumentare la potenza consumata e viceversa: tanta meno potenza consuma e tanto più tempo impiegherà per commutare. Cioè che rimane normalmente invariante è il prodotto di queste grandezze 
+\end{description}
+Per una certa famiglia logica il parametro di riferimento è il prodotto ritardo-potenza in quanto riassume al suo interno il bilancio tra tempo di propagazione e potenza di commutazione consumata.
+
 \chapter{RTL e TTL}
+
+
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
