@@ -197,9 +197,9 @@ Nella regione di cutoff il transistor è spento, non passa corrente dal colletto
     V_{be} < V_{th} \text{ \, \, } V_{bc} < 0
 \end{equation*}
 con $V_{th}$ la tensione di soglia (anche detta potenziale di base). Per avere polarizzazione inversa tra base e collettore, il collettore deve avere un potenziale $V_{c}$ più alto rispetto al potenziale di base $V_{b}$. Questo succede finché il collettore non arriva ad avere un potenziale al massimo inferiore di $0,5\,V$ rispetto alla tensione di base, quindi o è una tensione molto elevata oppure è una tensione vicina alla tensione di base $V_{th}$ ma non sotto $0,5\,V$ rispetto a $V_{th}$ altrimenti si polarizzerebbe direttamente. Per le correnti, nella regione di cutoff si ha:
-\begin{equation*}
+\begin{equation}
     I_{b} = 0\,A \text{ \, \, } I_{c} = 0\,A
-\end{equation*}
+\end{equation}
 In realtà più che $0\,A$ sarà uguale ad una piccola corrente di perdita $I_{0}$ che è la corrente inversa della giunzione pn che si sta considerando.
 \begin{figure}[h]
     \centering
@@ -248,9 +248,9 @@ Per una tensione del collettore abbastanza elevata (quindi per $V_{ce}$ grande) 
 
 \subsection{Saturazione}
 Nella regione di saturazione sia la giunzione tra la base e l'emettitore che quella tra la base e il collettore sono \textit{entrambe} in  polarizzazione \textit{diretta}. A differenza del caso precedente in cui il potenziale del collettore era molto elevato e per questo $V_{bc} < 0$ e poteva scorrere molta corrente secondo l'equazione \eqref{corrente_attiva_diretta}, adesso si abbassa il potenziale del collettore a circa $ 0,2 - 0,3\,V$ quindi inferiore al potenziale della base. Quindi la giunzione BC è polarizzata direttamente perché la tensione del collettore è circa $0,2\,V$, quella della base è di $0,8\,V$ e dunque $V_{bc} = 0,6\,V$. Tutto questo comporta che la corrente del collettore diminuisce e diventa minore strettamente della massima possibile in regione attiva diretta, cioè:
-\begin{equation*}
+\begin{equation}
     I_{c} < h_{fe} \cdot I_{b}
-\end{equation*}
+\end{equation}
 Si dice che il transistor \textit{ha saturato} cioè la tensione del collettore $V_{c}$ è diventata così bassa che non è più in grado di far scorrere le cariche. Per il resto, si ha:
 \begin{equation*}
     V_{be} > V_{th} \text{ \, \, } V_{ce} < V_{ce-sat} \text{ \, \, } I_{b} > 0
@@ -268,9 +268,9 @@ Nella regione attiva inversa la giunzione BC tra la base e il collettore è pola
     V_{be} < 0 \text{ \, \, } V_{ce} < V_{th}
 \end{equation*}
 Tuttavia in questa situazione si ha:
-\begin{equation*}
+\begin{equation}
     I_{e} \approx -\,I_{b}
-\end{equation*}
+\end{equation}
 cioè il guadagno in corrente del transistor è:
 \begin{equation*}
     \frac{I_{e}}{I_{b}} \leq 1
@@ -409,44 +409,47 @@ Il dispositivo N-MOS è caratterizzato da tre possibili regioni di funzionamento
 
 \subsection{Cutoff}
 Nella regione di cutoff o \textbf{di interdizione} la tensione tra gate e source non ha ancora raggiunto la tensione di soglia:
-\begin{equation*}
+\begin{equation}
     V_{gs} < V_{t}
-\end{equation*}
+\end{equation}
 In questa situazione non ci sono portatori di elettroni nel canale e questo comporta che \textit{non} c'è conduzione tra drain e source.
 
 Per tensioni $V_{gs}$ molto basse, minori della tensione di soglia $V_{t} = 2\,V$, il dispositivo sta lavorando in una regione in cui la corrente di drain $I_{d}$ è \textit{nulla}, come si vede nel grafico di sinistra. Non passa corrente tra drain e source, il che significa che il dispositivo è spento.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.42,angle=0]{n_mos_cutoff.png}
+    \includegraphics[scale=0.39,angle=0]{n_mos_cutoff.png}
     \caption{Regione di cutoff}
 \end{figure}
 \\Il grafico di destra ha la tensione $V_{ds}$ sull'asse \textit{x} e la corrente di drain $I_{d}$ sull'asse \textit{y} (in condizione statica è anche la corrente di source $I_{s}$). Nel grafico di sinistra invece, è rappresentato l'andamento della tensione di saturazione $I_{d-sat}$ rispetto alla tensione tra gate e source $V_{gs}$.
 
 \subsection{Lineare}
 Nella regione lineare il dispositivo MOS inizia a condurre perché la tensione del gate supera la tensione di soglia:
-\begin{equation*}
+\begin{equation}
     V_{gs} > V_{t}
-\end{equation*}
+\end{equation}
 Per ogni tensione di gate si identifica una specifica curva nel grafico di destra. Tutte le curve tendono a salire seguendo un andamento simile; in particolare: più alta è la tensione di gate e più la curva è ripida e alta. Con correnti di drain ragionevolmente basse, cioè
-\begin{equation*}
+\begin{equation}
     I_{d} < I_{d-sat}
-\end{equation*}
+\end{equation}
 ci si trova a lavorare in una regione prossima all'asse \textit{y} con tensioni $V_{gs}$ comprese tra $0\,V$ e circa $5\,V$. In questa regione il dispositivo ha un andamento \textit{lineare} con un comportamento che ricorda quello di una \textit{resistenza}; ovvero la corrente $I_{d}$ è \textit{direttamente proporzionale} alla tensione $V_{ds}$ con costante di proporzionalità chiamata \textbf{resistenza di canale} il cui valore è specificato all'interno del datasheet del dispositivo MOS. Ovviamente, la resistenza di canale è inversamente proporzionale, secondo una qualche legge, alla tensione di gate. Non a caso, a valori alti di $V_{gs}$ corrispondono curve più rapide che rappresentano resistenza basse.
 
 Superato un certo valore massimo di corrente $I_{d-sat}$, le curve tendono a diventare parallele all'asse x fermandosi su certo valore per la corrente di drain $I_{d}$.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.42,angle=0]{n_mos_lineare.png}
+    \includegraphics[scale=0.39,angle=0]{n_mos_lineare.png}
     \caption{Regione lineare}
 \end{figure}
 
 \subsection{Saturazione}
-Questa situazione si verifica nel momento in cui la tensione di gate $V_{gs}$ ha superato la tensione di soglia e, per un qualsiasi valore della tensione di drain $V_{ds}$ maggiore di un certo valore, la corrente di drain $I_{d}$ non aumenta più ma si ferma al valore di saturazione $I_{d-sat}$.
+Questa situazione si verifica nel momento in cui la tensione di gate $V_{gs}$ ha superato la tensione di soglia e, per un qualsiasi valore della tensione di drain $V_{ds}$ maggiore di un certo valore, la corrente di drain $I_{d}$ non aumenta più ma si ferma al valore di saturazione $I_{d-sat}$, cioè
+\begin{equation}
+    I_{d} = I_{d-sat}
+\end{equation}
 
 Di fatto, il dispositivo si comporta come un \textbf{generatore costante di corrente comandato in tensione}; dalla tensione di gate $V_{gs}$. Maggiore è la tensione di gate e maggiore è la corrente di saturazione.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4,angle=0]{n_mos_saturazione.png}
+    \includegraphics[scale=0.37,angle=0]{n_mos_saturazione.png}
     \caption{Regione di saturazione}
 \end{figure}
 \subsection{Confronto con il BJT}
@@ -666,15 +669,26 @@ Il dispositivo ricevente dovrà essere in grado di discriminare il segnale in in
 
 Il fatto che i dispositivi appartenenti alla medesima famiglia logica comunicano tra loro implica che questi dispositivi hanno degli ingressi e delle uscite. Inoltre ci sarà una certa corrente che scorre nei dispositivi in relazione ala fatto che su di essi vieni applicata una tensione in ingresso e sua volta definiscono una tensione di uscita.
 
-I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri statici}, che sono i parametri analizzati quando non c'è commutazioni di stati logici, e in \textbf{parametri dinamici}. I parametrici \textit{statici} sono i seguenti:
+I \textbf{parametri} delle famiglie logiche si distinguono in \textbf{parametri statici}, analizzati quando non ci sono commutazioni di stati logici, e in \textbf{parametri dinamici}. I parametrici \textit{statici} sono i seguenti:
 \begin{description}
     \item[Tensioni soglia di ingresso] $V_{iH}$ e $V_{iL}$
     \item[Tensioni soglia di uscita] anche dette livelli logici, sono $V_{oH}$ e $V_{oL}$
     \item[Corrente assorbita in ingresso] $I_{iH}$ e $I_{iL}$
     \item[Margine di rumore] legato a quanto è robusta la famiglia logica
-    \item[Fan-out] 
-    \item[Potenza statica]
+    \item[Fan-out] il numero di porte logiche che si possono guidare con una sola uscita, cioè quanti ingressi possono essere collegati ad un'uscita senza che smetta di funzionare il circuito 
+    \item[Consumo statico di potenza] quanto consuma la porta logica in condizione statica
 \end{description}
+Nello specifico:
+\begin{itemize}
+    \item[$V_{iH}$]: è un parametro di ingresso che definisce la \textit{minima} tensione di ingresso, applicata all'ingresso della porta logica, che è determinata come valore logico \textit{alto}. Quindi ogni tensione $V \geq V_{iH}$ è interpretata come lo stato logico alto, vero.
+    \item[$V_{iL}$]: anche questo è un parametro di ingresso che definisce la \textit{massima} tensione di ingresso che è determinata come valore logico \textit{basso}. Ogni tensione $V \leq V_{iL}$ è interpretata come lo stato logico basso, falso. Deve valere
+    \begin{equation}
+        V_{iH} > V_{iL}
+    \end{equation}
+    perché se si intersecassero 
+    
+\end{itemize}
+
 \chapter{RTL e TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
