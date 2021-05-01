@@ -731,9 +731,31 @@ I \textbf{parametri dinamici} sono tutti quei parametri che si verificano quando
 \end{description}
 Per una certa famiglia logica il parametro di riferimento è il prodotto ritardo-potenza in quanto riassume al suo interno il bilancio tra tempo di propagazione e potenza di commutazione consumata.
 
-\chapter{RTL e TTL}
+\chapter{RTL}
+La prima famiglia logica esaminata è la \textbf{RTL - Resistor Transistor Logic}, una famiglia ormai non più presente sul mercato basata sull'impiego di sole resistenze e transistors.
 
+\section{NOT}
+La porta NOT è la più semplice porta da realizzare perché sono sufficienti due resistenze e un solo transistor. La sua versione basilare in logica RTL è data dal seguente circuito:
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.38,angle=0]{rtl_not.png}
+    \caption{Struttura del NOT in logica RTL}
+\end{figure}
+\\Se l'ingresso \textit{IN} è  \textit{basso} (per esempio si applica una tensione in ingresso di $0\,V$) non può scorrere corrente nella base del transistor $Q_1$ che si troverà quindi nella regione di \textit{cutoff}. Essendo il transistor in interdizione, non scorre corrente tra collettore ed emettitore e quindi non scorre corrente nemmeno nella resistenza di collettore $R_c$ se non per alimentare una eventuale uscita. Dunque, in assenza di carico, l'uscita sarà \textit{alta}.
 
+Se invece l'ingresso è \textit{alto}, nella resistenza di base $R_b$ e nella giunzione \textit{pn} tra la base e l'emettitore scorre corrente, questo fa attivare la base del transistor e scorrerà una corrente dal collettore all'emettitore proporzionale al guadagno $h_{fe}$. Dunque l'uscita \textit{OUT} sarà \textit{bassa} poiché scorre corrente nella resistenza di collettore $R_c$ che causa una caduta di potenziale.
+
+\section{NOR}
+Rimanendo nel contesto della famiglia logica RTL, la seconda porta logica che nasce più facilmente dopo la porta NOT è la NOR. Le due porte, come accennato nel capitolo precedente, sono sufficienti per poter implementare una qualsiasi funzione logica. La porta NOR è composta da due celle di ingresso entrambe composte da una resistenza di base e un transistor. Entrambi i collettori sono connessi con la medesima resistenza di collettore $R_c$ ed entrambi gli emettitori sono a terra.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{rtl_nor.png}
+    \caption{Struttura del NOR in logica RTL}
+\end{figure}
+
+La corrente che passa attraverso la resistenza di collettore può passare sia attraverso $Q_1$ che $Q_2$, quindi è sufficiente che una delle due celle sia attiva (cioè basta che almeno una delle due tensioni in ingresso $V_{in-a}$ e $V_{in-b}$ sia \textit{alta}) per far scorrere una corrente in $R_{c}$ e avere uscita \textit{OUT bassa} ricalcando esattamente la tabella di verità del NOR.
+
+\chapter{TTL}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
