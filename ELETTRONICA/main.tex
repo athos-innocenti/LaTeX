@@ -781,6 +781,7 @@ Guardando più nel dettaglio la regione di transizione è possibile ricavare inf
 \end{figure}
 \\Quando la tensione in ingresso raggiunge i $700 - 750\,mV$, la tensione di collettore raggiunge gli $0,2\,V$. La curva rappresentata non è altro che l'esponenziale rovesciato della corrente di base che tende ad essere esponenziale in quanto la base del transistor è un diodo (quindi riprende il grafico in figura \ref{i_diodo}), e se la corrente di base è esponenziale anche quella di collettore, moltiplicata per il guadagno $h_{fe}$, vorrebbe essere esponenziale. Tuttavia quando la tensione di collettore raggiunge $0,2\,V$ non può scorrere ulteriore corrente dunque il transistor in saturazione e l'uscita diventa bassa.
 
+\subsection{Parametri statici}
 A partire da tutte queste considerazioni è già possibile stimare alcuni parametri statici della famiglia logica:
 \begin{itemize}
     \item Poiché $V_{iH}$ è la tensione di ingresso minima oltre la quale l'uscita è sicuramente bassa, si ha:
@@ -820,7 +821,7 @@ A partire da tutte queste considerazioni è già possibile stimare alcuni parame
     \end{equation}
     questo è vero per \textit{qualsiasi} corrente di collettore, ovvero tutte le correnti di collettore che non fanno uscire il transistor dalla saturazione. Tuttavia se l'uscita è bassa e guida altri ingressi, essa andrà a prelevare una certa $I_{iL}$ dagli altri ingressi ma essa, come detto nella \eqref{i_il_not}, è nulla quindi a livello logico basso si è abbastanza sicuri che non succede niente di particolare in quanto non scorre corrente in ingresso e il transistor può essere considerato in saturazione
 \end{itemize}
-Da tutti questi parametrici statici è ora possibile ricavare ulteriori grande d'interesse:
+Da tutti questi parametrici statici è ora possibile ricavare ulteriori grandezze d'interesse:
 \begin{itemize}
     \item Note le tensioni in ingresso e in uscita per i due livelli logici possibili è possibile calcolare il margine di rumore alto e basso:
     \begin{equation*}
@@ -861,9 +862,12 @@ Da tutti questi parametrici statici è ora possibile ricavare ulteriori grande d
     \end{equation}
     quindi una singola cella logica che compone la porta NOT in logica RTL consuma $18\,mW$ di potenza
 \end{itemize}
+
+\subsection{Parametri dinamici}
 Per quanto riguarda i parametrici dinamici si può dire che è un circuito abbastanza veloce 
 
 \chapter{TTL}
+\chapter{CMOS e BiCMOS}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
