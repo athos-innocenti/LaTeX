@@ -119,6 +119,7 @@ Il campo elettrico, come si vede nel secondo grafico di figura \ref{grafici}, ha
 \centering
 \includegraphics[scale=0.45,angle=0]{corrente_id.png}
 \caption{Andamento della corrente nel diodo in polarizzazione diretta e inversa}
+\label{i_diodo}
 \end{figure}
 
 In base a come sono costruiti diodo e circuito, il breakdown può essere \textit{reversibile}. Se all'interno del circuito (considerando un generatore ideale) la corrente non viene limitata in qualche modo (per esempio tramite delle resistenze) il diodo non è recuperabile dopo il breakdown. Ci sono due categorie di diodi: i diodi costruiti per andare in breakdown e quelli costruiti per non andarci; questi ultimi è molto probabile che effettivamente si rompano se vanno in breakdown indipendentemente dalla corrente. I diodi che invece sono costruiti appositamente per andare in breakdown sono chiamati \textbf{diodi Zener} e non si danneggiano andando in breakdown ma bisogna comunque limitare la corrente per esempio con una resistenza in serie per avere un corrente quasi lineare e quindi facilmente controllabile.
@@ -746,14 +747,121 @@ La porta NOT è la più semplice porta da realizzare perché sono sufficienti du
 Se invece l'ingresso è \textit{alto}, nella resistenza di base $R_b$ e nella giunzione \textit{pn} tra la base e l'emettitore scorre corrente, questo fa attivare la base del transistor e scorrerà una corrente dal collettore all'emettitore proporzionale al guadagno $h_{fe}$. Dunque l'uscita \textit{OUT} sarà \textit{bassa} poiché scorre corrente nella resistenza di collettore $R_c$ che causa una caduta di potenziale.
 
 \section{NOR}
-Rimanendo nel contesto della famiglia logica RTL, la seconda porta logica che nasce più facilmente dopo la porta NOT è la NOR. Le due porte, come accennato nel capitolo precedente, sono sufficienti per poter implementare una qualsiasi funzione logica. La porta NOR è composta da due celle di ingresso entrambe composte da una resistenza di base e un transistor. Entrambi i collettori sono connessi con la medesima resistenza di collettore $R_c$ ed entrambi gli emettitori sono a terra.
+Rimanendo nel contesto della famiglia logica RTL, la seconda porta logica che nasce più facilmente dopo la porta NOT è la NOR. Le due porte, come accennato nel capitolo precedente, sono sufficienti per poter implementare una qualsiasi funzione logica. La porta NOR è composta da due celle di ingresso entrambe composte da una resistenza di base $R_b$ e un transistor $Q$. Entrambi i collettori sono connessi con la medesima resistenza di collettore $R_c$ ed entrambi gli emettitori sono a terra.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{rtl_nor.png}
     \caption{Struttura del NOR in logica RTL}
 \end{figure}
 
-La corrente che passa attraverso la resistenza di collettore può passare sia attraverso $Q_1$ che $Q_2$, quindi è sufficiente che una delle due celle sia attiva (ovvero basta che almeno una delle due tensioni in ingresso $V_{in-a}$ e $V_{in-b}$ sia \textit{alta}) per far scorrere una corrente in $R_{c}$ e avere uscita \textit{OUT bassa} ricalcando esattamente la tabella di verità del NOR.
+La corrente che passa attraverso la resistenza di collettore $R_c$ può passare sia attraverso $Q_1$ che $Q_2$, quindi è sufficiente che una delle due celle sia attiva per far scorrere una corrente in $R_{c}$ e avere uscita \textit{OUT bassa} ricalcando così la tabella di verità del NOR. Una generica cella è attiva quando il suo ingresso è \textit{alto} ovvero la tensione in ingresso $V_{in-a}$ e/o $V_{in-b}$ è alta. Se almeno una cella è attiva, nel collettore del suo transistor scorrerà una corrente che farà abbassare il potenziale del collettore facendo scorrere una corrente attraverso il carico $R_c$ e questo abbassamento di potenziale determinerà un'uscita bassa dalla porta logica. Se invece nessuna delle due celle è attiva non passa corrente quindi l'uscita rimarrà \textit{alta}.
+
+Poiché le due celle di ingresso sono in parallelo la corrente può scorre in entrambe oppure in una delle due, in ogni caso la corrente delle due celle si somma e va a formare la corrente che scorre della resistenza di collettore.
+
+\section{Parametri della porta NOT}
+Quando si descrive una famiglia logica si devono fornire i valori di tutti i suoi parametri statici e dinamici. Per definire i parametri si deve procedere analiticamente osservando come varia la tensione di uscita del circuito al variare della tensione di ingresso.
+
+Come si nota dal grafico in figura \ref{not_transfer} per ingressi bassi l'uscita è alta mentre per ingressi alti l'uscita è bassa. In particolare, per tensioni di ingresso basse comprese tra $0\,V$ e circa $0,6\,V$ l'uscita è alta, mentre per tensioni alte da circa $0,7\,V$ in poi l'uscita e bassa. È poi presente una \textbf{regione di transizione} per valori di tensione in ingresso compresi tra circa $0,55\,V$ e $0,7\,V$ in cui l'uscita bassa da alta a bassa.
+
+Tendenzialmente si verifica l'effetto porta logica (verificabile anche a livello circuitale) per cui l'uscita della porta tende effettivamente ad avere un andamento logico, ovvero o è solo alta o solo bassa.
+
+Guardando più nel dettaglio la regione di transizione è possibile ricavare informazioni circa la caratteristica della porta logica. Osservando la figura \ref{not_transfer_zoom} si nota che intorno ai $500 - 550\,mV$ (diventando poi più marcata a partire dai $600\,mV$) la curva di tensione, che all'inizio è stabilmente alta, incomincia a scendere. Questo è dovuto al fatto che la giunzione tra la base e l'emettitore del transistor inizia ad accendersi e conseguentemente inizia a scorrere una esigua corrente di base. La giunzione al silicio si considera completamente accesa intorno agli $0,7\,V$, infatti intorno a quel valore di tensione il transistor riceverà così tanta corrente in base che tutta la corrente di collettore che vorrebbe scorrere nel transistor lo porterà in \textit{saturazione} e, dato il valore della resistenza di collettore $R_c$, la corrente che effettivamente scorrerà al suo interno sarà $I_{c} < h_{fe} \cdot I_{d}$ come da definizione di regione di saturazione in un BJT.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{rtl_not_transfer.png}
+    \caption{Tensione di uscita della porta NOT}
+    \label{not_transfer}
+\end{figure}
+\\Al contrario, durante la fase di transizione, corrispondente all'omonima regione, il transistor non è in saturazione (quindi la tensione di collettore non è pari a $0,2 - 0,3\,V$) ma si trova in regione \textit{attiva diretta} questo perché si sa che la corrente in base scorre positiva quindi, andando per esclusione, ci si trova proprio in quella regione.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{rtl_not_transfer_zoom.png}
+    \caption{Zoom sulla regione di transizione della porta NOT}
+    \label{not_transfer_zoom}
+\end{figure}
+\\Quando la tensione in ingresso raggiunge i $700 - 750\,mV$, la tensione di collettore raggiunge gli $0,2\,V$. La curva rappresentata non è altro che l'esponenziale rovesciato della corrente di base che tende ad essere esponenziale in quanto la base del transistor è un diodo (quindi riprende il grafico in figura \ref{i_diodo}), e se la corrente di base è esponenziale anche quella di collettore, moltiplicata per il guadagno $h_{fe}$, vorrebbe essere esponenziale. Tuttavia quando la tensione di collettore raggiunge $0,2\,V$ non può scorrere ulteriore corrente dunque il transistor in saturazione e l'uscita diventa bassa.
+
+A partire da tutte queste considerazioni è già possibile stimare alcuni parametri statici della famiglia logica:
+\begin{itemize}
+    \item Poiché $V_{iH}$ è la tensione di ingresso minima oltre la quale l'uscita è sicuramente bassa, si ha:
+    \begin{equation}
+        V_{iH} = 0,75\,V
+        \label{v_ih_not}
+    \end{equation}
+    \item Essendo $V_{iL}$ la tensione di ingresso al di sotto della quale l'uscita è sicuramente alta, si pone:
+    \begin{equation}
+        V_{iL} = 0,6\,V
+    \end{equation}
+    \item Per un ingresso alto, quindi con una tensione di ingresso pari a $V_{iH} = 0,75\,V$, sapendo che la tensione di base vale $R_{b} = 450\,\Omega$ e supponendo che sulla base ci sia una tensione di circa $0,6 - 0,65\,V$ si ottiene:
+    \begin{equation}
+        I_{iH} = \frac{0,75\,V - 0,65\,V}{450\,\Omega} \approx 200\,\mu A
+        \label{i_ih_not}
+    \end{equation}
+    se invece la tensione di ingresso sale, prendendo per esempio una tensione di ingresso di $5\,V$, si ha
+    \begin{equation*}
+        I_{iH} = \frac{5\,V - 0,7\,V}{450\,\Omega} \approx 9.5\,mA
+    \end{equation*}
+    \item Se l'ingresso è basso, quindi collegato a $0\,V$, esso vede la resistenza di base e la giunzione tra la base e l'emettitore anch'esso collegato a massa $0\,V$ dunque non scorre corrente:
+    \begin{equation}
+        I_{iL} \approx 0\,A
+        \label{i_il_not}
+    \end{equation}
+    l'unica corrente che potrebbe scorrere è una leggera corrente di perdita inversa $I_{0}$ che va verso terra ed è dovuta al carico del collettore ma è comunque trascurabile
+    \item A tensione in uscita alta, poiché tra collettore ed emettitore non scorre corrente e sulla resistenza di collettore $R_c$ non cade tensione, si ha:
+    \begin{equation}
+        V_{oH} = 5\,V
+        \label{v_oh_not}
+    \end{equation}
+    ma per far ciò non è stato collegato niente all'uscita. Se si collegasse all'uscita un altro ingresso RTL analogo (resistenza di base e giunzione base-emettitore entrambe a $0\,V$) si avrebbe una resistenza collegata con una giunzione pn, dunque scorrerebbe corrente e sull'uscita non ci sarebbero più $5\,V$ ma molti meno
+    \item Se infine la tensione in uscita è bassa, il transistor è in saturazione ed ha una tensione $V_{ce}$ che può essere al massimo $0,2\,V$, dunque:
+    \begin{equation}
+        V_{oL} = 0,2\,V
+        \label{v_ol_not}
+    \end{equation}
+    questo è vero per \textit{qualsiasi} corrente di collettore, ovvero tutte le correnti di collettore che non fanno uscire il transistor dalla saturazione. Tuttavia se l'uscita è bassa e guida altri ingressi, essa andrà a prelevare una certa $I_{iL}$ dagli altri ingressi ma essa, come detto nella \eqref{i_il_not}, è nulla quindi a livello logico basso si è abbastanza sicuri che non succede niente di particolare in quanto non scorre corrente in ingresso e il transistor può essere considerato in saturazione
+\end{itemize}
+Da tutti questi parametrici statici è ora possibile ricavare ulteriori grande d'interesse:
+\begin{itemize}
+    \item Note le tensioni in ingresso e in uscita per i due livelli logici possibili è possibile calcolare il margine di rumore alto e basso:
+    \begin{equation*}
+        \textit{NM}_{H} = V_{oH} - V_{iH} = 5\,V - 0,75\,V = 4,25\,V
+    \end{equation*}
+    abbastanza alto
+    \begin{equation*}
+        \textit{NM}_{L} = V_{iL} - V_{oL} = 0,6\,V - 0,2\,V
+    \end{equation*}
+    relativamente basso. Da qui si ricava infine il rumore elettrico:
+    \begin{equation}
+        \textit{NM} = min(\textit{NM}_{L},\, \textit{NM}_{H}) = 0,4\,V
+    \end{equation}
+    si nota che questa porta logica è \textit{molto asimmetrica} e il suo margine di rumore è tutto mangiato dalla parte bassa. Questo significa che per un ingresso basso di $0,2\,V$ la porta logica lo considera basso fino a $0,6\,V$ ma se c'è un rumore di $0,4\,V$, quindi lo fa salire a $0,6\,V$, non è più garantito che l'ingresso sia considerato correttamente
+    \item Avendo visto che il NOT non pone problemi quando il suo ingresso è basso, perché non ha requisiti in corrente (vedi \eqref{i_il_not}) e l'uscita è in saturazione quindi in una situazione buona per comandare un carico, il fattore critico della porta è l'uscita alta. Infatti con l'ingresso basso e l'uscita alta che va a pilotare altri ingressi (cioè un certo numero di giunzioni pn e resistenze verso masso), il transistor è in interdizione quindi il circuito è composto da una tensione di $5\,V$ più una resistenza da $640\,\Omega$ (come si vede in figura 5.1) e le \textit{n} coppie resistenza-diodo. Per determinare \textit{n}, cioè il fan-out, si deve considerare la tensione applicata nel nodo alla destra della resistenza da $640\,\Omega$ che precede le \textit{n} coppie. Volendo che il segnale (corrispondente all'uscita della porta) sia alto si sa che devono esserci almeno $0,75\,V$ secondo la \eqref{v_ih_not}, dunque ai capi della resistenza da $640\,\Omega$ si deve avere
+    \begin{equation*}
+        V_{R_{c}} < 5\,V - 0,75\,V
+    \end{equation*}
+    ma $V_{R_{c}} = I \cdot R_{c}$, dunque
+    \begin{equation*}
+        I \cdot R_{c} \leq 5\,V - 0,75\,V \Rightarrow I \leq \frac{5\,V - 0,75\,V}{640\,\Omega} = 6,6\,mA
+    \end{equation*}
+    che è la corrente massima che può scorrere nella resistenza $R_c$ prima che il nodo, rappresentante l'uscita della porta, vada sotto la $V_{iH} = 0,75\,V$ delle altre porte logiche. Questa corrente si può cedere alle \textit{n} porte logiche collegate. Si sa ora, grazie alla \eqref{i_ih_not}, che nel caso di ingresso alto ogni porta logica consuma una corrente pari a $I_{iH} \approx 200\,\mu A$, per cui:
+    \begin{equation}
+        \textit{Fan-out} = \frac{6,6\,mA}{200\,\mu A} = 33
+    \end{equation}
+    \item Quando l'uscita è bassa il transistor è in saturazione e, secondo la \eqref{v_ol_not}, ai capi di $R_c$ è applicata una tensione di $5\,V - 0,2\,V = 4,8\,V$ quindi la corrente che scorre attraverso $R_c$ è data da $I_{R_{c}} = \frac{4,8\,V}{640\,\Omega} = 7,5\,mA$. È l'unica corrente che scorre, non si deve considerare quella che scorre nella base del transistor perché questa corrente non fa parte della porta logica. Dunque si ottiene:
+    \begin{equation*}
+        P_{L} = 5\,V \cdot 7,5\,mA = 37,5\,mW
+    \end{equation*}
+    Quando invece l'uscita è alta la corrente che scorre in $R_c$ è nulla e la corrente in ingresso, secondo la \eqref{i_il_not}, è nulla dunque la cella è di fatto spenta:
+    \begin{equation*}
+        P_{H} = 0\,mW
+    \end{equation*}
+    Si arriva infine a definire la potenza media:
+    \begin{equation}
+        P = \frac{P_{L} + P_{H}}{2} = \frac{37,5\,mW + 0\,mW}{2} = 18\,mW
+    \end{equation}
+    quindi una singola cella logica che compone la porta NOT in logica RTL consuma $18\,mW$ di potenza
+\end{itemize}
+Per quanto riguarda i parametrici dinamici si può dire che è un circuito abbastanza veloce 
 
 \chapter{TTL}
 \chapter{Logica sequenziale e Flip-Flop}
