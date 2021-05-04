@@ -736,7 +736,7 @@ Per una certa famiglia logica il parametro di riferimento è il prodotto ritardo
 La prima famiglia logica esaminata è la \textbf{RTL - Resistor Transistor Logic}, una famiglia ormai non più presente sul mercato basata sull'impiego di sole resistenze e transistors.
 
 \section{NOT}
-La porta NOT è la più semplice porta da realizzare perché sono sufficienti due resistenze e un solo transistor. La sua versione basilare in logica RTL è data dal seguente circuito:
+La porta NOT è la più semplice porta da realizzare perché sono sufficienti due resistenze e un solo transistor. È l'invertitore più semplice da realizzare anche se ha un consumo considerevole. La sua versione basilare in logica RTL è data dal seguente circuito:
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.38,angle=0]{rtl_not.png}
@@ -864,9 +864,136 @@ Da tutti questi parametrici statici è ora possibile ricavare ulteriori grandezz
 \end{itemize}
 
 \subsection{Parametri dinamici}
-Per quanto riguarda i parametrici dinamici si può dire che è un circuito abbastanza veloce 
+Per quanto riguarda i parametrici dinamici si può dire che è un circuito abbastanza veloce grazie alla sua semplicità. Quando si deve accendere il dispositivo si incontra inizialmente la resistenza di base da $450\,\Omega$ (decisamente bassa, è questo il motivo per cui ha un consumo molto elevato) che pompa corrente nella base. Tutta questa corrente viene amplificata dal transistor che permette di abbassare (assorbendo corrente) la resistenza di carico $R_c$ e le eventuali \textit{capacità parassite} che potrebbero essere presenti. Avendo molta corrente sia in base che nel collettore saranno sufficienti pochi nanosecondi (circa $5\,nS$) per accendere il transistor.
+
+Analogamente l'operazione di spegnimento del dispositivo, ovvero l'azione di rilasciare l'uscita per farla ritornare alta, è anch'essa molto veloce e richiede solo pochi nanosecondi (sempre circa $5\,nS$). Quando il transistor è acceso si sta facendo scorrere corrente nella base che, per costruzione, è una giunzione pn che si carica con i portatori minoritari. Quando si vuole spegnere la base si devono svuotare i portatori minoritari accumulati, cioè si deve far scorrere una corrente inversa per eliminare la carica accumulata nella base. Tutta questa operazione può essere effettuata rapidamente perché per svuotare le cariche si incontra la resistenza di base e il transistor della porta precedente che è in saturazione e può quindi tirare molta corrente. Per quanto detto, i tempi di propagazione $t_{p_{HL}}$ e $t_{p_{LH}}$ sono entrambi molto piccoli, dell'ordine dei nanosecondi:
+\begin{equation}
+    t_{p_{HL}} \approx 5\,nS \text{ \, \, } t_{p_{LH}} \approx 5\,nS
+\end{equation}
+Ricordando che la potenza dissipata è $18\,mW$, si può calcolare il prodotto ritardo-potenza (più piccolo è e meglio è perché significa che si ha poco ritardo e/o poco consumo):
+\begin{equation}
+    \textit{DP} = t_{p} \cdot P = 5\,nS \cdot 18\,mW = 90\,pJ
+\end{equation}
+Si può dire che il dispositivo ha un comportamento dinamico \textit{simmetrico}, cioè i due tempi di propagazione sono simili tra loro.
+
+Se si raddoppiassero tutte le resistenze si dimezzerebbero le correnti e questo comporta un dimezzamento della potenza. Ma l'accensione del dispositivo dipende da quanta corrente passa nella resistenza di base e nella giunzione pn tra base ed emettitore dunque raddoppiando $R_b$ la corrente si dimezza e si dimezza anche la corrente che scorre tra collettore ed emettitore e questo implica che il tempo di propagazione raddoppia. Anche per eliminare i portatori minoritari sarà richiesto il doppio del tempo. Dunque entrambi $t_{p_{HL}}$ e $t_{p_{LH}}$ raddoppiano, la potenza \textit{P} si dimezza e quindi \textit{DP} rimane \textit{invariato} e dipende solo da \textit{come} è costruita la porta logica.
 
 \chapter{TTL}
+È la più recente evoluzione della famiglia logica RTL. \textbf{TTL} sta per \textbf{Transistor Transistor Logic}, così chiamata perché prevede l'impiego di due transistor.
+
+\section{NOT base}
+La porta NOT nella sua versione \textit{base} è composta da due resistenze, una delle quali è la resistenza di carico, e due transistors. La versione in logica TTL è data dal seguente circuito:
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ttl_not_base.png}
+    \caption{Struttura base del NOT in logica TTL}
+    \label{not_base}
+\end{figure}
+\\Quando l'ingresso \textit{IN} della porta è \textit{basso} (si considera una tensione di $0\,V$) la giunzione tra la base e l'emettitore del transistor $Q_1$ è polarizzata \textit{direttamente}, dunque scorre una corrente dalla base all'emettitore passate anche nella resistenza $R_{pu}$. Se tra la base e l'emettitore è presente una tensione di $0,7\,V$ e sull'emettitore è applicata la tensione di ingresso di $0,2\,V$ (difficilmente è effettivamente nulla), ai due capi della resistenza $R_{pu}$ sono applicati due potenziali da $5\,V$ e $0,9\,V$ e la corrente che scorre nella resistenza, cioè la corrente in base del transistor, vale:
+\begin{equation*}
+    I_{R_{pu}} = \frac{V_{R_{pu}}}{{R_{pu}}} = \frac{5\,V - 0,9\,V}{4\,k\Omega} \approx 1\,mA
+\end{equation*}
+Data questa corrente in base, $Q_1$ non può che trovarsi o in saturazione o in regione attiva diretta. Per essere in regione attiva diretta dovrebbe scorrere tanta corrente nel suo collettore ma questa corrente proverrebbe dalla base del transistor $Q_2$ che ha una giunzione pn tra la base e l'emettitore, questo comporta che non può scorrere una corrente che sia uscente dalla base di $Q_2$ e quindi $I_{c_1} \approx 0\,A$ e $Q_1$ si trova sicuramente in \textit{saturazione}. Ricevendo $0,2\,V$ in ingresso e trovandosi in saturazione, $Q_1$ ha una tensione tra collettore ed emettitore pari a $V_{ce-sat} = 0,2\,V$ e sul collettore è presente un potenziale di $0,4\,V$. Con $0,4\,V$ massimi sul collettore, la base di $Q_2$ (in particolare la giunzione tra base ed emettitore) \textit{non} si può accendere, ma allora se $Q_2$ è spento significa che l'uscita \textit{OUT} dell'intero circuito è \textit{alta} perché \textit{non} scorre corrente attraverso il carico $R_c$.
+
+Se invece \textit{IN} è \textit{alto} la tensione tra la base e l'emettitore di $Q_2$ è compresa tra $0\,V$ e $0,75\,V$ e, poiché tra la base e il collettore di $Q_1$ è presente una giunzione pn, sulla base di $Q_1$ c'è una tensione compresa tra $0\,V$ e $1,4 - 1,5\,V$ (non oltre perché si avrebbero le giunzioni base-collettore di $Q_1$ e base-emettitore di $Q_2$ entrambe pienamente polarizzate direttamente). Dunque se \textit{IN} è alto a $5\,V$, la giunzione tra la base e l'emettitore di $Q_1$ rimane polarizzata \textit{inversamente} mentre la giunzione tra la base e il collettore di $Q_1$ viene tirata su dalla \textbf{resistenza di pull-up} $R_{pu}$ e si polarizza \textit{direttamente}: questo comporta che $Q_1$ si trova in regione \textit{attiva inversa}. In regione attiva inversa il guadagno in corrente di $Q_1$ è $h_{fe} \approx 0$, quindi la corrente che scorre dall'ingresso è molto poca. In questa situazione scorre corrente nella giunzione tra base e collettore di $Q_1$ e nella giunzione tra base ed emettitore di $Q_2$, dunque $Q_2$ è acceso, va in saturazione e \textit{OUT} è \textit{bassa}.
+
+I principali pregi del NOT in TTL rispetto a quello in RTL sono i seguenti:
+\begin{itemize}
+    \item Quando in fase dinamica, con ingresso inizialmente alto, si vuole spegnere il dispositivo abbassando l'ingresso e facendo diventare l'uscita alta, in $Q_1$ la giunzione tra la base e l'emettitore si polarizza direttamente e il transistor passa in regione attiva diretta assorbendo le cariche minoritarie dalla base del transistor $Q_2$ mediante il suo guadagno $h_{fe}$, quindi lo spegnimento è molto veloce come lo è altrettanto la transizione $L \rightarrow H$ in uscita (già sapevamo che la transizione in uscita $H \rightarrow L$ è veloce perché accendere un transistor è sempre più facile che spegnerlo)
+    \item La corrente assorbita sull'ingresso è limitata e in particolare, mentre nel caso RTL quando l'ingresso era alto si doveva fornire un corrente che poteva eventualmente diventare notevole, in questo caso se l'ingresso è alto non scorre corrente nell'ingresso quindi il caso di ingresso alto è un caso favorevole. Quando invece l'ingresso è basso si ha un valore fisso di corrente che dipende da $R_{pu}$
+    \item Lo stadio di uscita è composto dalla resistenza $R_c$ come nel caso RTL, quindi quando l'uscita è bassa non ci sono problemi (transistor che va in saturazione) mentre se l'uscita è alta c'è la resistenza $R_c = 1,6\,k\Omega$ maggiore di quella in RTL per poter diminuire la potenza consumata dalla porta logica pur avendo minor capacità di guidare l'uscita ma questo è ragionevole perché serve a guidare la $I_{iH}$ delle altre porte logiche che si è detto essere molto piccola
+\end{itemize}
+In generale, quando l'uscita va bassa il transistor tira la corrente verso il basso ma quando l'uscita va alta si ha una modesta resistenza $R_c$ che alza la corrente.
+
+\section{Enhanced NOT}
+A causa della sua scarsa efficienza, la versione base del NOT in logica TTL è stata rapidamente rimpiazzata con un suo miglioramento chiamato \textbf{enhanced NOT}. Il circuito è più complesso: è aumentato il numero di transistors e delle resistenze ed è stato introdotto un diodo. Nello specifico, tra il transistor $Q_1$ (con la relativa resistenza di pull-up $R_{pu}$) e il transistor $Q_2$ è stato inserito uno stadio intermedio composto da due resistenze $R_{pu_1}$ e $R_{pd}$ e il transistor $Q_3$ (tutti e tre servono per guidare i transistor $Q_2$ e $Q_4$ con due segnali in opposizione di fase), inoltre la resistenza di carico $R_c$ da $1,6\,k\Omega$ è stata sostituita con un nuovo carico composto dal diodo $D_1$, il transistor $Q_4$ e la resistenza di carico $R_c$ da $130\,\Omega$. Il transistor $Q_4$ in uscita aiuta a migliorare le performance. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ttl_not_enh.png}
+    \caption{Struttura dell'enhanced NOT}
+    \label{not_enh}
+\end{figure}
+\\Quando $Q_3$ è \textit{spento}, in $R_{pu_1}$ e $R_{pd}$ non scorre corrente, quindi l'ingresso nella base di $Q_4$ è alto mentre quello nella base di $Q_2$ è basso. Questo comporta che $Q_2$ è spento e $Q_4$ può essere acceso se scorre corrente dalla sua base all'emettitore, passante poi in $D_1$.
+
+Viceversa, se scorre corrente attraverso $Q_3$ (quindi $Q_3$ è accesso la corrente scorre anche attraverso $R_{pu_1}$ e $R_{pd}$) c'è una caduta di tensione su $R_{pu_1}$ e su $R_{pd}$, quindi l'ingresso nella base di $Q_4$ è basso e quello nella base di $Q_2$ è alto. In queste condizioni, $Q_4$ è spento mentre $Q_2$ è acceso.
+
+L'obiettivo del miglioramento era quello di aggiungere qualcosa nello stadio di uscita ma questa aggiunta ha implicato l'inserimento dello stadio intermedio appena descritto. In seguito a queste modifiche:
+\begin{itemize}
+    \item Lo stadio di uscita è stato effettivamente migliorato perché il transistor $Q_4$ aggiunto è in grado di fornire una piccola corrente all'uscita che può quindi essere tirata verso l'alto più velocemente
+    \item Al contrario, il transistor $Q_2$ è nuovamente difficile da spegnere perché il suo spegnimento può essere effettuato solo tramite la \textbf{resistenza di pull-down} $R_{pd}$ posta a $1\,k\Omega$ per esigenze di consumo
+\end{itemize}
+Il guadagnato in velocità ottenuto inserendo $Q_4$ nello stadio di uscita è stato pagato in termini di velocità di commutazione quando si deve spegnere $Q_2$, ovvero quando si deve fare il passaggio $L \rightarrow H$ in uscita.
+
+\subsection{Caratteristica di enhanced NOT}
+La \textbf{caratteristica ingresso-uscita} dell'enhanced NOT ha un andamento che può essere schematizzato in tre fasi. Per valori bassi di tensione l'uscita rimane alta, segue una fase in cui l'uscita decresce lentamente e infine si ha una terza fase in cui l'uscita crolla fino a stabilizzarsi su valore di tensione basso. Analizzando più nel dettaglio tramite la figura \ref{enh_zoom} si nota che nella seconda fase la tensione di uscita decresce \textit{linearmente}. Per una tensione in ingresso compresa tra $0\,V$ e circa $1,5\,V$ (corrispondente all'intervallo di tensioni in cui l'uscita inizialmente rimane costante e poi decresce) si nota che in corrispondenza di $0,5 - 0,6\,V$ inizia la fase di decrescita lineare.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_not_enh_transfer.png}
+    \caption{Tensione in uscita dall'enhanced NOT}
+\end{figure}
+
+Analizzando la struttura circuitale dell'enhanced NOT riportata in figura \ref{not_enh} si nota che per un ingresso basso (tensione in ingresso di $0\,V$), sull'emettitore di $Q_1$ è presente un potenziale positivo di $0,7\,V$ e sul collettore, poiché c'è una normale giunzione pn, può esserci un potenziale negativo che vale al massimo $0,7\,V$. Dunque quando l'ingresso è basso, la base di $Q_1$ è tenuta alta dal pull-up $R_{pu}$ e il collettore sta a circa $0\,V$. Ci si trova dunque nella prima fase in cui l'uscita rimane alta.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_not_enh_transfer_zoom.png}
+    \caption{Zoom sulla regione di transizione}
+    \label{enh_zoom}
+\end{figure}
+
+Se ora si aumenta la tensione dell'emettitore (quindi \textit{IN}) a circa $0,5\,V$, tra emettitore e base di $Q_1$ si passa da una tensione di $0,7\,V$ ad una tensione di $0,7\,V + 0,5\,V = 1,2\,V$ e poiché sulla giunzione base-collettore di $Q_1$ si può avere al massimo $0,7\,V$, tra la base e l'emettitore di $Q_3$ si crea una tensione di $0,5\,V$ (come in ingresso) e quella giunzione inizia a polarizzarsi. Se il transistor $Q_3$ inizia ad accendersi comincia a scorre corrente dal collettore all'emettitore di $Q_3$, cioè da $R_{pu_1}$ a $R_{pd}$. Ma se scorre corrente nello stadio intermedio, la caduta di tensione ai capi di $R_{pu_1}$ è \textit{direttamente proporzionale} alla corrente che ci scorre. Per poter calcolare questa corrente si considera che tra la base e l'emettitore di $Q_3$ c'è una tensione di $0,5\,V$ e ciò che rimane cade sulla resistenza $R_{pd}$. Il fatto che il nodo tra $R_{pu_1}$ e il collettore di $Q_3$ scenda di tensione fa sì che anche l'uscita (l'emettitore) del transistor $Q_4$ vada verso il basso, quindi l'uscita scende linearmente (perché, come detto, la tensione di base di $Q_4$ scende). Ci si trova dunque nella seconda fase di decrescita lineare con pendenza della retta intorno a $-\frac{1}{2}$.
+
+A partire da $1,2\,V$ in ingresso, cioè da quando la tensione sull'emettitore di $Q_3$ è salita di circa $0,7\,V$, si accende il transistor $Q_2$ che tira bruscamente verso il basso l'uscita del circuito. Ci si trova dunque nella terza fase. Se si continua ad aumentare la tensione in ingresso la corrente passa attraverso $R_{pu}$, tramite la giunzione base-collettore di $Q_1$ va nella base di $Q_3$, da lì tramite l'emettitore va in $Q_2$ e infine esce dall'emettitore di $Q_2$ andando a terra. Non viene fornita nessuna corrente all'ingresso.
+
+La corrente di carico $R_c$ e il diodo $D_1$ sono stati inseriti per ottimizzare la forma d'onda di uscita. In particolare $R_c$ serve perché in fase di commutazione dinamica del livello logico (in entrambi i sensi) esiste un piccolo istante di tempo in cui $Q_4$ e $Q_2$ sono accesi contemporaneamente (perché è più difficile spegnere un transistor acceso piuttosto che accenderne uno spento: il transistor spento si accende velocemente mentre quello acceso si spegne lentamente) e in quell'istante la corrente scorre in entrambi da $Q_4$ a $Q_2$. Per limitare questa corrente si inserisce la resistenza $R_c$ che limita anche la potenza di uscita. Il risultato netto dell'impiego di $R_c$ e $D_1$ è che la tensione di uscita è difficile che sia $5\,V$ perché se sulla base di $Q_4$ ci sono $5\,V$, tra base ed emettitore ce ne sono $4,3\,V$ e sul diodo ce ne sono circa $3,7\,V$.
+
+Analizzando la curva in figura \ref{enh_zoom} si ricava:
+\begin{equation}
+    V_{iH} \approx 1,4\,V
+\end{equation}
+
+\section{NOT standard}
+Nella progettazione di una porta logica si vorrebbe che essa commuti in maniera istantanea e con poca indeterminazione di tensione tra i due stati logici; ovvero si vorrebbe che il passaggio da uscita alta a bassa sia il più brusco possibile. Si vorrebbe dunque eliminare la regione lineare tra $V_{iL}$ e $V_{iH}$. Per risolvere questo problema è stata progettata un'ulteriore versione della porta NOT chiamata \textbf{standard NOT} nella quale la resistenza $R_{pd}$ tra $Q_3$ e $Q_2$ è stata sostituita con un circuito composto da due resistenze $R_{pu_2}$ e $R_{pd}$ e un transistor $Q_5$. Questo circuito aggiuntivo permette di risolvere il problema della decrescita lineare della tensione di uscita.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ttl_not_std.png}
+    \caption{Struttura standard del NOT in logica TTL}
+    \label{not_std}
+\end{figure}
+
+Le tre sezioni aggiunte all'interno del NOT standard rispetto alla struttura del NOT base sono così chiamate:
+\begin{description}
+    \item[Active Pull-Down APD] il circuito appena descritto, aggiunto per risolvere il problema della decrescita lineare della tensione di uscita. Viene chiamato così perché al suo interno è presente il transistor $Q_5$ che è un aggettivo attivo e ha il compito di sincronizzare il funzionamento di questa cella logica
+    \item[Phase splitter] lo stadio intermedio composto dalle resistenze $R_{pu_1}$ e $R_{pd}$ e dal transistor $Q_3$. Viene così chiamato perché dato un ingresso (proveniente dal collettore del transistor $Q_1$) produce due uscite di fase opposta dirette alla base di $Q_4$ e $Q_2$
+    \item[Totem-Pole] composto dai due transistor $Q_4$ e $Q_2$, dal diodo $D_1$ e dalla resistenza $R_c$.
+\end{description}
+Rifacendosi alla figura \ref{not_std} è possibile analizzare le sue caratteristiche principali:
+\begin{itemize}
+    \item Il transistor superiore di uscita $Q_4$ serve per guidare il circuito alto perché fornisce una piccola corrente tramite la quale l'uscita può essere tirata verso l'alto velocemente
+    \item All'interno dell'APD, quando $Q_3$ si spegne 
+    \item
+\end{itemize}
+
+\section{Parametri della porta NOT standard}
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer.png}
+%    \caption{Tensione in uscita dal NOT standard}
+%    \label{enh_zoom}
+%\end{figure}
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer_zoom.png}
+%    \caption{Zoom sulla regione di transizione}
+%    \label{enh_zoom}
+%\end{figure}
+\section{NAND}
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[scale=0.4,angle=0]{ttl_nand.png}
+%    \caption{Struttura del NAND in logica TTL}
+%    \label{ttl_nand}
+%\end{figure}
+
 \chapter{CMOS e BiCMOS}
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
