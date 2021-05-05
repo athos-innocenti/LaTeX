@@ -829,7 +829,7 @@ Da tutti questi parametrici statici è ora possibile ricavare ulteriori grandezz
     \end{equation*}
     abbastanza alto
     \begin{equation*}
-        \textit{NM}_{L} = V_{iL} - V_{oL} = 0,6\,V - 0,2\,V
+        \textit{NM}_{L} = V_{iL} - V_{oL} = 0,6\,V - 0,2\,V = 0,4\,V
     \end{equation*}
     relativamente basso. Da qui si ricava infine il rumore elettrico:
     \begin{equation}
@@ -890,9 +890,10 @@ La porta NOT nella sua versione \textit{base} è composta da due resistenze, una
     \label{not_base}
 \end{figure}
 \\Quando l'ingresso \textit{IN} della porta è \textit{basso} (si considera una tensione di $0\,V$) la giunzione tra la base e l'emettitore del transistor $Q_1$ è polarizzata \textit{direttamente}, dunque scorre una corrente dalla base all'emettitore passate anche nella resistenza $R_{pu}$. Se tra la base e l'emettitore è presente una tensione di $0,7\,V$ e sull'emettitore è applicata la tensione di ingresso di $0,2\,V$ (difficilmente è effettivamente nulla), ai due capi della resistenza $R_{pu}$ sono applicati due potenziali da $5\,V$ e $0,9\,V$ e la corrente che scorre nella resistenza, cioè la corrente in base del transistor, vale:
-\begin{equation*}
+\begin{equation}
     I_{R_{pu}} = \frac{V_{R_{pu}}}{{R_{pu}}} = \frac{5\,V - 0,9\,V}{4\,k\Omega} \approx 1\,mA
-\end{equation*}
+    \label{i_rpu}
+\end{equation}
 Data questa corrente in base, $Q_1$ non può che trovarsi o in saturazione o in regione attiva diretta. Per essere in regione attiva diretta dovrebbe scorrere tanta corrente nel suo collettore ma questa corrente proverrebbe dalla base del transistor $Q_2$ che ha una giunzione pn tra la base e l'emettitore, questo comporta che non può scorrere una corrente che sia uscente dalla base di $Q_2$ e quindi $I_{c_1} \approx 0\,A$ e $Q_1$ si trova sicuramente in \textit{saturazione}. Ricevendo $0,2\,V$ in ingresso e trovandosi in saturazione, $Q_1$ ha una tensione tra collettore ed emettitore pari a $V_{ce-sat} = 0,2\,V$ e sul collettore è presente un potenziale di $0,4\,V$. Con $0,4\,V$ massimi sul collettore, la base di $Q_2$ (in particolare la giunzione tra base ed emettitore) \textit{non} si può accendere, ma allora se $Q_2$ è spento significa che l'uscita \textit{OUT} dell'intero circuito è \textit{alta} perché \textit{non} scorre corrente attraverso il carico $R_c$.
 
 Se invece \textit{IN} è \textit{alto} la tensione tra la base e l'emettitore di $Q_2$ è compresa tra $0\,V$ e $0,75\,V$ e, poiché tra la base e il collettore di $Q_1$ è presente una giunzione pn, sulla base di $Q_1$ c'è una tensione compresa tra $0\,V$ e $1,4 - 1,5\,V$ (non oltre perché si avrebbero le giunzioni base-collettore di $Q_1$ e base-emettitore di $Q_2$ entrambe pienamente polarizzate direttamente). Dunque se \textit{IN} è alto a $5\,V$, la giunzione tra la base e l'emettitore di $Q_1$ rimane polarizzata \textit{inversamente} mentre la giunzione tra la base e il collettore di $Q_1$ viene tirata su dalla \textbf{resistenza di pull-up} $R_{pu}$ e si polarizza \textit{direttamente}: questo comporta che $Q_1$ si trova in regione \textit{attiva inversa}. In regione attiva inversa il guadagno in corrente di $Q_1$ è $h_{fe} \approx 0$, quindi la corrente che scorre dall'ingresso è molto poca. In questa situazione scorre corrente nella giunzione tra base e collettore di $Q_1$ e nella giunzione tra base ed emettitore di $Q_2$, dunque $Q_2$ è acceso, va in saturazione e \textit{OUT} è \textit{bassa}.
@@ -944,11 +945,10 @@ Se ora si aumenta la tensione dell'emettitore (quindi \textit{IN}) a circa $0,5\
 
 A partire da $1,2\,V$ in ingresso, cioè da quando la tensione sull'emettitore di $Q_3$ è salita di circa $0,7\,V$, si accende il transistor $Q_2$ che tira bruscamente verso il basso l'uscita del circuito. Ci si trova dunque nella terza fase. Se si continua ad aumentare la tensione in ingresso la corrente passa attraverso $R_{pu}$, tramite la giunzione base-collettore di $Q_1$ va nella base di $Q_3$, da lì tramite l'emettitore va in $Q_2$ e infine esce dall'emettitore di $Q_2$ andando a terra. Non viene fornita nessuna corrente all'ingresso.
 
-La corrente di carico $R_c$ e il diodo $D_1$ sono stati inseriti per ottimizzare la forma d'onda di uscita. In particolare $R_c$ serve perché in fase di commutazione dinamica del livello logico (in entrambi i sensi) esiste un piccolo istante di tempo in cui $Q_4$ e $Q_2$ sono accesi contemporaneamente (perché è più difficile spegnere un transistor acceso piuttosto che accenderne uno spento: il transistor spento si accende velocemente mentre quello acceso si spegne lentamente) e in quell'istante la corrente scorre in entrambi da $Q_4$ a $Q_2$. Per limitare questa corrente si inserisce la resistenza $R_c$ che limita anche la potenza di uscita. Il risultato netto dell'impiego di $R_c$ e $D_1$ è che la tensione di uscita è difficile che sia $5\,V$ perché se sulla base di $Q_4$ ci sono $5\,V$, tra base ed emettitore ce ne sono $4,3\,V$ e sul diodo ce ne sono circa $3,7\,V$.
-
-Analizzando la curva in figura \ref{enh_zoom} si ricava:
+La corrente di carico $R_c$ e il diodo $D_1$ sono stati inseriti per ottimizzare la forma d'onda di uscita. In particolare $R_c$ serve perché in fase di commutazione dinamica del livello logico (in entrambi i sensi) esiste un piccolo istante di tempo in cui $Q_4$ e $Q_2$ sono accesi contemporaneamente (perché è più difficile spegnere un transistor acceso piuttosto che accenderne uno spento: il transistor spento si accende velocemente mentre quello acceso si spegne lentamente) e in quell'istante la corrente scorre in entrambi da $Q_4$ a $Q_2$. Per limitare questa corrente si inserisce la resistenza $R_c$ che limita anche la potenza di uscita. Il risultato netto dell'impiego di $R_c$ e $D_1$ è che la tensione di uscita è difficile che sia $5\,V$ perché se sulla base di $Q_4$ ci sono $5\,V$, tra base ed emettitore ce ne sono $4,3\,V$ e sul diodo ce ne sono circa $3,75\,V$. Dunque, per quanto appena detto e analizzando la curva in figura \ref{enh_zoom}, si ricava:
 \begin{equation}
-    V_{iH} \approx 1,4\,V
+    V_{iH} \approx 1,4\,V \text{ \, \, } V_{oH} = 3,75\,V
+    \label{v_h}
 \end{equation}
 
 \section{NOT standard}
@@ -969,23 +969,72 @@ Le tre sezioni aggiunte all'interno del NOT standard rispetto alla struttura del
 Rifacendosi alla figura \ref{not_std} è possibile analizzare le sue caratteristiche principali:
 \begin{itemize}
     \item Il transistor superiore di uscita $Q_4$ serve per guidare il circuito alto perché fornisce una piccola corrente tramite la quale l'uscita può essere tirata verso l'alto velocemente
-    \item All'interno dell'APD, quando $Q_3$ si spegne 
-    \item
+    \item All'interno dell'APD, quando $Q_3$ si spegne il transistor $Q_5$ funge da raccoglitore di corrente perché la tensione che si trova sul nodo sottostante l'emettitore di $Q_3$ fa attivare la base di $Q_5$ che poi va ad assorbire corrente tramite la resistenza di pull-down $R_{pd}$
+    \item La resistenza $R_c$ serve per limitare la cross conduzione di $Q_2$ e $Q_4$. L'inserimento dell'APD aiuta a sincronizzare tutte le varie operazioni
 \end{itemize}
 
+Con l'inserimento della sezione di active pull-down si risolve il problema della decrescita lineare della funzione di trasferimento che, come si vede in figura \ref{std_transfer}, perde completamente quella regione e la variazione della tensione in uscita diventa più repentino come effettivamente si vorrebbe nel contesto dell'elettronica digitale.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer.png}
+    \caption{Tensione in uscita dal NOT standard}
+    \label{std_transfer}
+\end{figure}
+\\Le decrescita lineare della tensione di uscita era dovuta al fatto che, dal momento in cui l'ingresso \textit{IN} era a $0,5\,V$, sul nodo sottostante l'emettitore di $Q_3$ iniziava a salire il potenziale che faceva scorrere una corrente all'interno dello stadio intermedio (composto da $R_{pu_{1}}$, $R_{pd}$ e $Q_3$). Con il nuovo circuito quando ci sono $0,5\,V$ in ingresso, e quindi anche sul collettore di $Q_1$, anche se la giunzione base-emettitore di $Q_3$ si accendesse per far passare un po' di corrente, tale corrente non potrebbe andare da nessuna parte perché tra l'emettitore di $Q_3$ e la resistenza $R_{pu_{2}}$ ci sono circa $0\,V$ e se si volesse far scorrere della corrente su $R_{pu_{2}}$ e su $R_{pd}$ in quel punto invece di avere circa $0\,V$ se ne dovrebbero avere almeno $0,7\,V$ perché si dovrebbe accendere $Q_5$. Dunque fino a circa $1,2 - 1,4\,V$ di tensione in ingresso che sta salendo, non succede niente. Nel momento in cui si raggiunge una tensione di $1,2 - 1,4\,V$, si accende $Q_5$ ma contemporaneamente si accende anche $Q_2$ perché su entrambi i transistor agisce una tensione di circa $0,6\,V$: il circuito è sincronizzato. Quando si accende $Q_5$, questo inizia pompare corrente, passante attraverso $R_{pu_{1}}$, tramite $R_{pd}$, quindi quando si accende $Q_5$ l'uscita tende ad abbassarsi. Contemporaneamente si accende anche $Q_2$ che tira l'uscita verso il basso.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer_zoom.png}
+    \caption{Zoom sulla regione di transizione}
+    \label{std_zoom}
+\end{figure}
+\\La sincronizzazione delle azioni di $Q_2$ e $Q_5$ permette di abbassare repentinamente l'uscita del circuito in modo da evitare la regione lineare. Questa azione, come si nota nello zoom in figura \ref{std_zoom}, termina poi intorno a $1,4\,V$ in ingresso.
+
 \section{Parametri della porta NOT standard}
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer.png}
-%    \caption{Tensione in uscita dal NOT standard}
-%    \label{enh_zoom}
-%\end{figure}
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[scale=0.35,angle=0]{ttl_not_std_transfer_zoom.png}
-%    \caption{Zoom sulla regione di transizione}
-%    \label{enh_zoom}
-%\end{figure}
+\begin{itemize}
+    \item Poiché la fase di decrescita repentina dell'uscita si conclude intorno a $1,35\,V$ si pone:
+    \begin{equation}
+        V_{iH} = 1,35\,V
+    \end{equation}
+    \item Al contrario, la medesima fase di decrescita inizia intorno a $1,1\,V$ in ingresso, dunque:
+    \begin{equation}
+        V_{iL} = 1,1\,V
+    \end{equation}
+    \item Per quanto riguarda la corrente in ingresso, si sa che $I_{iH}$ è determinata dalla corrente inversa che dipende dal funzionamento in regione attiva inversa del transistor $Q_1$. In questo caso la corrente inversa è molto bassa, circa l'1\,\% della corrente che scorre nel circuito:
+    \begin{equation}
+        I_{iH} \approx 15\,\mu A
+    \end{equation}
+    \item Quando invece la tensione in ingresso è bassa, come già detto nella \eqref{i_rpu}, per calcolare la corrente in ingresso si considera una tensione in ingresso di $0,2\,V$ e una tensione di $5\,V - 0,9\,V = 4,1\,V$ sulla resistenza di pull-up $R_{pu} = 4\,k\Omega$ per cui:
+    \begin{equation}
+        I_{iL} = \frac{5\,V - 0,9\,V}{4\,k\Omega} = \frac{4,1\,V}{4\,k\Omega} = 1\,mA
+    \end{equation}
+    \item La tensione di uscita alta, come già accennato nella \eqref{v_h}, vale:
+    \begin{equation}
+        V_{oH} = 3,75\,V
+    \end{equation}
+    e non può essere maggiore di questo valore perché in uscita ci sono il diodo $D_1$, su cui agisce una tensione di $0,7\,V$, e la giunzione base-emettitore di $Q_4$ su cui agiscono ancora $0,7\,V$. Quindi anche se si portasse la base di $Q_4$ a $5\,V$ tramite la resistenza $R_{pu_{1}}$, si avrebbe comunque una caduta di potenziale di $0,7\,V + 0,7\,V = 1,4\,V$.
+    \item A tensione di uscita bassa, invece, la tensione di uscita è pari alla tensione di saturazione del transistor inferiore $Q_2$, dunque:
+    \begin{equation}
+        V_{oL} = 0,2\,V
+    \end{equation}
+\end{itemize}
+A partire dai parametri statici è ora possibile ricavare il margine di rumore e la potenza dissipata:
+\begin{itemize}
+    \item Note le tensioni in ingresso e in uscita per i due livelli logici, si calcolano il margine di rumore alto e basso:
+    \begin{equation*}
+        \textit{NM}_{H} = V_{oH} - V_{iH} = 3,75\,V - 1,35\,V = 2,4\,V
+    \end{equation*}
+    abbastanza alto
+    \begin{equation*}
+        \textit{NM}_{L} = V_{iL} - V_{oL} = 1,1\,V - 0,2\,V = 0,9\,V
+    \end{equation*}
+    l'aver aggiunto tutti i transistor intermedi ha fatto salire la $V_{iL}$ e questo è positivo per la porta logica perché il rumore elettrico è ora più alto. Segue quindi il rumore elettrico:
+    \begin{equation}
+        \textit{NM} = min(\textit{NM}_{L},\, \textit{NM}_{H}) = 0,9\,V
+    \end{equation}
+    \item Per quanto riguarda la potenza, non si può più dire che la potenza alta e bassa sono uguali né che una delle due è nulla perché ci sono così tante componenti che ci sarà sempre un qualche ramo che consuma della corrente. Quando l'uscita è bassa i transistor $Q_2$ e $Q_3$ sono entrambi accesi, quindi la corrente scorre nelle resistenza $R_{pu}$ e $R_{pu_{1}}$. Poiché il potenziale dell'emettitore di $Q_2$ è di $0\,V$, tra la base di $Q_2$ e l'emettitore di $Q_3$ ci sono $0,7\,V$, tra la base di $Q_3$ e il collettore di $Q_1$ ci sono $1,4\,V$ e sulla base di $Q_1$ ci sono circa $2,1\,V$ 
+\end{itemize}
+
+\subsection{Parametri dinamici}
 \section{NAND}
 %\begin{figure}[h]
 %    \centering
