@@ -736,7 +736,7 @@ Per una certa famiglia logica il parametro di riferimento è il prodotto ritardo
 La prima famiglia logica esaminata è la \textbf{RTL - Resistor Transistor Logic}, una famiglia ormai non più presente sul mercato basata sull'impiego di sole resistenze e transistors.
 
 \section{NOT}
-La porta NOT è la più semplice porta da realizzare perché sono sufficienti due resistenze e un solo transistor. È l'invertitore più semplice da realizzare anche se ha un consumo considerevole. La sua versione basilare in logica RTL è data dal seguente circuito:
+La porta \textbf{NOT} è la più semplice porta da realizzare perché sono sufficienti due resistenze e un solo transistor. È l'invertitore più semplice da realizzare anche se ha un consumo considerevole. La sua versione basilare in logica RTL è data dal seguente circuito:
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.38,angle=0]{rtl_not.png}
@@ -747,7 +747,7 @@ La porta NOT è la più semplice porta da realizzare perché sono sufficienti du
 Se invece l'ingresso è \textit{alto}, nella resistenza di base $R_b$ e nella giunzione \textit{pn} tra la base e l'emettitore scorre corrente, questo fa attivare la base del transistor e scorrerà una corrente dal collettore all'emettitore proporzionale al guadagno $h_{fe}$. Dunque l'uscita \textit{OUT} sarà \textit{bassa} poiché scorre corrente nella resistenza di collettore $R_c$ che causa una caduta di potenziale.
 
 \section{NOR}
-Rimanendo nel contesto della famiglia logica RTL, la seconda porta logica che nasce più facilmente dopo la porta NOT è la NOR. Le due porte, come accennato nel capitolo precedente, sono sufficienti per poter implementare una qualsiasi funzione logica. La porta NOR è composta da due celle di ingresso entrambe composte da una resistenza di base $R_b$ e un transistor $Q$. Entrambi i collettori sono connessi con la medesima resistenza di collettore $R_c$ ed entrambi gli emettitori sono a terra.
+Rimanendo nel contesto della famiglia logica RTL, la seconda porta logica che nasce più facilmente dopo la porta NOT è la \textbf{NOR}. Le due porte, come accennato nel capitolo precedente, sono sufficienti per poter implementare una qualsiasi funzione logica. La porta NOR è composta da due celle di ingresso entrambe composte da una resistenza di base $R_b$ e un transistor $Q$. Entrambi i collettori sono connessi con la medesima resistenza di collettore $R_c$ ed entrambi gli emettitori sono a terra.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{rtl_nor.png}
@@ -882,7 +882,7 @@ Se si raddoppiassero tutte le resistenze si dimezzerebbero le correnti e questo 
 È la più recente evoluzione della famiglia logica RTL. \textbf{TTL} sta per \textbf{Transistor Transistor Logic}, così chiamata perché prevede l'impiego di due transistor.
 
 \section{NOT base}
-La porta NOT nella sua versione \textit{base} è composta da due resistenze, una delle quali è la resistenza di carico, e due transistors. La versione in logica TTL è data dal seguente circuito:
+La porta \textbf{NOT} nella sua versione \textit{base} è composta da due resistenze, una delle quali è la resistenza di carico, e due transistors. La versione in logica TTL è data dal seguente circuito:
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{ttl_not_base.png}
@@ -1031,17 +1031,64 @@ A partire dai parametri statici è ora possibile ricavare il margine di rumore e
     \begin{equation}
         \textit{NM} = min(\textit{NM}_{L},\, \textit{NM}_{H}) = 0,9\,V
     \end{equation}
-    \item Per quanto riguarda la potenza, non si può più dire che la potenza alta e bassa sono uguali né che una delle due è nulla perché ci sono così tante componenti che ci sarà sempre un qualche ramo che consuma della corrente. Quando l'uscita è bassa i transistor $Q_2$ e $Q_3$ sono entrambi accesi, quindi la corrente scorre nelle resistenza $R_{pu}$ e $R_{pu_{1}}$. Poiché il potenziale dell'emettitore di $Q_2$ è di $0\,V$, tra la base di $Q_2$ e l'emettitore di $Q_3$ ci sono $0,7\,V$, tra la base di $Q_3$ e il collettore di $Q_1$ ci sono $1,4\,V$ e sulla base di $Q_1$ ci sono circa $2,1\,V$ 
+    \item Per quanto riguarda la potenza, non si può più dire che la potenza alta e bassa sono uguali né che una delle due è nulla perché ci sono così tante componenti che ci sarà sempre un qualche ramo che consuma della corrente. Quando l'uscita è bassa i transistor $Q_2$ e $Q_3$ sono entrambi accesi, quindi la corrente scorre nelle resistenze $R_{pu}$ e $R_{pu_{1}}$. Poiché il potenziale dell'emettitore di $Q_2$ è di $0\,V$, tra la base di $Q_2$ e l'emettitore di $Q_3$ ci sono $0,7\,V$, tra la base di $Q_3$ e il collettore di $Q_1$ ci sono $1,4\,V$ e sulla base di $Q_1$ ci sono circa $2,1\,V$, si può calcolare la corrente che scorre attraverso $R_{pu}$
+    \begin{equation*}
+        I_{R_{pu}} = \frac{5\,V - 2,1\,V}{4\,k\Omega} \approx 0,7\,mA
+    \end{equation*}
+    (dunque $Q_3$ è in saturazione) e la corrente che scorre attraverso $R_{pu_{1}}$
+    \begin{equation*}
+        I_{R_{pu_{1}}} = \frac{5\,V - 0,9\,V}{1,6\,k\Omega} \approx 2,5\,mA
+    \end{equation*}
+    In base a queste informazioni si ottiene:
+    \begin{equation*}
+        P_{L} = 5\,V \cdot (0,7\,mA + 2,5\,mA) = 16\,mW
+    \end{equation*}
+    Quando invece l'uscita è alta l'unica componente in cui scorre corrente è la resistenza di ingresso $R_{pu}$ per cui
+    \begin{equation*}
+        P_{H} = 5\,V \cdot 1\,mA = 5\,mW
+    \end{equation*}
+    Infine, la potenza media è data da:
+    \begin{equation}
+        P = \frac{P_{L} + P_{H}}{2} = \frac{16\,mW + 5\,mW}{2} \approx 11,5\,mW
+    \end{equation}
 \end{itemize}
 
 \subsection{Parametri dinamici}
+Quando si deve passare dal livello logico alto a basso sono sufficienti pochi nanosecondi (circa $5\,nS$) perché per effettuare questo passaggio si deve accendere il transistor $Q_2$ (come nel caso del NOT RTL) che è un'operazione veloce. In questo caso non ci si preoccupa di spegnere il transistor superiore del totem pole, cioè $Q_4$, perché deve spegnersi più tardi e ciò che conta è che il nodo tra $R_{pu_{1}}$ e la base di $Q_4$, che è a $0,9\,V$, viene portato giù dalla corrente che scorre attraverso $R_{pu_{1}}$.
+
+Analogamente, nel passare dal livello logico basso a quello alto il transistor $Q_2$ deve essere spento e per farlo si devono rimuovere le cariche minoritarie al suo interno. È qui che entra il gioco la sezione di active pull-down composta dal transistor $Q_5$ che consente ti rendere tutta questa operazione veloce. A differenza del passaggio di livello precedente, in questo $Q_4$ deve essere spento e per farlo entra in gioco $Q_5$. Anche in questo caso sono sufficienti circa $5\,nS$. 
+
+Per quanto detto, i tempi di propagazione $t_{p_{HL}}$ e $t_{p_{LH}}$ sono:
+\begin{equation}
+    t_{p_{HL}} \approx 5\,nS \text{ \, \, } t_{p_{LH}} \approx 5\,nS
+\end{equation}
+Ricordando che la potenza dissipata è circa $11\,mW$ (quasi la metà rispetto al caso RTL), si può calcolare il prodotto ritardo-potenza (più piccolo è e meglio è perché significa che si ha poco ritardo e/o poco consumo):
+\begin{equation}
+    \textit{DP} = t_{p} \cdot P = 5\,nS \cdot 11,5\,mW = 57,5\,pJ
+\end{equation}
+circa $2/3$ di quello della porta logica NOT nella famiglia RTL.
 \section{NAND}
-%\begin{figure}[h]
-%    \centering
-%    \includegraphics[scale=0.4,angle=0]{ttl_nand.png}
-%    \caption{Struttura del NAND in logica TTL}
-%    \label{ttl_nand}
-%\end{figure}
+Data la porta NOT, il componente più adatto da affiancare a tale porta logica per poter effettivamente ottenere una famiglia logica in grado di implementare una qualsiasi funzione logica è la porta \textbf{NAND}. La scelta di questa porta logica è dovuta al fatto che è possibile realizzare \textbf{transistor multiemettitore} il cui funzionamento è del tutto analogo a quello del transistor tradizionale con la sola differenza che la corrente che scorre in una delle due giunzioni base-emettitore1 o base-emettitore2 è indifferente. Con questo transistor, qualsiasi dei due ingressi venga messo \textit{basso} fa considerare l'ingresso come \textit{basso}, il resto del circuito è esattamente uguale al circuito della porta NOT.
+
+Se uno dei due ingressi è \textit{basso}, polarizza \textit{direttamente} la giunzione tra la base e l'emettitore (l'altro ingresso invece di rimanere basso è disattivato, cioè non ci scorre corrente ed è come se non ci fosse) e quindi la fa considerare come un ingresso basso permettendo di avere l'uscita del circuito \textit{alta} (il NAND è vero e almeno uno dei due ingresso è falso).
+
+Viceversa, se entrambi gli ingressi sono \textit{alti} è come se si avesse un solo emettitore alto e a quel punto l'ingresso è effettivamente considerato come \textit{alto} e l'uscita del circuito è \textit{bassa}.
+
+Se non è presente la sezione di active pull-up (cioè mancano la resistenza $R_c$ il transistor $Q_4$ e il diodo $D_1$) il circuito viene chiamato \textbf{open collector} e l'uscita è composta solo dal transistor $Q_2$. Per poter utilizzare l'uscita del circuito si dovrà inserire esternamente una resistenza di pull-up così il circuito torna ad essere uguale allo stadio di uscita della porta NOT in versione RTL. Questa tipologia di circuiti, insieme alla classe \textbf{open drain} nel caso dei circuiti C-MOS, ha una serie di possibili applicazioni, un esempio è la possibilità di modificare la tensione di uscita della porta logica: si vuole cioè porre il pull-up ad una tensione desiderata diversa dai canonici $5\,V$.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ttl_nand.png}
+    \caption{Struttura del NAND in logica TTL}
+    \label{ttl_nand}
+\end{figure}
+
+\section{Comportamento dinamico del NOT}
+Si vuole studiare cosa succede all'interno del circuito quando l'ingresso, e conseguentemente anche l'uscita, cambia stato ovvero quando esegue la commutazione. Si considera la versione \textit{standard} della porta NOT in logica TTl.
+
+\subsection{Commutazione dell'uscita $H \rightarrow L$}
+
+
+\subsection{Commutazione dell'uscita $L \rightarrow H$}
 
 \chapter{CMOS e BiCMOS}
 \chapter{Logica sequenziale e Flip-Flop}
