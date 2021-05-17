@@ -1144,7 +1144,17 @@ Il pull-down attivo si basa sulla sincronizzazione, sia in accensione che in spe
 \end{figure}
 \\Anche in questo caso l'ingresso va giù molto velocemente e dopo un paio di nanosecondi la base di $Q_3$ è svuotata. A questo punto si accende $Q_4$ e si spegne $Q_2$. Rispetto al caso precedente la presenza di $Q_5$ nel carico attivo permette di ridurre il tempo necessario per spegnere $Q_2$ a pochi nanosecondi (è stato dimezzato circa) perché è in grado di tirare corrente molto velocemente.
 
+Analizzando l'assorbimento di corrente durante la commutazione dell'uscita riportato in figura \ref{l_to_h2} si nota che la regione d'interesse è molto più ristretta rispetto al caso precedente. Utilizzando l'APD si è riuscito a dimezzare il consumo di energia che continua però ad avere lo stesso andamento. L'energia di commutazione è più che minore della metà di quella del caso precedente in cui non viene utilizzato il pull-down attivo. Inoltre il passaggio $L \rightarrow H$ è molto più veloce perché si passa da $10\,nS$ a circa $5\,nS$ quindi è stato \textit{dimezzato} anche il tempo di propagazione. Il circuito, oltre ad essere più veloce è anche più efficiente dal punto di vista energetico.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_l_to_h_apd2.png}
+    \caption{Assorbimento di corrente nella commutazione $L \rightarrow H$ con APD}
+    \label{l_to_h2}
+\end{figure}
+
 \chapter{CMOS e BiCMOS}
+I transistor di tipo \textbf{MOS} 
+
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
