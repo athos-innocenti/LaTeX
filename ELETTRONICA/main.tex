@@ -1086,9 +1086,63 @@ Se non è presente la sezione di active pull-up (cioè mancano la resistenza $R_
 Si vuole studiare cosa succede all'interno del circuito quando l'ingresso, e conseguentemente anche l'uscita, cambia stato ovvero quando esegue la commutazione. Si considera la versione \textit{standard} della porta NOT in logica TTl.
 
 \subsection{Commutazione dell'uscita $H \rightarrow L$}
-Quando l'ingresso muta da \texit{basso} ad \textit{alto} succede che
+Inizialmente l'uscita è alta e l'ingresso è basso ma ad un certo punto l'ingresso passa ad essere alto e si vuole studiare cosa succede a livello dinamico all'interno del circuito. 
+
+Quando l'ingresso è \textit{basso} significa che su \textit{IN} ci sono circa $0\,V$ e quindi $Q_1$ ha la giunzione tra base ed emettitore polarizzata \textit{direttamente} dalla resistenza di pull-up $R_{pu}$. Di conseguenza, poiché tra la base di $Q_3$ e il collettore di $Q_1$ non scorre corrente diretta verso $Q_1$ se non quella di rimozione delle cariche, la corrente di collettore in condizioni statiche è $I_{c} \approx 0\,A$ quindi si può supporre che $Q_1$ è in \textit{saturazione} e, nelle medesime condizioni, $Q_3$ è \textit{spento}. Poiché $Q_3$ è spento nel nodo sottostante il suo emettitore ci sono circa $0\,V$ e quindi anche $Q_5$ e $Q_2$ sono \textit{spenti}. Rimane solo $Q_4$ nella cui base scorre una corrente grazie a $R_{pu_{1}}$ e sul suo collettore è presente una tensione data da $I \cdot R_c$ dunque, in condizioni normali (quando la corrente che scorre nella sua base è modesta), $Q_4$ lo si considera in regione \textit{attiva}.
+
+Quando invece l'ingresso commuta passando ad essere \textit{alto} si ottiene che i transistor $Q_2$, $Q_3$ e $Q_5$ sono in \textit{saturazione} mentre $Q_4$ è \textit{spento} e $Q_1$ è in regione \textit{attiva inversa}.
+
+Tuttavia, per poter arrivare in questa configurazione, sicuramente $Q_1$ e $Q_4$ dovranno spegnersi mentre $Q_2$, $Q_3$ e $Q_5$ dovranno accendersi. Andando nel dettaglio, durante la commutazione dell'uscita dovuta alla variazione dell'ingresso, per prima cosa $Q_1$ passa dalla saturazione alla regione attiva inversa perché mano a mano che aumenta l'ingresso, la tensione $V_{be}$ diventa nulla così il transistor sarà momentaneamente in interdizione e poi regione attiva inversa. Non appena $Q_1$ entra in regione attiva inversa e grazie al pull-down attivo si attivano insieme $Q_2$, $Q_3$ e $Q_5$ e, ancora contemporaneamente, $Q_4$ si spegne. Come si vede in figura \ref{h_to_l}, poiché $Q_4$ non era in saturazione, il suo spegnimento è più facile e regolare rispetto allo spegnimento di un transistor in piena saturazione.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_h_to_l.png}
+    \caption{Commutazione $H \rightarrow L$}
+    \label{h_to_l}
+\end{figure}
+\\Dalla figura \ref{h_to_l} si nota che l'uscita inizia a passare a livello logica basso in corrispondenza di circa $1,5\,V$ (grazie alla sincronizzazione del circuito per tensioni minori non succede niente). Per valori di tensioni maggiori grazie all'accensione dei tre transistors $Q_2$, $Q_3$ e $Q_5$ si ha una variazione abbastanza repentina dell'uscita. In corrispondenza di ciò l'ingresso invece passa lentamente al livello logico alto. Questo maggior lentezza rispetto alla velocità con cui varia l'uscita è dovuto al fatto che lo stadio TTL è composto dal diodo $D_1$ con $Q_4$ e $R_c$ che rallentano la variazione.
+
+In questa commutazione dell'uscita non ci sono criticità rilevanti: non appena viene superata la tensione di soglia $V_{iH} = 1,4\,V$ l'uscita commuta immediatamente e in meno di un nanosecondo l'uscita si è già stabilizzata sul livello logico basso. Questa elevata velocità di commutazione è dovuta al fatto che quasi l'intersa fase di commutazione è dovuta all'accensione dei tre transistors e lo spegnimento di uno solo che, come già detto, è abbastanza rapido.
 
 \subsection{Commutazione dell'uscita $L \rightarrow H$}
+Inizialmente l'uscita è bassa e l'ingresso è alto ma ad un certo punto l'ingresso passa al livello logico basso.
+
+Quando l'ingresso è \textit{alto} i tre transistors $Q_2$, $Q_3$ e $Q_5$ sono accesi e si trovano in \textit{saturazione} ma dopo che l'ingresso è diventato \textit{basso} ci si trova nella situazione iniziale del caso precedente ovvero $Q_1$ è in \textit{saturazione} e $Q_4$ è acceso e si trova in regione \textit{attiva diretta}. L'accensione e lo spegnimento di $Q_4$ non sono operazioni rilevanti dal punto di vista della complessità e anche il passaggio di $Q_1$ da regione attiva inversa alla regione di saturazione è un passaggio ugualmente semplice. Ciò che si deve fare affinché la commutazione sia completa è spegnere i tre transistors accesi e tutti in saturazione: questa operazione è invece molto complessa.
+
+Per prima cosa, in seguito alla variazione dell'ingresso, $Q_1$ passa da attiva inversa ad attiva diretta per un brevissimo periodo di tempo per poi finire in saturazione. Il breve intervallo in attiva diretta è dovuto al fatto che quando l'ingresso è alto sul suo collettore ci sono $1,4\,V$ e quando l'ingresso viene portato a $0\,V$ la giunzione tra base ed emettitore si polarizza subito ma sull'emettitore continuerà a persistere $1,4\,V$ perché ci sono le cariche accumulate e delle capacità parassite per cui $Q_1$ dovrà estrarre delle cariche da $Q_3$, spegnendolo, e per farlo scorrerà una corrente dal collettore all'emettitore, quindi sarà in attiva diretta. Non appena $Q_3$ inizia a spegnersi ed entrare in saturazione si attiva tutta la parta destra del circuito.
+
+Il funzionamento di tale parte dipende però da quale tipologia di porta NOT si considera, infatti nelle versioni viste può essere presente o meno la zona di pull-down attivo ($Q_5$, $R_{pd}$ e $R_{pu_{2}}$) e inoltre può anche essere eventualmente sostituita con una zona di pull-down \textit{resistivo} (cioè una sola resistenza).
+
+\subsubsection{$L \rightarrow H$ senza APD}
+Se non è presente la zona di active pull-down tra i transistors $Q_3$ e $Q_2$ c'è una semplice resistenza $R_{pd}$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_l_to_h_noapd1.png}
+    \caption{Commutazione $L \rightarrow H$ senza APD}
+\end{figure}
+\\L'ingresso commuta rapidamente passando dal livello logico alto a quello basso, al contrario l'uscita non cambia più istantaneamente come nel caso precedente ma cambia dopo un intervallo temporale di circa $10\,nS$. Durante questo intervallo l'uscita, dopo essere rimasta inizialmente invariata, fa un primo modesto salto di tensione, rimane poi circa costante e infine subisce un'impennata verso l'alto.
+
+Il primo intervallo temporale in cui l'uscita rimane invariata indica il tempo necessario a $Q_1$ per poter svuotare la base di $Q_3$ spegnendolo. Nel momento in cui $Q_3$ si spegne non passa più corrente né in $R_{pu_{1}}$ né in $R_{pd}$ e questo fa sì che scorra corrente in $Q_4$ che si accende e tenta di tirare l'uscita verso l'alto realizzando quel piccolo salto. Tuttavia $Q_2$ deve ancora spegnersi perché era in saturazione e l'unico modo per farlo è attraverso la poca corrente che può essere scaricata tramite $R_{pd}$. Quindi la fase in cui l'uscita rimane quasi costante si verifica perché $Q_2$ si sta spegnendo. Non appena $Q_2$ si è spenta si ha lo scatto verso l'alto dell'uscita tirata dal blocco alto del totem pole ($D_1$, $Q_4$ e $R_c$).
+
+Nella fase in cui l'uscita rimane quasi costante è attivo sia il blocco alto che quello basso del totem pole, questo lo si può vedere analizzando l'assorbimento di corrente della porta logica come riportato in figura \ref{l_to_h1}. Nell'intervallo di tempo compreso tra quando l'ingresso commuta e $Q_3$ si spegne s $Q_4$ si accende l'assorbimento di corrente rimane costante. Non appena si accende $Q_4$ esso inizia a pompare corrente che scorre all'interno di tutto il totem pole, quindi l'assorbimento di corrente impenna verso l'alto stabilizzandosi su un valore di $30\,mA$ che dipende dalla resistenza $R_c$. Si nota dunque che commutare l'uscita dal livello logico basso a quello alto consuma un'energia di
+\begin{equation*}
+    6\,nS \cdot (5\,V \cdot 30\,mA) = 6\,nS \cdot 150\,mW = 900\,pJ
+\end{equation*}
+che, essendo tanta, non è trascurabile e non si può far commutare tante volte la porta logica perché per ogni commutazione sono appunto consumati $900\,pJ$. 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_l_to_h_noapd2.png}
+    \caption{Assorbimento di corrente nella commutazione $L \rightarrow H$ senza APD}
+    \label{l_to_h1}
+\end{figure}
+
+\subsubsection{$L \rightarrow H$ con APD}
+Il pull-down attivo si basa sulla sincronizzazione, sia in accensione che in spegnimento, di $Q_2$, $Q_3$ e $Q_5$ e in particolare permette uno spegnimento rapido e facile.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{ttl_l_to_h_apd1.png}
+    \caption{Commutazione $L \rightarrow H$ con APD}
+\end{figure}
+\\Anche in questo caso l'ingresso va giù molto velocemente e dopo un paio di nanosecondi la base di $Q_3$ è svuotata. A questo punto si accende $Q_4$ e si spegne $Q_2$. Rispetto al caso precedente la presenza di $Q_5$ nel carico attivo permette di ridurre il tempo necessario per spegnere $Q_2$ a pochi nanosecondi (è stato dimezzato circa) perché è in grado di tirare corrente molto velocemente.
 
 \chapter{CMOS e BiCMOS}
 \chapter{Logica sequenziale e Flip-Flop}
