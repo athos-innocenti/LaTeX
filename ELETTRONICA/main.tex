@@ -1153,7 +1153,22 @@ Analizzando l'assorbimento di corrente durante la commutazione dell'uscita ripor
 \end{figure}
 
 \chapter{CMOS e BiCMOS}
-I transistor di tipo \textbf{MOS} 
+I transistors N-MOS e P-MOS prendono il nome di \textbf{MOS ad arricchimento} perché per creare il canale di conduzione, tale canale deve essere arricchito di cariche portatrici; quindi un MOS a canale n deve essere arricchito di elettroni mentre uno a canale p di lacune.
+
+Oltre a questa categoria, ne esiste una seconda chiamata \textbf{MOS a svuotamento} carattierizzati dal fatto che, in fase di costruzione, tra source e drain viene creata una zona drogata n+ in modo da formare nativamente un canale che li connette direttamente. Se non viene applicata tensione al gate, il canale è già esistente quindi in condizioni normali c'è conduzione tra source e drain. L'unica operazione possibile è spegnerlo attivamente. Per farlo si abbassa la tensione di gate $V_{gs}$ (come nel caso di uno ad arricchimento in cui si tolgono le cariche portatrici) facendola diventare negativa in modo che inizi ad attrarre cariche positive al di sotto del canale, queste vanno a neutralizzare la zona n+ fino a farla diventare una zona p chiudendo così il canale di conduzione.
+
+A livello pratico il MOS a svuotamento ha la stesse equazioni viste per quello ad arricchimento con la vola differenza che la tensione di soglia $V_t$ è \textit{negativa} e dunque anche semplicemente con $V_{gs} = 0\,V$ la tensione di soglia è già stata superata e quindi il dispositivo è acceso in conduzione. Per spegnerlo si deve avere $V_{gs} < V_{t} < 0\,V$.
+
+\section{CMOS}
+Il termine indica la famiglia delle porte MOS \textbf{complementari} così chiamate per indicare il fatto che si utilizza un dispositivo a canale p e un complementare dispositivo a canale n. In figura \ref{cmos} il MOS a canale p si trova nella parte superiore, mentre quello a canale n nella parte inferiore.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ttl_l_to_h_apd2.png}
+    \caption{Struttura di un CMOS}
+    \label{cmos}
+\end{figure}
+
+\section{BiCMOS}
 
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
