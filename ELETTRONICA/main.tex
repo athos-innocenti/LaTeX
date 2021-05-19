@@ -1160,15 +1160,141 @@ Oltre a questa categoria, ne esiste una seconda chiamata \textbf{MOS a svuotamen
 A livello pratico il MOS a svuotamento ha la stesse equazioni viste per quello ad arricchimento con la vola differenza che la tensione di soglia $V_t$ è \textit{negativa} e dunque anche semplicemente con $V_{gs} = 0\,V$ la tensione di soglia è già stata superata e quindi il dispositivo è acceso in conduzione. Per spegnerlo si deve avere $V_{gs} < V_{t} < 0\,V$.
 
 \section{CMOS}
-Il termine indica la famiglia delle porte MOS \textbf{complementari} così chiamate per indicare il fatto che si utilizza un dispositivo a canale p e un complementare dispositivo a canale n. In figura \ref{cmos} il MOS a canale p si trova nella parte superiore, mentre quello a canale n nella parte inferiore.
+Il termine indica la famiglia delle porte MOS \textbf{complementari} così chiamate per indicare il fatto che si utilizza un dispositivo a canale p e un complementare dispositivo a canale n. Generalmente, per ragioni di simmetria, si vuole che questi due dispositivi siano uguali a livello di comportamente e prestazioni.
+
+\subsection{NOT}
+Come si vede in figura \ref{cmos} l'implementazione in logica CMOS della porta logica NOT è composta da due transistors: uno a canale p nella parte superiore e uno a canale n nella parte inferiore.
+
+Quando l'ingresso $V_{i}$ del circuito è \textit{alto}, la $V_{gs}$ di $Q_n$ è alta quindi si suppone che $Q_n$ sia acceso e si trovi in regione \textit{lineare} e in questo condizioni il transistor viene visto come la corrispondente resistenza di canale $R_{dsn}$. Al contrario, la $V_{gs}$ di $Q_p$ è circa $0\,V$ quindi il transistor è \textit{spento} ed è come se nella parte alta dell'intero circuito non ci fosse niente. Dunque, quando l'ingresso è alto si vede solo la resistenza del MOS a canale n che tira l'uscita verso il basso, dunque il livello logico in uscita è \textit{basso}.
+
+Viceversa, se l'ingresso è \textit{basso}, la $V_{gs}$ di $Q_n$ è circa $0\,V$ mentre quella di $Q_p$ è circa $-V_{dd}$ (la tensione di soglia di un P-MOS è negativa), in questa condizione il transistor a canale n è \textit{spento}, quindi non c'è la parte inferiore del circuito, mentre quello a canale p è acceso e si trova in regione \textit{lineare}. Nel complesso, si vede solo la resistenza di canale $V_{dsp}$ del P-MOS che fa sì che l'uscita del circuito sia \textit{alta}.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4,angle=0]{ttl_l_to_h_apd2.png}
-    \caption{Struttura di un CMOS}
+    \includegraphics[scale=0.4,angle=0]{cmos.png}
+    \caption{Struttura di un CMOS \textit{inverter}}
     \label{cmos}
 \end{figure}
+\\Nel funzionamento della porta NOT si vedono \textit{alternativamente} i due dispositivi complementari. Inoltre, se il dispositivo è esattamente simmetrico la curva di tensione del dispositivo è \textit{simmetrica} rispetto a metà tensione di alimentazione e questo permetterà di aumentare, massimizzandoli, i margini di rumore.
+
+Per determinare come varia l'uscita rispetto all'ingresso si hanno a disposizione solo informazioni relative alla corrente di drain $I_{d}$ che si sa essere definita come:
+\begin{equation}
+    I_{d} = K\,[2(V_{gs} - V_{t})V_{ds} - V_{ds}^2]
+    \label{i_d}
+\end{equation}
+ma ciò che si vuole studiare è invece $V_{o}$ dunque la prima cosa che si deve fare è stabilire come ricavare la tensione di uscita partendo dalla corrente di drain. La prima assunzione che si fa è che tutta la corrente del transistor a canale p, cioè $I_{d_{p}}$, passa nel secondo transistor a canale n, per cui:
+\begin{equation}
+    I_{d_{p}} = I_{d_{n}}
+    \label{i_cmos}
+\end{equation}
+Questa assunzione è vera perché l'uscita, che si suppone vada a guidare un'altra porta logica dello stesso tipo, non assorbe corrente. I dispositivi MOS ha l'ingresso controllato in tensione dunque, poiché il gate è isolato (è un condensatore), in condizioni statiche non scorre corrente nel gate e dunque, sempre in condizioni statiche, alla porta logica CMOS non viene richiesta corrente. In condizioni statiche la corrente di uscita è $I_{o} \approx 0\,A$ e questo comporta la validità del \eqref{i_cmos}. In particolare, la \eqref{i_d} varia per i due transistor perché sono diverse le relative tensioni $V_{ds}$ e $V_{gs}$ e cambia anche \textit{K} definito come:
+\begin{equation*}
+    K_{p} = \frac{1}{2}\mu_{p} C_{ox}\frac{W_p}{L_p}
+\end{equation*}
+\begin{equation*}
+    K_{n} = \frac{1}{2}\mu_{n} C_{ox}\frac{W_n}{L_n}
+\end{equation*}
+Si ricavano due correnti di drain che, come detto nella \eqref{i_cmos}, devono essere uguagliate. Nell'equazione che definisce la corrente di drain per il MOS a canale n, cioè $I_{d_{n}}$, la $V_{ds}$ corrisponde a $V_{o}$:
+\begin{equation}
+    V_{ds_{n}} = V_{o}
+\end{equation}
+quella che si vuole trovare, mentre $V_{gs}$ corrisponde a $V_{in}$: 
+\begin{equation}
+    V_{gs_{n}} = V_{i}
+\end{equation}
+Per quello a canale p la situazione è leggermente diversa perché valgono:
+\begin{equation}
+    V_{ds_{p}} = V_{dd} - V_{o}
+\end{equation}
+\begin{equation}
+    V_{gs_{p}} = V_{dd} - V_{i}
+\end{equation}
+Sostituendo questi valori all'interno delle equazioni dei due dispositivi ed eguagliandole per la \eqref{i_cmos}, si ricava la tensione $V_{o}$ e il suo andamento rispetto $V_i$:
+\begin{equation*}
+    \frac{1}{2}\mu_{p} C_{ox}\frac{W_p}{L_p}\,[2(V_{dd} - V_{i} - V_{t})(V_{dd} - V_{o}) - (V_{dd} - V_{o})^2] = \frac{1}{2}\mu_{n} C_{ox}\frac{W_n}{L_n}\,[2(V_{i} - V_{t})V_{o} - V_{o}^2]
+\end{equation*}
+Ciò che rende \textit{asimmetriche} le due equazioni è il termine \textit{K} che dipende dalla mobilità $\mu$, dal parametro $C_{ox}$ (rappresenta il modo in cui viene fatto l'ossido di gate) e dal rapporto tra larghezza e lunghezza di canale.
+
+Se si suppone $K_{p} = K_{n}$ le due equazioni sono simmetriche rispetto $V_{dd}$ e $0\,V$ perché sono una la ribaltata dall'altra ($V_{ds}$ e $V_{gs}$ sono tra loro ribaltate rispetto $V_{dd}$): questo dice che per costruzione il grafico è simmetrico rispetto alla tensione di alimentazione sia in ingresso che in uscita. La curva di $V_{o}$ è doppiamente simmetrica rispetto a metà tensione di alimentazione $\frac{V_{dd}}{2}$. Come si vede in figura \ref{v_o}, quando l'ingresso è basso l'uscita è alta e uguale a $V_{dd}$ perché è acceso solo $Q_p$. Quando si raggiunge la tensione di soglia $V_t$ di $Q_n$ il transistor inizia a spegnersi e infatti la curva inizia a scendere leggermente verso il basso.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{cmos_v.png}
+    \caption{$V_{o}$ per un CMOS \textit{inverter}}
+    \label{v_o}
+\end{figure}
+\\In corrispondenza del punto in cui la caratteristica raggiunge una pendenza pari a -1 (la pendenza dipende dalle caratteristiche della tensione di soglia) la tensione in ingresso è $V_{iL}$. Da questo momento la curva inizia a scendere più bruscamente fino ad intersecare l'asse di antisimmetria in corrispondenza della tensione in ingresso $V_{th} = \frac{V_{dd}}{2}$. Superato questo punto inizia il fenomeno inverso per cui la curva inizia a raddrizzarsi continuando ancora a scendere. Il punto in cui ha pendenza è nuovamente pari a -1 la corrispondente tensione in ingresso è $V_{iH}$, superata tale tensione l'uscita si stabilizza a circa $0\,V$.
+
+Poiché la curva è simmetrica, sicuramente $V_{iH}$ e $V_{iL}$ sono simmetrici rispetto al centro di tensione, dunque sono \textit{uguali} i due margini di rumore
+\begin{equation}
+    \textit{NM}_{L} = \textit{NM}_{H}
+\end{equation}
+e dipendono dal punto corrispondente a $V_{iL}$ che può essere stabilito analiticamente:
+\begin{equation}
+    V_{iH} = \frac{1}{8}[5V_{dd} - 2V_{t}]
+    \label{v_ih}
+\end{equation}
+\begin{equation}
+    V_{iL} = \frac{1}{8}[3V_{dd} + 2V_{t}]
+    \label{v_il}
+\end{equation}
+entrambi dipendono dalla tensione di soglia $V_t$ e da $V_{dd}$. Dunque, costruendo opportunamente il circuito, uguagliando le tensioni di soglia e uguagliando $K_{p}$ e $K_{n}$ si ottiene un circuito simmetrico con le caratteristiche \eqref{v_ih} e \eqref{v_il}. Il margine di rumore è sostanzialmente pari a $V_{iL}$ perché:
+\begin{equation}
+    V_{oL} = 0\,V \text{ \, \, } V_{oH} = V_{dd}
+\end{equation}
+da cui seguono
+\begin{equation}
+    \textit{NM}_{H} = V_{oH} - V_{iH} = V_{dd} - \frac{1}{8}[5V_{dd} - 2V_{t}]
+\end{equation}
+\begin{equation}
+    \textit{NM}_{L} = V_{iL} - V_{oL} = \frac{1}{8}[3V_{dd} + 2V_{t}] - 0\,V = V_{iL}
+\end{equation}
+Ovvero $\textit{NM}_{H} = \textit{NM}_{L}$, dunque:
+\begin{equation}
+    \textit{NM} = \textit{NM} = min(\textit{NM}_{L},\, \textit{NM}_{H}) = \textit{NM}_{L} = V_{iL}
+    \label{nm}
+\end{equation}
+
+La \eqref{v_il} e \eqref{nm} suggerirebbero di porre $V_{t} = V_{th} = \frac{V_{dd}}{2}$ così da ricavare il massimo ottenibile cioè $\textit{NM}_{max} = \frac{V_{dd}}{2}$. Non è però conveniente farlo perché se si aumenta la tensione di soglia a $\frac{V_{dd}}{2}$, il punto in cui si raggiunge pendenza -1 è proprio il punto di intersezione con la retta di antisimmetria. È bene quindi avere $V_{t} < V_{th}$ in modo che quando la tensione sale, $Q_n$ si accende prima di quando si spegne $Q_p$ così da poterlo tirare verso il basso.
+
+\subsection{NOR}
+La porta logica viene realizzata mediante l'impiegato di quattro MOS: due a canale p disposti in serie nella parte superiore e due a canale n in parallelo nella parte inferiore. I due ingressi \textit{A} e \textit{B} sono presenti sia nella parte superiore che in quella inferiore.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{cmos_nor.png}
+    \caption{Struttura di un CMOS NOR}
+\end{figure}
+
+Quando i due ingressi sono entrambi \textit{bassi}, i due transistors a canale n sono  \textit{spenti}, quelli a canale p hanno una $V_{gs}$ tale da farli \textit{accendere} e dunque l'uscita della porta è \textit{alta}.
+
+Se uno dei due ingressi è \textit{basso} e l'altro è \textit{alto}, il MOS nella parte inferiore che ha ingresso alto si \textit{accende} e l'uscita viene portata verso il \textit{basso}, nel frattempo il MOS nella parte superiore con ingresso alto si \textit{spegne} perché la sua $V_{gs}$ è minore della sua tensione di soglia $V_t$ in quanto sulla sua base c'è la tensione $V_{dd}$. Così facendo si considera solo parte inferiore del circuito.
+
+Se entrambi gli ingressi sono \textit{alti}, i due transistors a canale n si \textit{accendono} (quindi è come se ci fossero due resistenze di canale in parallelo) mentre i due MOS a canale p nella parte superiore sono entrambi \textit{spenti} perché la loro $V_{gs}$ è minore o uguale di $0\,V$. Dunque l'intera parte superiore è spenta e l'uscita è \textit{bassa}. 
+
+\subsection{NAND}
+Anche questa porta logica è realizzata mediante l'impiegato di quattro MOS: due a canale p disposti in parallelo nella parte superiore e due a canale n in serie nella parte inferiore. I due ingressi \textit{A} e \textit{B} sono presenti sia nella parte superiore che in quella inferiore.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{cmos_nand.png}
+    \caption{Struttura di un CMOS NAND}
+\end{figure}
+
+Quando i due ingressi sono entrambi \textit{alti}, i due transistors inferiori a canale n sono \textit{accesi} mentre quelli superiori a canale p sono \textit{spenti}, dunque l'uscita è \textit{bassa}.
+
+Se un ingresso è \textit{basso} e l'altro è \textit{alto}, almeno uno dei due MOS a canale n si \textit{spegne}, ma poiché sono in serie questo comporta che l'intera parte inferiore è aperta e dunque l'uscita del circuito è \textit{alta} perché tirata in alto dal corrispettivo transistor a canale p che, avendo l'ingresso basso si \textit{accende}.
+
+Se infine entrambi gli ingressi sono \textit{bassi}, i due transistor a canale p nella parte superiore si \textit{accendono} mentre quelli inferiori si \textit{spengono} così che l'uscita della porta sia \textit{alta}.
+
+Dunque, NOR e NAND in logica CMOS sono \textit{complementari} tra loro per la struttura fisica e per il loro funzionamento. Nel caso della porta NAND, per poter avere $K_{p} = K_{n}$ il MOS a canale n o è largo il doppio e ha la stella lunghezza del canale p oppure ha metà lunghezza di canale ed ha la stessa larghezza oppure ancora una via di mezzo.
+
+\section{Confronto tra TTL e CMOS}
+OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA
 
 \section{BiCMOS}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.38,angle=0]{bicmos.png}
+    \caption{Struttura di un BiCMOS}
+\end{figure}
 
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
