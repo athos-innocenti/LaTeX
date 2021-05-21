@@ -1286,15 +1286,54 @@ Se infine entrambi gli ingressi sono \textit{bassi}, i due transistor a canale p
 Dunque, NOR e NAND in logica CMOS sono \textit{complementari} tra loro per la struttura fisica e per il loro funzionamento. Nel caso della porta NAND, per poter avere $K_{p} = K_{n}$ il MOS a canale n o è largo il doppio e ha la stella lunghezza del canale p oppure ha metà lunghezza di canale ed ha la stessa larghezza oppure ancora una via di mezzo.
 
 \section{Confronto tra TTL e CMOS}
-OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA OIOIA
+Una delle più importanti differenze tra le due famiglie logiche è che le porte logiche TTL hanno una tensione di alimentazione fissa a $5\,V$, al contrario le famiglie logiche realizzate con i MOSFET, in particolare la CMOS, sono abbastanza flessibili per quanto riguarda la tensione di alimentazione perché i loro margini interni dipendono solo dai drogaggi e dalla dimensione dei transistors. Quindi con nella famiglia CMOS è possibile ottenere un vasto intervallo di potenza di alimentazione e l'intero processo è fatto in modo tale da poter essere scalato in tensione e il processo stesso si presta ad essere variato.
+
+Nel caso della famiglia CMOS le due tensioni $V_{iH}$ e $V_{iL}$ normalmente vengono messe a circa $1/3V_{dd}$ e $2/3V_{dd}$ rispettivamente, quindi tendono ad essere proporzionali all'alimentazione nominale. Nel caso TTL invece $V_{iH}$ e $V_{iL}$ sono fisse a circa $0,9\,V$ e $1,4\,V$, nominalmente dal datasheet sono $0,8\,V$ e $2\,V$.
+
+Quando l'uscita della porta è bassa, la famiglia logica TTL ha un transistor in saturazione verso massa, mentre la famiglia CMOS ha un N-MOS in regione lineare verso massa in modo da vedere la resistenza di canale.
+
+Se invece l'uscita della porta è alta, la porta CMOS è simmetrica dunque c'è un P-MOS in regione lineare verso $V_{dd}$, mentre nel caso TTL un diodo e un transistor sono in conduzione insieme alla resistenza di collettore $R_c$.
+
+A livello di consumo statico, nel caso TTL ci sono delle correnti di polarizzazione degli stadi interni e alcune correnti in ingresso che consumano potenza statica, nel caso CMOS invece, poiché dai gate non passa corrente e in tutti gli altri casi è acceso un solo canale (o quello n o quello p, in condizioni statiche) allora staticamente non scorre corrente nei gate e nei source, quindi non scorre corrente nei circuito e questo implica che la potenza statica e la corrente sono entrambe circa nulle (al netto delle piccole correnti di perdita).
+
+Al netto, l'aspetto positivo della logica TTL è che ha l'uscita bipolare che è in grado di portare molta corrente verso il basso (terza considerazione fatta) al contrario della famiglia CMOS che invece ha poca capacità di guida di corrente in uscita.
 
 \section{BiCMOS}
-
+È una tecnologia che combina insieme i vantaggi della famiglia CMOS, quali l'elevata integrazione (dovuta alla struttura simmetrica molto semplice) e il basso consumo di potenza statica, con quelli della famiglia TTL, ovvero la capacità di guidare molta corrente in uscita. Non a caso la sigla di questa famiglia logica sta per \textbf{bipolar and CMOS} in riferimento al fatto che si combina l'impiego sia dei CMOS che dei BJT. Internamente questi circuiti sono CMOS mentre sono bipolari nei pressi dell'uscita.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.38,angle=0]{bicmos.png}
-    \caption{Struttura di un BiCMOS}
+    \includegraphics[scale=0.36,angle=0]{bicmos.png}
+    \caption{Struttura di un \textit{inverter} BiCMOS}
+    \label{not_bicmos}
 \end{figure}
+\\A seconda di come vengono costruiti possono essere compatibili con tensioni di alimentazione $V_{dd} = 3,3\,V - 2,5\,V$ tipiche della famiglia CMOS, oppure con $V_{dd} = 5\,V$ compatibile con la famiglia TTL. Sia $Q_1$ che $Q_2$ sono transistor bipolari di tipo \textit{npn}.
+
+È possibile verificare che il circuito in figura \ref{not_bicmos} è effettivamente una porta NOT. $P_1$ e $N_{d1}$ sono una coppia complementare pn quindi formano un invertitore, questo significa che se l'ingresso è \textit{alto} il nodo tra la base di $Q_1$ e i due transistors ha invece livello logico basso. Analogamente, anche per $P_2$ e $N_{d2}$ l'ingresso è basso e sul gate di $N_{d2}$ il segnale è basso. $Q_1$ è spento a causa della coppia $P_1$ e $N_{d1}$, invece, tra la base e l'emettitore di $Q_2$ ci sono al massimo $0,7\,V$ quindi potrebbe essere acceso da $N_1$ e la sua uscita tende ad essere \textit{bassa} e $V_{out} = 0,7\,V$.
+
+Se invece l'ingresso è \textit{basso}, poiché $P_1$ e $N_{d1}$ formano un invertitore, il nodo tra la base di $Q_1$ e i due transistors ha livello logico alto. Sul gate di $N_{d2}$ il segnale è alto mentre sul gate di $M_1$ il segnalo è basso, questo significa che $N_1$ è spento mentre $N_{d2}$ è acceso e tira verso il basso la base di $Q_2$ che è quindi spento. Al contrario, $Q_1$ è acceso e si trova in regione attiva diretta perché sulla sua base c'è una tensione pari a $V_{dd}$, dunque l'uscita della porta è \textit{alta}. Poiché tra la base e l'emettitore di $Q_1$ non possono esserci più di $0,7\,V$, si ha $V_{oH} = V_{dd} - 0,7\,V$ e $V_{oL} = 0,7\,V$.
+
+In condizione \textit{dinamica}, con inizialmente l'ingresso basso e l'uscita alta, quando l'ingresso diventa alto, la coppia complementare $P_1$ - $N_{d1}$ spegne rapidamente $Q_1$ estraendo tutte le cariche di gate, al contrario $N_{d2}$ si spegne e, fintanto che l'uscita è alta, si accende $Q_2$ (grazie a $N_1$) così che l'uscita possa andare velocemente al livello logico basso. Viceversa, quando inizialmente l'ingresso è alto e diventa basso, il nodo tra la base di $Q_1$ e i due transistors diventa alto e questo fa accendere $Q_1$ e $N_{d2}$ che fa svuotare $Q_2$ (che era acceso in saturazione), dunque l'uscita diventa alta.
+
+Si vede quindi che $N_{d1}$ e $N_{d2}$ hanno anche la funzione di svuotare $Q_1$ e $Q_2$ e, essendo due MOS, a differenza del caso TTL in cui si utilizzavano resistenze basse che consumavano molto, con i MOS si può avere una resistenza bassa senza eccessivi consumi perché questi transistors consumano corrente solo durante la commutazione.
+
+\subsection{Compatibilità}
+L'aver modificato lo stadio di ingresso e di uscita pone dei problemi di compatibilità in termini di $V_{oH}$, $V_{oL}$ e $V_{iH}$, $V_{iL}$. Vengono quindi fatte diverse versioni dei BiCMOS a seconda che si voglia l'ingresso CMOS compatibile e anche l'uscita CMOS compatibile. Questo è dovuto alla coppia $P_1$ - $N_{d1}$ è un'architettura CMOS alimentata tra $0\,V$ e $5\,V$ e potrebbe non essere compatibile nell'interfacciarsi con altri dispositivi logici, dunque se si opera con altri dispositivi CMOS il dispositivo non deve essere modificato se tutti i circuiti hanno lo stesso nodo di alimentazione.
+
+Se invece si vuole interfacciare un componente BiCMOS con uno TTL, in particolare sull'ingresso, si deve fare in modo che un'uscita TTL che guida l'ingresso abbia il livello logico alto $V_{oH} \approx 3,5\,V$, questo potrebbe essere un problema se si alimenta lo stadio di ingresso della porta BiCMOS a $5\,V$ come gli altri TTL perché $1/3V_{dd}$ e $2/3V_{dd}$ sono vicini a $V_{oH} \approx 3,5\,V$ quindi non ci sarebbe margine di rumore. Per risolvere questo problema si fa in modo che nello stadio di ingresso della porta logica BiCMOS (la parte inferiore di figura \ref{bicmos}) alimentata a $5\,V$, ci sia in realtà una tensione di $3\,V - 3,5\,V$. Per farlo si aggiungono due diodi che facciano cadere la tensione di riferimento a circa $3\,V - 3,5\,V$ a questo punto, poiché l'ingresso TTL sta tra $3\,V$ e $3,5\,V$, la dinamica CMOS è compatibile con tale intervallo quindi è in grado di ricevere ingressi TTL. La parte nel mezzo raffigurata in figura \ref{odc} è quella già vista in precedenza, cioè in figura \ref{not_bicmos}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bicmos2.png}
+    \caption{Struttura di un \textit{inverter} BiCMOS}
+    \label{bicmos}
+\end{figure}
+\\Se si vuole rendere anche l'uscita TTL compatibile, si rimette il medesimo stadio TTL, senza la resistenza, composta da un diodo e due transistors così da replicare la funzionalità di uscita TTL. In questo modo, il ciruito è internamente CMOS e all'esterno, sia in ingresso che in uscita, è TTL.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{bicmos3.png}
+    \caption{Struttura di un \textit{inverter} BiCMOS}
+    \label{odc}
+\end{figure}
+
 
 \chapter{Logica sequenziale e Flip-Flop}
 \chapter{Circuiti integrati commerciali}
