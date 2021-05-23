@@ -1339,10 +1339,48 @@ Utilizzando questa porta logica con lo stadio di ingresso appena descritto, si p
 
 L'uscita del dispositivo di figura \ref{odc} è anch'essa TTL compatibile e quindi può sicuramente guidare un ingresso TTL mentre, per poter guidare un circuito CMOS alimentato a $5\,V$, poiché la $V_{iH}$ del CMOS è $3,4\,V$, si può correre il rischio di essere bassi con la $V_{oH}$ in uscita dalla porta. Il circuito è quindi sicuramente TTL compatibile in ingresso e in uscita ma potrebbe presentare dei problemi se l'uscita TTL viene collegata con una porta CMOS.
 
-\chapter{Logica sequenziale e Flip-Flop}
+\chapter{Logica e Flip\,-\,Flop}
 Le due principali tipologie di logica maggiormente utilizzate in elettronica e informatica sono la logica combinatoria e la logica sequenziale.
 
-Per logica \textbf{combinatoria} si intende una funzione logica applicata ad un certo vettore d'ingresso \textit{X}, composto da un numero arbitrario di bit, che restituisce, tramite l'applicazione degli operatori booleani, un risultato logico in uscita rappresentato dal vettore \textit{Y}. Non necessariamente il vettore di ingresso e quello di uscita hanno la stessa dimensione. La funzione \textit{f} è una funzione \textit{combinatoria} perché combina i valori di \textit{X} per creare la \textit{Y} ed è una funzione \textit{statica} nel senso che non cambia nel tempo.
+Per logica \textbf{combinatoria} si intende una funzione logica applicata ad un certo vettore d'ingresso \textit{X}, composto da un numero arbitrario di bit, che restituisce, tramite l'applicazione degli operatori booleani, un risultato logico in uscita rappresentato dal vettore \textit{Y}. Non necessariamente il vettore di ingresso e quello di uscita hanno la stessa dimensione. La funzione \textit{f} è una funzione \textit{combinatoria} perché combina i valori di \textit{X} per creare la \textit{Y}, è una funzione \textit{statica} nel senso che non cambia nel tempo ed è una funzione che \textit{non} ha memoria, ovvero non varia in funzione dell'ingresso e non tiene traccia degli ingressi passati.
+
+La logica \textbf{sequenziale} introduce il concetto di \textbf{tempo discreto}. Una logica di questo tipo può essere definita come una funzione logica che evolve a istanti temporali:
+\begin{align*}
+    Y_{(n)} &= f_{1}(X, M_{n})\\
+    M_{n+1} &= f_{2}(X_{n}, M_{n})
+\end{align*}
+dove $f_1$ e $f_2$ sono due funzioni \textit{combinatorie}, questo significa che si definisce la logica sequenziale sfruttando quella combinatoria. La funzione $f_1$ genera l'uscita \textit{Y} in base all'ingresso \textit{X} e alla memoria allo stato attuale $M_n$. La memoria $M$ del sistema si aggiorna allo stadio successivo (quindi al prossimo colpo di clock) tramite la funziona combinatoria $f_2$ che dipende dall'ingresso $X_n$ e dalla memoria del sistema all'istante precedente. La transizione dall'istante \textit{n} al successivo istante $n + 1$ dipende dal segnale di sincronismo generale che è detto \textbf{clock}. Per poter implementare una qualsiasi funzione logica sequenziale è quindi necessario costruzione dei circuiti logici che siano in grado di memorizzare un'informazione digitale.
+
+\section{DFF}
+Ci sono moltissimi modi per poter memorizzare un'informazione digitale e conservarlo al variare del tempo, quello più comune e semplice è il flip\,-\,flop di tipo D più semplicemente chiamato \textbf{DFF}. Questo tipo di flip\,-\,flop, come si vede in figura \ref{dff}, ha come ingressi il dato \textit{D} che deve essere memorizzato e il segnalo di clock e ha due uscite \textit{Q} e $\overline{Q}$ che sono sempre una la negazione dell'altra. L'obiettivo di questo circuito è quello di fare in modo che in corrispondenza del \textit{fronte positivo} del segnale di clock (quando il clock sale passando dal livello logico basso a quello alto) il contenuto di \textit{D} venga portato sull'uscita \textit{Q} e, corrispondentemente, il suo opposto sull'uscita $\overline{Q}$. Dopo che il dato è passato dall'ingresso all'uscita (solo in corrispondenza del fronte positivo del clock) il dato rimane stabilmente fisso fino al prossimo fronte positivo e indipendentemente da come varia l'ingresso \textit{D}. Quindi, sia che il clock sia alto o basso o sia sul fronte negativo, \textit{Q} rimane invariato, cioè mantiene memorizzato il dato (cioè il valore di \textit{D}) ricevuto in corrispondenza del fronte positivo del clock.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{dff.png}
+    \caption{Schema di un DFF}
+    \label{dff}
+\end{figure}
+\\Per poter arrivare a definire il circuito che realizza concretamente il DFF è necessario introdurre un elemento base che è il latch set and reset.
+
+\section{Latch SR}
+Un \textbf{latch SR} costituisce la cella base di un DFF. Il latch SR è costituito da due porte logiche NAND collegate tra loro in \textit{retroazione}. Si dice che la porta NAND è una porta in cui \textit{domina lo 0 in ingresso} perché è sufficiente che uno dei suoi ingressi sia 0 per garantire che la sua uscita sia 1, inoltre questo vale sia se la porta NAND ha solo due ingressi e sia se ne ha di più. I due ingressi del latch sono i segnali di \textbf{set} e \textbf{reset} presi entrambi \textit{negati}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{latch_sr.png}
+    \caption{Struttura di un latch SR}
+    \label{sr}
+\end{figure}
+\\Sembra apparentemente un dispositivo combinatorio ma il fatto che le due porte logiche siano collegate tra loro in retroazione, ovvero l'uscita di una va a costituire uno dei due ingressi dell'altra e viceversa, fa sì che il dispositivo sia in realtà un circuito sequenziale.
+
+
+
+\newpage
+Il latch SR, che come accennato costituisce l'elemento base del DFF, compare per bene tre volte all'interno della struttura che realizzare il DFF e che è riportata in figura \ref{dff_struttura}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{dff_struttura.png}
+    \caption{Struttura di un DFF}
+    \label{dff_struttura}
+\end{figure}
 
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
