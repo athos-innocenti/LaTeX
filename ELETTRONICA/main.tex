@@ -4,7 +4,7 @@
 \usepackage{amsmath, amsfonts, amssymb, amsthm}
 \usepackage{graphicx, appendix, geometry}
 \geometry{a4paper, top=2cm, bottom=3cm, left=2cm, right=2cm, bindingoffset=5mm}
-# ciao
+
 \author{Athos Innocenti}
 \title{\Huge Elettronica}\date{}\author{}
 \begin{document}
@@ -1323,19 +1323,27 @@ Se invece si vuole interfacciare un componente BiCMOS con uno TTL, in particolar
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{bicmos2.png}
-    \caption{Struttura di un \textit{inverter} BiCMOS}
+    \caption{Struttura di un \textit{inverter} BiCMOS in versione TTL}
     \label{bicmos}
 \end{figure}
 \\Se si vuole rendere anche l'uscita TTL compatibile, si rimette il medesimo stadio TTL, senza la resistenza, composta da un diodo e due transistors così da replicare la funzionalità di uscita TTL. In questo modo, il ciruito è internamente CMOS e all'esterno, sia in ingresso che in uscita, è TTL.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{bicmos3.png}
-    \caption{Struttura di un \textit{inverter} BiCMOS}
+    \caption{Stadio di ingresso e uscita per un \textit{inverter} BiCMOS}
     \label{odc}
 \end{figure}
+\\Dunque, in questa versione TTL compatibile si punta prima di tutto a rendere l'ingresso TTL compatibile: nel caso di un semplice ingresso di tipo CMOS (quindi fatto come la parte inferiore di figura \ref{bicmos}) le sue classiche soglie logiche sono $1/3V_{dd}$ e $2/3V_{dd}$ che, per un circuito alimentato a $5\,V$, corrispondono a circa $1,6\,V$ e $3,7\,V$. Se l'ingresso della porta logica è guidato da una porta logica TTL, il suo livello logico alto è $V_{oH} = 3,5\,V$ che è molto simile a $V_{iH} = 2/3V_{dd} = 3,4\,V$ di una porta logica CMOS, quindi ci sarà un margine di rumore di $0,1\,V$. Per fare questo si adatta lo stadio di ingresso andando ad abbassare la tensione di alimentazione. In questo modo, se viene alimentato a $3,3\,V$ si ottengono $V_{iL} = 1,1\,V$ e $V_{iH} = 2,2\,V$ che ora è ragionevolmente inferiore a $3,5\,V$ e quindi il margine di rumore alto è $1,3\,V$ quindi sufficientemente elevato.
 
+Utilizzando questa porta logica con lo stadio di ingresso appena descritto, si può tranquillamente collegare una porta logica CMOS, a $5\,V$ o a $3,3\,V$, allo stadio di ingresso per guidare la porta; per entrambi le tensioni tale porta in ingresso è in grado di guidare la porta in esame.
+
+L'uscita del dispositivo di figura \ref{odc} è anch'essa TTL compatibile e quindi può sicuramente guidare un ingresso TTL mentre, per poter guidare un circuito CMOS alimentato a $5\,V$, poiché la $V_{iH}$ del CMOS è $3,4\,V$, si può correre il rischio di essere bassi con la $V_{oH}$ in uscita dalla porta. Il circuito è quindi sicuramente TTL compatibile in ingresso e in uscita ma potrebbe presentare dei problemi se l'uscita TTL viene collegata con una porta CMOS.
 
 \chapter{Logica sequenziale e Flip-Flop}
+Le due principali tipologie di logica maggiormente utilizzate in elettronica e informatica sono la logica combinatoria e la logica sequenziale.
+
+Per logica \textbf{combinatoria} si intende una funzione logica applicata ad un certo vettore d'ingresso \textit{X}, composto da un numero arbitrario di bit, che restituisce, tramite l'applicazione degli operatori booleani, un risultato logico in uscita rappresentato dal vettore \textit{Y}. Non necessariamente il vettore di ingresso e quello di uscita hanno la stessa dimensione. La funzione \textit{f} è una funzione \textit{combinatoria} perché combina i valori di \textit{X} per creare la \textit{Y} ed è una funzione \textit{statica} nel senso che non cambia nel tempo.
+
 \chapter{Circuiti integrati commerciali}
 \chapter{Convertitori DA e AD}
 \chapter{Microcontrollori}
