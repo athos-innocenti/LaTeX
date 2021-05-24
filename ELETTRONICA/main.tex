@@ -647,7 +647,7 @@ Se per esempio si considera la porta NOR, la sua tabella di verità è la seguen
         1 &0 &0\\
         1 &1 &0
         \end{tabular}
-    \end{table}
+\end{table}
 \\Imponendo ora il corto tra i due ingressi \textit{A} e \textit{B} deve valere il vincolo aggiuntivo $A = B$ quindi si considerano solo la prima e l'ultima riga della tabella precedente:
 \begin{table}[ht]
         \centering
@@ -1365,16 +1365,44 @@ Ci sono moltissimi modi per poter memorizzare un'informazione digitale e conserv
 Un \textbf{latch SR} costituisce la cella base di un DFF. Il latch SR è costituito da due porte logiche NAND collegate tra loro in \textit{retroazione}. Si dice che la porta NAND è una porta in cui \textit{domina lo 0 in ingresso} perché è sufficiente che uno dei suoi ingressi sia 0 per garantire che la sua uscita sia 1, inoltre questo vale sia se la porta NAND ha solo due ingressi e sia se ne ha di più. I due ingressi del latch sono i segnali di \textbf{set} e \textbf{reset} presi entrambi \textit{negati}.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4,angle=0]{latch_sr.png}
+    \includegraphics[scale=0.39,angle=0]{latch_sr.png}
     \caption{Struttura di un latch SR}
     \label{sr}
 \end{figure}
 \\Sembra apparentemente un dispositivo combinatorio ma il fatto che le due porte logiche siano collegate tra loro in retroazione, ovvero l'uscita di una va a costituire uno dei due ingressi dell'altra e viceversa, fa sì che il dispositivo sia in realtà un circuito sequenziale.
 
+Nel caso in cui $\overline{S} = 1$ e $\overline{R} = 1$, ovvero se è asserito sia il segnale set che il segnale reset, se si suppone $Q = 0$ gli ingressi della porta NAND \textit{bassa} sono 1 e 0 quindi la sua uscita è 1; questo comporta che gli ingressi della porta NAND \textit{alta} sono entrambi 1 e la sua uscita è 0 come si era supposto. Questo comporta che avere $Q = 0$ e $\overline{Q} = 1$ è una condizione \textit{stabile} per il circuito. Se invece si suppone $Q = 1$, gli ingressi della porta NAND \textit{bassa} sono entrambi 1 quindi la sua uscita è 0; questo comporta che gli ingressi della porta NAND \textit{alta} sono 1 e 0 e la sua uscita è 1 come si era supposto. Anche in questo caso, avere $Q = 1$ e $\overline{Q} = 0$ è una condizione \textit{stabile} per il circuito. Dunque, se $\overline{S} = 1$ e $\overline{R} = 1$, indipendentemente dal valore di \textit{Q} le due uscite sono stabili. Si verifica quindi che il latch SR non è una rete combinatoria perché con il medesimo ingresso $\overline{S} = 1$ e $\overline{R} = 1$ si può avere come uscita sia $Q = 0$ e $\overline{Q} = 1$ che $Q = 1$ e $\overline{Q} = 0$ ed entrambe soddisfano il criterio di funzionalità delle due porte NAND. Il fatto che col medesimo ingresso si possono avere due uscite diverse ed entrambe sono soddisfatte significa che qualsiasi sia l'uscita (tra le due possibili) quando l'ingresso viene portato a $\overline{S} = 1$ e $\overline{R} = 1$, tale uscita viene \textit{mantenuta}; è per questo motivo le due uscite vengono indicato con  $Q_{old}$ e $\overline{Q_{old}}$ e sono entrambi stabili.
 
+Nel caso in cui $\overline{S} = 0$ e $\overline{R} = 1$, poiché la porta NAND è dominata dallo 0, sicuramente l'uscita del NAND \textit{alta} è $Q = 1$ e questo comporta che, poiché entrambi gli ingressi del NAND \textit{bassa} sono 1, la sua uscita è $\overline{Q} = 0$. Si ricava quindi il significato del set negato: il segnale di set è \textit{attivo basso} e quindi quando viene portato a 0 fa il set del bit di uscita (se $\overline{R} = 1$). Per questa coppia di ingressi, se si riportasse $\overline{S} = 1$ l'uscita verrebbe mantenuta perché in quel momento gli ingressi della porta NAND alta sarebbero $\overline{S} = 1$ e $\overline{Q} = 0$ quindi si avrebbe $Q = 1$ che coincide con l'uscita precedente.
 
-\newpage
-Il latch SR, che come accennato costituisce l'elemento base del DFF, compare per bene tre volte all'interno della struttura che realizzare il DFF e che è riportata in figura \ref{dff_struttura}.
+Il caso speculare in cui $\overline{S} = 1$ e $\overline{R} = 0$, l'uscita del NAND \textit{bassa} è $\overline{Q} = 1$ e questo comporta che, poiché entrambi gli ingressi del NAND \textit{alta} sono 1, la sua uscita è $Q = 0$. Anche in questo caso, se si portasse $\overline{R} = 1$ l'uscita verrebbe mantenuta.
+
+Se infine $\overline{S} = 0$ e $\overline{R} = 0$, l'uscita delle due porte NAND sono automaticamente $\overline{Q} = 1$ e $Q = 1$ perché, nuovamente, la porta NAND è dominata dallo 0. Tuttavia questa coppia di uscite viola la definizione di negazione quindi questa condizione deve essere evitata anche perché se si portassero entrambi $\overline{S} = 1$ e $\overline{R} = 1$ i due ingressi delle due porte NAND sarebbero entrambi 1 e l'uscita, che era a 1, passerebbe istantaneamente a 0 su entrambe ma a quel punto gli ingressi per le due porte NAND sarebbero 1 e 0 e le uscite diventerebbero 1. Quindi se tutto fosse perfettamente sincrono il latch inizierebbe ad oscillare tra entrambi 1 ed entrambi 0 con la velocità di propagazione delle porte NAND, tuttavia non è possibile far commutare contemporaneamente i due segnali set e reset da 0 a 1 e inoltre è impossibile che le due porte logiche abbiano lo stesso tempo di propagazione cioè è impossibile che generino l'uscita nello stesso istante. Quello che succede nella realtà è che, quando set e reset vengono entrambi portati a 1, uno dei due passa a 1 prima dell'altro e quello che per primo diventa 1 produce uno 0 nell'uscita della relativa porta NAND che lo riceve in ingresso e a quel punto la seconda porta NAND riceverà tale 0 in ingresso così che la sua uscita rimarrà ad 1. Se il set passa per primo a 1 in uscita ci sarà una condizione di reset. Al contrario, se il reset passa per primo a 1 in uscita ci sarà una condizione di set. Utilizzando un latch SR si deve dunque impedire di avere come ingresso $\overline{S} = 0$ e $\overline{R} = 0$ (perché le uscite non rispetterebbero la negazione) e soprattutto si deve evitare i due segnali cambino contemporaneamente.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c c | c c }
+    $\overline{S}$ &$\overline{R}$ &$Q_{new}$ &$\overline{Q_{new}}$\\\hline
+    1 &1 &$Q_{old}$ &$\overline{Q_{old}}$\\
+    0 &1 &1 &0\\
+    1 &0 &0 &1\\
+    0 &0 &1 &1
+    \end{tabular}
+    \caption{Tabella di verità del latch SR}
+\end{table}
+\section{Struttura del DFF}
+Il latch SR, che costituisce l'elemento base del DFF, compare per bene tre volte all'interno della struttura del DFF che è riportata in figura \ref{dff_struttura}. Uno degli aspetti principali del DFF è che se il clock si trova in una condizione \textit{statica}, ovvero o vale 0 o vale 1, indipendentemente dal valore del dato in ingresso (per indicare che il valore non è rilevante si utilizza il simbolo \textsc{x} di \textbf{don't care}) le uscite $Q_{new}$ e $\overline{Q_{new}}$ devono rimare quelle che erano precedentemente, ovvero $Q_{old}$ e $\overline{Q_{old}}$ che rappresentano l'ultimo dato disponibile. Al contrario, sul \textit{fronte positivo} del clock (cioè quando il clock passa da 0 a 1, viene indicato con $\uparrow$) se il dato è a 0 allora $Q_{new} = 0$ e $\overline{Q_{new}} = 1$, se invece il dato è a 1 le uscite saranno $Q_{new} = 1$ e $\overline{Q_{new}} = 0$.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c | c c }
+    Clock &Data &$Q_{new}$ &$\overline{Q_{new}}$\\\hline
+    0 &x &$Q_{old}$ &$\overline{Q_{old}}$\\
+    1 &x &$Q_{old}$ &$\overline{Q_{old}}$\\
+    $\uparrow$ &0 &0 &1\\
+    $\uparrow$ &1 &1 &0
+    \end{tabular}
+    \caption{Tabella di verità del DFF}
+\end{table}
+\\Con il DFF si è quindi effettivamente costruito un elemento di memoria perché, ad eccezione del fronte positivo, in condizioni statiche del clock l'informazione rimane memorizzata su \textit{Q}. Si può rappresentare il DFF secondo la funzione \textit{di memorizzazione} $Q_{n+1} = D_{n}$, per la quale l'uscita si propaga con un colpo di clock di ritardo, ovvero si è memorizzato l'ingresso del colpo di clock precedente mettendolo in uscita.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4,angle=0]{dff_struttura.png}
@@ -1382,7 +1410,29 @@ Il latch SR, che come accennato costituisce l'elemento base del DFF, compare per
     \label{dff_struttura}
 \end{figure}
 
+Se $Clock = 0$, le due porte NAND che lo ricevano in ingresso hanno automaticamente l'uscita a 1 e dunque il latch più a destra (che ha uscite $\overline{Q}$ e $Q$, è detto \textit{latch di uscita}) mantiene il suo stato, indipendentemente dal resto. Dunque $Q_{new} = Q_{old}$ e $\overline{Q_{new}} = \overline{Q_{old}}$. Nel resto del circuito rimani libera la parte evidenziata di seguito:
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{dff1.png}
+    \label{dff1}
+\end{figure}
+\\la NAND \textit{di ingresso} (quella che ha come ingresso il dato) ha un 1 in ingresso e questo implica che la porta si comporta come una NOT sul secondo ingresso, quindi la sua uscita è $\overline{Data}$. La NAND più alta ha quindi come ingressi 1 e $\overline{Data}$ quindi si comporta come una NOT e la sua uscita è $Data$. Questa uscita va poi in ingresso, insieme al clock, alla NAND sottostante che ha uscita 1. Anche la NAND che forma il \textit{latch di ingresso} insieme alla NAND di ingresso hanno come secondo ingresso $\overline{Data}$.
+
+Sul \textit{fronte positivo} del clock, se $Data = 0$ significa che $\overline{Data} = 1$. Il \textit{gate di ingresso} superiore (quella alta tra le due NAND che ricevono il clock in ingresso) ha momentaneamente gli ingressi entrambi a 0 e quando il clock passa a 1 la sua uscita rimane a 1. Il gate di ingresso inferiore invece ha ingressi 1 0 1 e quando il clock passa a 1 avrà tutti gli ingressi a 1 quindi l'uscita è 0. Il latch SR di uscita ha quindi ingressi 1 e 0 a cui corrispondono le uscite $Q = 0$ e $\overline{Q} = 1$. Dopo il fronte, la NAND di ingresso ha gli ingressi entrambi a 0 quindi la sua uscita rimane a 1; lo 0 ricevuto in ingresso dall'altra NAND fa bloccare per tutti gli istanti successivi la sua uscita a 1 e quindi il circuito non varia indipendentemente dal dato.
+
+Sempre sul \textit{fronte positivo} del clock (partendo col clock a 0), se $Data = 1$ significa che $\overline{Data} = 0$. La NAND di ingresso ha entrambi gli ingressi a 1 quindi la sua uscita è 0. Il gate di ingresso inferiore ha ingressi 1 0 0 e uscita 1, il gate di ingresso superiore ha ingressi 1 e 0 e uscita 1 e lo stesso vale per la NAND più alta. Quando il clock passa a 1 il gate di ingresso superiore ha gli ingressi entrambi a 1 e quindi uscita 0, il gate di ingresso inferiore ha ingressi 0 1 0 e quindi uscita a 1. Il latch SR di uscita ha quindi ingressi 0 e 1 a cui corrispondono le uscite $Q = 1$ e $\overline{Q} = 0$. La NAND più alta ha ingressi a 0 e uscita 1.
+
+Quando $Clock = 1$, se il dato passa da 1 a 0 l'uscita della NAND di ingresso passa a 1 ma viene bloccata qualsiasi altra variazione, quindi anche in questo caso $Q_{new} = Q_{old}$ e $\overline{Q_{new}} = \overline{Q_{old}}$.
+
 \chapter{Circuiti integrati commerciali}
+I circuiti integrati commerciali sono tutti quei circuiti disponibili sul mercato e utilizzati per comporre i circuiti logici. Per poter costruire un circuito logico il primo passo da fare è quello di sintetizzare una rete logica sequenziale o combinatoria. Ci sono molti modi in cui è possibile progettare il circuito logico: una possibilità è quella che prevede l'impiego di singole celle logiche di base, quindi porte logiche standard accompagnate da flip\,-\,flop per la memorizzazione. Tuttavia questa soluzione è molto grossolana e immediatamente scartata. Un'ulteriore possibilità è quella di implementare una funzionalità logica utilizzando le cosiddette \textbf{logiche programmabili}: invece di utilizzare specifiche porte logiche standard si utilizzano dei chip che possono essere programmati (vengono utilizzati specifici linguaggi come VHDL) in modo da poter eseguire una qualsiasi operazione logica specifica (and, or, not ecc) oppure una serie ampliamente configurabile di funzioni logiche. Questi dispositivi prendono il nome di \textbf{FPGA} cioè field programmable gate array dove il termine gate array sta ad indicare una matrice di gate e con gate si identifica la singola funzione logica elementare. Il risultato sarà dunque una funzione logica, eventualmente complessa, implementata in un unico chip. Un'ulteriore possibilità sono gli \textbf{ASIC} che sta per application specific integrated circuits, dispositivi progettati direttamente per poter eseguire una specifica funzione logica all'interno di un solo circuito integrato creato appositamente. L'FPGA, essendo programmato, può essere modificato a piacere, al contrario, l'ASIC una volta costruzione non può più essere modificato.
+
+Passando però nel concreto entrano in gioco la famiglie logiche, ognuna delle quali ha le proprie peculiarità e prestazioni legate alla velocità e al consumo di potenza.
+
+Precedentemente, un qualsiasi sistema era composto da diversi circuiti integrati elementari ognuno con una propria funzione: le porte logiche, i flip\,-\,flop, i buffer, i sommatori, i contatori ecc. Oggigiorno i circuiti logici standard più classici sono obsoleti, possono infatti essere sostituiti con un singolo dispositivo logico programmabile, detto \textbf{PLD}, per esempio un FPGA, che contiene milioni di gates elementari con cui si può costruire di tutto: porte logiche, flip\,-\,flop, moltiplicatori, sommatori, comparatori, encoders, multiplexers, circuiti di gestione del clock (detti PPL) ecc.
+
+
+
 \chapter{Convertitori DA e AD}
 \chapter{Microcontrollori}
 
