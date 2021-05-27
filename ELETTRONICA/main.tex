@@ -4,7 +4,7 @@
 \usepackage{amsmath, amsfonts, amssymb, amsthm}
 \usepackage{graphicx, appendix, geometry}
 \geometry{a4paper, top=2cm, bottom=3cm, left=2cm, right=2cm, bindingoffset=5mm}
-sono un cretino, oggi non ho studiato elettronica ahah
+
 \author{Athos Innocenti}
 \title{\Huge Elettronica}\date{}\author{}
 \begin{document}
@@ -1436,10 +1436,97 @@ Il principale motivo per cui oggi si utilizzano i circuiti logici programmabili 
 Riassumendo, i circuiti integrati nel contesto dell'elettronica digitale vengono utilizzati per costruire i sistemi digitali (che svolgono un certo insieme di funzioni) seguendo diversi paradigmi possibili; quello più attuale si basa sull'utilizzo di una logica programmabile (FPGA, $\mu$C, DSP) accompagnata da una glue logic per garantire tutte le interconnessioni richieste, dai front-end ICs (ADC e DAC, funzioni I/O) per interfacciarsi con l'esterno, da un sistema di gestione del clock e da un sistema di power supply per la loro alimentazione. Ciascuno di questi dispositivi integrati è ospitato all'interno del proprio package che contiene il silicio di cui sono fatti.
 
 \section{Packaging}
+Il package di un circuito integrato è un elemento importante da considerare perché determina l'ammontare dell'\textit{area} occupata dal circuito e immancabilmente la sua dimensione influenza anche gli effetti \textit{parassiti} (capacità e induttanze); più un package è grande e più avrà componenti parassite che disturbano il trasferimento dell'informazione. In generale, più un package è piccolo e minori saranno sia l'area occupata che le componenti parassite. Questo però non implica che si utilizza sempre un package microscopico perché esso può richiedere sì tecniche migliori ma anche più costose, per questo di norma si cerca sempre un bilanciamento.
+
+Esistono diverse tipologie di package, in ordine decrescente di grandezza:
+\begin{description}
+    \item[DIP] sta per \textbf{dual-in-line package}, veniva utilizzato per contenere i primi circuiti integrati digitali. È l'unica tipologia ad avere dei piedini veri e propri che richiedono dei fori metallizzati per poter essere montati (si chiamano \textbf{true hole}). Facile da montare ma ha lo svantaggio di essere molto più grande della superficie effettivamente in silicio (vedi figura \ref{dip_smd}), al suo interno quindi ci sono molti fili lunghi e sottili (il che implica effetti parassiti) per collegare la zona in silicio ai vari pin, separati tra loro di $2,54\,mm$
+    \item[SMD] abbreviazione di \textbf{surface mount device} ovvero dispositivi a montaggio superficiale. È la tipologia di packaging maggiormente utilizzata per dispositivi general purpose. Questa tipologia e le successive elencate non utilizzano la tecnologia true hole: vengono appoggiati sul circuito stampato e poi \textit{saldati} su di essa.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.3,angle=0]{dip_smd.png}
+        \caption{Struttura di un DIP e di un SMD}
+        \label{dip_smd}
+    \end{figure}
+    \\Esistono diverse tipologie di package SMD che differiscono per le dimensioni dei pin che tendono ad essere sempre più piccoli. Il passo tra due pin va da $1,27\,mm$ a $0,5\,mm$. Mentre tutti i DIP hanno indicativamente 8 pin per lato, il numero di pin su un SMD può variare: ci sono package a 5 pin per lato, a 3 e a 2 pin. Quando un SMD diventa molto piccolo non si utilizza il package e i pin sono collegati direttamente con la superficie di silicio (chiamata \textbf{die}). Alcuni SMD hanno i piedini solo su due lati, altri invece su tutti e quattro. Un importante problema per i DIP e per gli SMD è che se si mettono i pin solo sulla \textit{periferia}, quindi sul perimetro, il numero di pin che si possono portare fuori, all'esterno di un circuito integrato, è basso e limitato dal perimetro stesso del dispositivo. Per risolvere questo problema sono stati introdotti nuovi package tra cui il BGA.
+    \item[BGA] ovvero \textbf{ball grid arrays}. È una tecnologia di packaging utilizzata per poter distribuire i pin di I/O non più lungo il perimetro del circuito ma su una sua superficie. Invece di avere dei pin, questo package è caratterizzato dall'avere molte piccole sfere di \textit{stagno} sotto di esso come si vede in figura \ref{bga}.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.38,angle=0]{bga.png}
+        \caption{Struttura di un BGA}
+        \label{bga}
+    \end{figure}
+    \\Il fatto che i pin siano ora distribuiti su una superficie permette a questi circuiti integrati di avere dimensioni più piccole, quindi effetti parassiti più contenuti e infine una velocità molto più elevata. Questa tecnologia è utilizzata nei computer portatili.
+    \item[Bare Die] utilizzata soprattutto per gli ASICs in cui i dispositivi sono collegati direttamente con il PCB (il circuito stampato). Dunque con questa tecnologia si assembla il \textit{die}, il circuito in silicio, direttamente sul circuito stampato.
+    \begin{figure}[hb]
+        \centering
+        \includegraphics[scale=0.28,angle=0]{package.png}
+        \caption{Varie tipologie di package}
+    \end{figure}
+\end{description}
+
+\section{Famiglie logiche a 5\textit{V}}
+Nel contesto delle famiglie logiche che lavorano a tensione costante di $5\,V$ sono presenti le famiglie \textbf{bipolari} e le famiglie \textbf{CMOS}.
+
+Per quanto riguarda le famiglie bipolari, tra di essere compaiono la porta logica \textbf{TTL}, sia in versione standard (anche se ormai obsoleta) che \textit{low power}, e le porte \textit{low power Schottky}. Le famiglie TTL Schottky sono famiglie TTL in cui il transistor utilizzato è di tipo Schottky, ovvero la giunzione pn tra la base e l'emettitore è una giunzione metallo e semiconduttore; questo permette di velocizzare lo spegnimento del transistor e quindi avere dispositivi più veloci. Tuttavia queste famiglie sono ormai obsolete, le uniche che si trovano ancora sono chiamate \textbf{ALS}, advanced low power Schottky, che consumano la metà della potenza permettendo di raggiungere il doppio della velocità. Accanto a queste famiglie logiche si hanno le famiglie TTL \textbf{F}, cioè fast, che hanno la massima velocità di commutazione associata però ad un consumo molto più elevato. Le famiglie \textit{low power} lo sono perché si aumenta il valore delle resistenze interne, questo però comporta che la velocità diminuisca anche se può essere parzialmente recuperata utilizzando dispositivi Schottky. La versione F ha valori più bassi di resistenza in modo da caricare e scaricare le capacità parassite o i portatori minoritari più velocemente, alle spese di un maggior consumo di potenza. Quindi, in generale, ormai le famiglie TTL non si usano più se non alcuni dispositivi appartenenti alla famiglia F che vengono utilizzati solo se non sono disponibili gli equivalenti dispositivi CMOS.
+
+Per quanto riguarda le famiglie CMOS a $5\,V$, le più importanti sono le famiglie \textbf{AHC} e \textbf{HC}, e le famiglie \textbf{AC}. AHC sta per advanced high speed CMOS, sono delle famiglie logiche general purpose, se però si hanno necessità legate alla velocità allo si preferisce utilizzare la famiglia AC che sta per advanced CMOS.
+
+In generale comunque, oggigiorno le famiglie logiche a $5\,V$ sono ormai \textit{obsolete} perché lo sviluppo tecnologico si è orientato verso famiglie a tensioni più basse, principalmente perché le famiglie progettate per lavorare a tensioni più basse permettono di ottenere le stesse prestazioni, se non migliori, consumando meno potenza.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.38,angle=0]{state_of_art.png}
+    \caption{Stato dell'arte delle famiglie logiche}
+\end{figure}
+\\Si verifica che, diminuendo la tensione \textit{nominale} $V_{cc}$, il tempo di ritardo viene diminuito e questo permette di avere dispositivi più veloci. Al contrario, riducendo la tensione \textit{attuale} $V_{cc}$, il tempo di ritardo viene aumentato e quindi il dispositivo è più lento. Inoltre le stesse famiglie, sotto opportune condizioni, possono essere comandate con valori di tensione differenti, per esempio l'AHC può lavorare sia a $5\,V$ che a $3,3\,V$. Dunque, migrando verso famiglie logiche appositamente disegnate per lavorare a tensioni più basse, il tempo di propagazione è più basso (perché il MOSFET può essere ottimizzato in fase di progettazione per lavorare a tensioni più basse, per farlo si riduce la lunghezza di canale per avere una resistenza inferiore); se invece utilizzato una certa famiglia facendola lavorare ad una tensione minorare rispetto a quella per cui è stata progettata allora il tempo di propagazione aumenta (perché se diminuisce la tensione aumenta la resistenza di canale).
+
+\section{Famiglie logiche a bassa tensione}
+Nelle famiglie logiche a bassa tensione (cioè $< 5\,V$) si trovano le famiglie \textbf{CMOs} a bassa tensione e le famiglie logiche \textbf{BiCMOS}.
+
+Tra le famiglie CMOS le più importanti sono le famiglie \textbf{LV} e \textbf{LVC}, entrambe general purpose di tipo \textit{low voltage} CMOS, oppure le famiglie \textbf{ALVC} e \textbf{AVC} che invece sono famiglie logiche sempre di tipo low voltage CMOS ma che permettono di avere velocità più elevate.
+
+Dal punto di vista delle famiglie logiche BiCMOS le famiglie maggiormente utilizzate sono le \textbf{LVT}, acronimo di low voltage BiCMOS, che hanno prestazioni elevate con un relativo basso consumo. Tuttavia, le BiCMOS vengono generalmente utilizzate per valori di tensione intermedi e solo in casi particolari come per esempio all'interno bus.
+
+Tutti i sistemi moderni sono basati su sistemi low voltage CMOS (quindi nodi da $3,3\,V$ e inferiori) e componenti BiCMOS, non si usa più la tecnologia a $5\,V$ se non, eventualmente, interfacciarsi con l'ambiente esterno.
+
+\section{Acronimi}
+Tutti i circuiti integrati sono identificati attraverso un acronimo specifico, definito secondo una nomenclatura standardizzata. Questa nomenclatura è composta da \textbf{acronimi} e delle \textbf{particelle} ognuno dei quali fornisce una serie di informazioni:
+\begin{enumerate}
+    \item\textbf{Produttore}
+    \item\textbf{Famiglia logica}: di che tipo di famiglia logica si tratta, ognuna identificata con un proprio acronimo
+    \item\textbf{Funzionalità}: quale funzione logica è implementata nel circuito integrato
+    \item\textbf{Package}: specifica a quale package appartiene il circuito integrato
+    \item\textbf{Range di temperatura}
+\end{enumerate}
+Tutte le informazioni specifiche del circuito integrato sono specificate nel relativo datasheet. Al suo interno sono indicate alcune informazioni tra cui: la descrizione del dispositivo, le sue caratteristiche generali, la forma del circuito insieme alla disposizione dei pin a seconda del tipo di package disponibile, le versioni disponibili (ognuna con il proprio nome e range di temperatura) per quello specifico circuito integrato e infine la tabella di verità del circuito seguita dal suo diagramma logico.
+
+\section{Confronto tra famiglie logiche}
+Per confrontare le famiglie logiche si usano alcuni parametri e \textit{criteri} col fine di stabilire quale famiglia logica e circuito utilizzare per un certo obiettivo. Generalmente si utilizzano \textbf{criteri di prestazione} anche se a volte ne possono entrare in gioco altri come il \textbf{criterio del costo} e il \textbf{criterio della semplificazione} con il quale si tendono a scegliere dispositivi il più simili per possibili per questioni di uniformità e affidabilità.
+
+Le performance di un circuito logico integrato sono misurate in termini di:
+\begin{enumerate}
+    \item\textbf{Velocità}: intesa sia come ritardo nelle operazioni di input\,-\,output che come la massima frequenza di clock a cui il circuito logico può lavorare
+    \item\textbf{Capacità di uscita}: ovvero la capacità di fornire la corrente adeguata in base ai bisogni dei dispositivi che il circuito integrato sta guidando. Questo diventa un problema particolarmente importante quando si devono guidare impedenze basse come nel caso di un bus (che ha elevata capacità)
+    \item\textbf{Consumo di potenza}: fondamentale soprattutto nel caso di circuiti CMOS in cui dipende anche dalla frequenza a cui si fa lavorare il circuito
+\end{enumerate}
+In generale, ciascuna famiglia offre un diverso compromesso tra tutte queste caratteristiche.
+
+\subsection{Velocità contro potenza}
+Di solito, si può ottenere maggior velocità al costo di un maggior consumo di potenza. Nel caso di un circuito CMOS la velocità è la resistenza equivalente a ciascuno dei due MOS ma è anche la capacità in uscita. Dunque la velocità è definita come $\tau = R \cdot C$. Al contrario, la potenza dipende dal fatto che, ad un certo punto, i due MOS, nel passare da alto a basso, vanno in cross conduzione il che causa una perdita di potenza che è proporzionale a $V_{dd}^{2}/2R$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.33,angle=0]{family_comparison.png}
+    \caption{Confronto tra famiglie logiche}
+\end{figure}
+
+\section{Circuiti logici integrati}
+
 
 
 \chapter{Convertitori DA e AD}
 \chapter{Microcontrollori}
+
+\chapter{STM32}
 
 \begin{appendices}
 
