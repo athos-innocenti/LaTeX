@@ -1520,11 +1520,16 @@ Di solito, si può ottenere maggior velocità al costo di un maggior consumo di 
 \end{figure}
 
 \section{Circuiti logici integrati}
-
-
+Ripartirò da qui eheh..
 
 \chapter{Convertitori DA e AD}
-
+\section{Convertitori DA}
+\subsection{R-2R}
+\subsection{Syntesizer}
+\section{Convertitori AD}
+\subsection{Digital ramp}
+\subsection{Approssimazioni successive}
+\subsection{Flash ADC}
 
 \chapter{Microcontrollori}
 
@@ -1686,7 +1691,11 @@ Ci sono poi dei registri di indirizzo che servono, ad esempio, per scrivere l'in
 Infine, si ha la parte di configurazione del clock per fare il prescaler, l'interrupt e il collegamento con il DMA.
 
 \section{ADC}
-È un oggetto complesso:
+È un oggetto complesso: nella parte centrale si trova l'unità di conversione (SAR, per approssimazioni successive), poi ci sono i 16 canali di ingresso applicati a porte GPIO configurate come analogiche e attraverso un multiplexer si seleziona il canale da convertire. Il mutiplexer è costituito da interruttori MOSFET che però hanno capacità parassite che ricordano la tensione dell'ultimo canale convertito e scaricano la carica accumulata sul canale successivo causando una variazione di tensione e quindi una conversione errata. Per evitare questo problema nel datasheet è riportata, per una resistenza del canale, il giusto tempo di acquisizione tale che il segnale sul canale si stabilizzi.
+
+I valori convertiti arrivano a un data register e oltre a questi ci sono anche dei segnali per la coordinazione dell'ADC attraverso interruzioni.
+
+In basso ci sono vari timer che indicano all'ADC di fare la conversione nel momento opportuno. I registri dell'ADC comunicano attraverso il bus delle periferiche con la CPU e il DMA. Attraverso un multiplexer viene scelta la sorgente del timer e anche l'unità di conversione ha due sorgenti di trigger separate che vanno in data register separati e fanno due tipi di conversione.
 
 
 \begin{appendices}
