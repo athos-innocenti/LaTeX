@@ -1522,7 +1522,7 @@ Di solito, si può ottenere maggior velocità al costo di un maggior consumo di 
 \section{Circuiti logici integrati}
 
 \chapter{Convertitori DA e AD}
-
+Fra non ne posso più :(
 \section{Convertitori DA}
 \subsection{R-2R}
 \subsection{Syntesizer}
@@ -1597,11 +1597,11 @@ La struttura scelta per i microcontrollori è quindi quella delle memorie di tip
 \subsection{Interfaccia}
 L'\textbf{interfaccia} del microcontrollore deve essere \textit{semplice} e per realizzarla ci sono vari metodi:
 \begin{description}
-    \item[GPIO bit addressable] 
-    \item[Periferiche di comunicazione]
-    \item[Mixed Signal Peripherals]
-    \item[Numerical Control Interface - PWM]
-    \item[Reagire velocemente a eventi esterni HW - IRQ]
+    \item[GPIO bit addressable] Si può accedere singolarmente ai pin del microcontrollore che normalmente sono raggruppati in porte di I/O: in queste si può leggere e/o scrivere tutti i bit insieme. Leggere una word non è un problema perché si può facilmente selezionare il bit d'interesse; al contrario può essere difficile modificare un bit perché bisogna prima leggere tutta la parola, cambiare il bit e infine riscriverlo (servono quindi tre istruzioni). Per questa operazione i microcontrollori hanno un registro di set e reset dove si scrive una parola con bit settati a 1 nelle posizioni in cui si vuole settare a 1 o resettare a 0 i bit della porta in questione. Questi registri permettono quindi di modificare i singoli pin senza dover conoscere tutto il contenuto delle porte
+    \item[Periferiche di comunicazione]La comunicazione avviene secondo protocolli con determinati standard elettrici e logici. Oltre ai due bus che vanno nella memoria, la CPU è collegata tramite un altro bus alle diverse periferiche. I dispositivi con cui il microcontrollore deve comunicare possono essere altri microcontrollori o sensori
+    \item[Mixed Signal Peripherals]I convertitori possono trovarsi all'esterno del microcontrollore e possono gestire segnali misti. Spesso però al suo interno c'è già un ADC perché più frequentemente si deve misurare una grandezza analogica piuttosto che generarla
+    \item[Numerical Control Interface - PWM]Se con un microcontrollore si vuole guidare un motore, esso non potrebbe generare direttamente la tensione analogica da mandare al motore per cui si utilizza l'inerzia del sistema. In base alla durata dell'intervallo di tempo in cui si esercita una forza su una massa si può accelerare tale massa come si desidera e se si continua a esercitare la forza in più intervalli di tempo la massa tenderà ad avere un moto quasi costante perché ogni volta che decelera per attrito viene riapplica la forza. Tuttavia, la forza applicata può essere sempre la stessa e se la massa è grande non si nota nemmeno la variazione della forza. Questa tecnica si chiama \textbf{pulse width modulation}, ovvero modulazione della forza di impulso: il sistema viene controllato attraverso impulsi e in base alla loro ampiezza si fornisce energia diversa al sistema. Mentre si può variare l'\textit{ampiezza} dell'impulso, il \textit{periodo} degli impulsi è \textit{fisso}. È un sistema adatto a controllare sistemi molto grandi perché necessita solo di un transistor: quando il transistor è acceso viene applicata una tensione di sistema. Se il periodo è breve è come applicare una tensione $V_{o} = V_{bus} \cdot \delta$ dove $\delta = T_{on} / T$ è il duty cycle fisso che è definito come la \textit{media} della tensione erogata con gli impulsi. Per fare questo tipo di segnale esistono diverse periferiche apposite chiamate \textbf{timer} che sono contatori con contano da 0 a \textit{T}: quando arriva a \textit{T} il segnale commuta e dopo un valore prescritto torna alto (maggiore è questo valore e minore è il duty cycle se va da basso ad alto). Riassumendo: per controllare gli ingressi ADC/periferiche di comunicazione; per controllare le uscite DAC/GPIO/PWM
+    \item[Reagire velocemente a eventi esterni HW - IRQ]Il microcontrollore deve avvertire velocemente la CPU  che è successo qualcosa su un pin. Si può configurare il sistema GPIO per generare \textit{interruzioni} alla CPU qualora lo stato di un certo pin cambi: la richiesta di interruzione (IRQ) interrompe il funzionamento del codice e porta l'esecuzione della routine di interruzione. Questa operazione è eseguita da una periferica specifica: il gestore degli interrupt hardware AW. Questa periferica è diversa da quella dei processori complessi in cui alla CPU  arriva una generica richiesta di interruzione che si traduce nell'esecuzione di un codice generico che va ad interrogare il gestore per cercare la sorgente dell'interruzione e solo successivamente viene eseguito il codice specifico per l'interruzione. In questo modo si semplifica l'hardware ma serve un tempo \textit{maggiore} per gestire l'interruzione. Nei microcontrollori c'è una tabella \textit{statica} di puntatori a funzione che corrispondono a diverse sorgenti di interruzione: quando si attiva una \textbf{IRQ} viene direttamente eseguita la routine di interruzione corretta indicata dalla tabella
 \end{description}
 
 \subsection{Footprint ridotto}
