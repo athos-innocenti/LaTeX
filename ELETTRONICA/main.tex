@@ -1520,9 +1520,9 @@ Di solito, si può ottenere maggior velocità al costo di un maggior consumo di 
 \end{figure}
 
 \section{Circuiti logici integrati}
-Ripartirò da qui eheh..
 
 \chapter{Convertitori DA e AD}
+
 \section{Convertitori DA}
 \subsection{R-2R}
 \subsection{Syntesizer}
@@ -1531,7 +1531,85 @@ Ripartirò da qui eheh..
 \subsection{Approssimazioni successive}
 \subsection{Flash ADC}
 
-\chapter{Microcontrollori}
+\chapter{Dispositivi digitali programmabili}
+A differenza delle porte logiche che eseguono sempre la stessa funzione, i \textbf{dispositivi digitali programmabili} possono essere programmati per poter eseguire determinate attività e hanno diversi gradi di complessità:
+\begin{enumerate}
+    \item Microcontrollori
+    \item Microprocessori
+    \item Digital Signal Processor - DSP
+    \item Graphic Processing Unit - GPU
+    \item Array di processori paralleli
+    \item Complex Programmable Logic Devices - CPLD
+    \item Field Programmable Gate Array - FPGA
+\end{enumerate}
+Un \textbf{microprocessore} è un dispositivo \textit{single core} costruito per eseguire un codice macchina in modo \textit{sequenziale}.
+
+Nelle \textbf{multicore coarse-grained} CPU e DPS (con al massimo 5 o 8 core) alcuni thread lavorano in \textit{parallelo} ma in modo \textit{indipendente}.
+
+Nei \textbf{massively parallel processor array} ci sono migliaia di thread che lavorano in \textit{parallelo} su processori singolarmente molto più semplici delle CPU. Sono utili quando si può dividere la computazione in tanti sottoproblemi indipendenti.
+
+Negli \textbf{FPGA} si ha un \textit{mare} di celle logiche programmabili a piacimento. LA struttura è completamente arbitraria in modo da poter risolvere uno specifico problema.
+
+Mentre fino alla GPU i dispositivi si possono programmare in C, l'FPGA ha bisogno di un linguaggio di più basso livello e quindi è più difficile ma, allo stesso tempo, è anche più flessibile.
+
+\section{Microprocessore}
+Un \textbf{microprocessore} contiene al suo interno una singola CPU, acronimo di \textit{chip processing unit}. Per poter funzionare correttamente un microprocessore ha bisogno di una serie di circuiti esterni perché, collegandolo semplicemente all'alimentazione non sarebbe in grado di effettuare nessuna operazione.
+
+Tra i principali componenti esterni di cui un microprocessore deve disporre per poter lavorare ci sono:
+\begin{enumerate}
+    \item\textbf{RAM}: che contiene tutte le varie istruzioni che devono essere eseguite all'interno del microprocessore
+    \item\textbf{DMA Controller}: questo dispositivo permette di risparmiare lavoro e attesa al processore occupandosi dello spostamento dei dati dalla memoria. Non a caso, questo dispositivo è programmato per \textit{copiare} grandi quantità di dati all'interno della memoria primaria veloce del processore. Una volta concluso il trasferimento, viene mandato un segnale al processore che, nel frattempo, ha eseguito altre istruzioni. I dati prodotti dal processore vengono poi spostati dal DMA nella memoria esterna secondaria. Il suo utilizzo è \textit{mascherato} dal sistema operativo
+    \item\textbf{UART}: il protocollo di comunicazione \textit{asincrono}
+    \item\textbf{Interrupt Controller}: un dispositivo che si occupa di gestire le interruzioni che possono verificarsi durante la normale esecuzione sequenziale delle istruzioni all'interno del processore
+    \item\textbf{Clock}: deve essere fornito dall'\textit{esterno}
+\end{enumerate}
+In precedenza, tutte queste componenti erano dei chip esterni al processore e ad esso collegati tramite un \textit{bus}. Oggigiorno molte funzioni sono state spostate all'interno del chip stesso, quindi nello stesso silicio, ma restano comunque separate dalla CPU vera e propria. Alcune componenti restano fisicamente separate dalla CPU come ad esempio la RAM e il generatore di clock esterno.
+
+Oltre alla RAM ci deve essere anche una \textbf{memoria permanente} che ospita il programma da eseguire e questa memoria è solitamente un \textit{disco rigido} oppure una memoria \textit{SSD}. La RAM memorizza alcuni \textit{giga} byte ed è molto \textit{veloce}, al contrario il disco memorizza una quantità di dati ormai del \textit{tera} byte ma è più \textit{lento}; la SSD è una via di mezzo perché è un disco allo stato solido costituito da memoria flash con capacità minori di quelle di un hard disk ma velocità più alte in modo da arrivare a velocità di trasferimento del $Gb/s$.
+
+\section{Microcontrollore}
+Un \textbf{microcontrollore} contiene al suo interno una singola CPU, acronimo di \textit{chip processing unit}, che, rispetto a quella di un microcontrollore, è molto più \textit{piccola} e più \textit{semplice}, con una potenza di calcolo minore. A differenza di un microprocessore \textit{non} ha bisogno di circuiti esterni per funzionare, questo perché al suo interno integra, oltre alla CPU, una serie di dispositivi come DMA, PIC (interrupt controller) e anche una fonte di clock, una RAM (anche se più piccola di una che può essere collegata ad un microprocessore) e una memoria permanente flash (in realtà è \textit{semi permanente}). Oltre a questi dispositivi di supporto alla CPU, all'interno di un microcontrollore ci sono molteplici periferiche che gli permettono di comunicare con l'esterno, tra queste: UART e convertitori AD e DA e molte altre.
+
+È un dispositivo che ha come target di utilizzo un \textbf{sistema embedded}, ovvero un sistema indipendente che svolge pochi calcoli.
+
+\section{Requisiti di un microcontrollore}
+Il tempo di esecuzione del codice deve essere il \textit{più veloce possibile} ma soprattutto deve godere della proprietà di \textbf{predicibilità}, una caratteristica fondamentale nei \textit{sistemi di controllo}. Il microcontrollore, in base alla differenza tra l'uscita del sistema da controllare e il valore di riferimento, agisce in un determinato modo in base all'algoritmo di controllo che deve essere eseguito entro un certo tempo perché il funzionamento dell'\textit{anello di retroazione} è gestito da un sistema a dati campionati e quindi è \textit{stabile} se la frequenza del controllore è \textit{maggiore} di una certa frequenza minima.
+
+Un microprocessore \textit{non} è predicibile a causa, ad esempio, delle \textit{interruzioni}.
+
+\subsection{Predicibilità}
+Affinché il tempo di esecuzione del codice all'interno di un microcontrollore sia breve e soprattutto predicibile, l'architettura  del software deve essere \textit{semplice} e per questo il codice viene spesso scritto direttamente sull'hardware sprovvisto di sistema operativo oppure tramite semplici sistemi operativi dedicati allo scheduling dei tasks; in ogni caso il software è gestito ad un livello \textit{medio - basso}. Inoltre, affinché sia predicibile, si usa un determinato tipo di hardware tra:
+\begin{description}
+    \item[RISC Core - Reduced Instruction Set Computer] esegue poche istruzioni ma in tempo breve e costante
+    \item[CISC Core - Comples Instruction Set Computer] ha istruzioni più complesse, quindi con tempo di esecuzione variabile e poco predicibile, e molto più numerose
+\end{description}
+In generale, per i microcontrollori si sono sempre preferite architetture di tipo RISC.
+
+Per quanto riguarda la memoria, c'è una distinzione tra le varie architetture delle memoria per le CPU:
+\begin{description}
+    \item[Memoria Harvard] la memoria dati è \textit{separata} da quella del programma
+    \item[Memoria Ven-Neumann] la memoria dati e quella del programma sono \textit{fuse} insieme. Questa è la struttura tipica utilizzata all'interno dei PC
+\end{description}
+Se la CPU può accedere contemporaneamente alle due memorie (dati e di programma), si possono stabilire i tempi di esecuzione. Se invece le due memorie sono fuse insieme, le istruzioni e i dati non possono arrivare contemporaneamente all'interno della CPU quindi i due accessi alla memoria potrebbero portare a \textit{indeterminazione}.
+
+La struttura scelta per i microcontrollori è quindi quella delle memorie di tipo \textit{Harvard}: il microcontrollore ha all'interno la RAM e al bordo la memoria flash, ma le tre componenti (RAM, CPU e Flash) sono tutte sullo stesso chip.
+
+\subsection{Interfaccia}
+L'\textbf{interfaccia} del microcontrollore deve essere \textit{semplice} e per realizzarla ci sono vari metodi:
+\begin{description}
+    \item[GPIO bit addressable] 
+    \item[Periferiche di comunicazione]
+    \item[Mixed Signal Peripherals]
+    \item[Numerical Control Interface - PWM]
+    \item[Reagire velocemente a eventi esterni HW - IRQ]
+\end{description}
+
+\subsection{Footprint ridotto}
+Un microcontrollore deve essere \textbf{poco ingombrante} sia a livello \textbf{fisico} che \textbf{energetico}.
+
+Dal punto di vista fisico deve avere delle \textit{dimensioni ridotte}, in particolare dovrebbe essere integrato in un unico chip. La necessità delle dimensioni ridotte è dovuta al fatto che, generalmente, un microcontrollore è inserito in applicazioni integrate. Tuttavia, le dimensioni ridotte sono richieste anche per una semplice questione di \textbf{affidabilità}: ogni volta che un componente è saldato su una scheda, c'è una certa probabilità che non funzioni nel montaggio automatizzato e, inoltre, sono più esposti ad agenti chimici e fisici.
+
+Dal punto di vista energetico un microcontrollore deve consumare poca energia elettrica (pochi $\mu W$). Un microcontrollore funziona attraverso \textit{batterie} consumando poco, un \textit{milionesimo} rispetto a quanto consuma un processore di un normale PC. Per consumare poco può stare acceso ed eseguire codice solo per pochissime percentuali di tempo (start e stop). Inoltre, dalla batteria si deve stabilizzare una tensione necessaria ad alimentare il core del microcontrollore e quindi serve un alimentatore \textit{stabilizzato}. I circuiti di regolazione per produrre tale alimentazione possono essere estremamente \textit{piccoli} e \textit{semplici} garantendo quindi nuovamente affidabilità attraverso temperature minori.
 
 \section{Periferiche di comunicazione}
 Una delle più importanti funzionalità di un qualsiasi microcontrollore è quella di comunicare con il mondo esterno. Il modo tipico di interazione con l'esterno è tramite un sistema di comunicazione costituito da un bus che collega più periferiche. La maggior parte dei bus di comunicazione è \textit{seriale asincrono} e basato sull'utilizzo di pochi fili. Questo significa che l'informazione, invece di passare parallela con un bit per ogni filo, viene messa in fila nel dominio del tempo e fatta passare su pochi fili, questo fa risparmiare sia in termini di complessità di cablaggio che in termini di complessità della scheda anche se richiede più tempo. Anche se richiede più tempo è preferibile implementare questa semplificazione basata sull'utilizzo di pochi fili perché spesso non si devono comunicare grandi quantità di dati.
