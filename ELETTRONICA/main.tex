@@ -1522,7 +1522,26 @@ Di solito, si può ottenere maggior velocità al costo di un maggior consumo di 
 \section{Circuiti logici integrati}
 
 \chapter{Convertitori DA e AD}
-Fra non ne posso più :(
+L'operazione di \textbf{conversione} è un'operazione di trasformazione dell'informazione dal dominio analogico ad uno digitale. I dispositivi digitali lavorano in un dominio digitale: processano dati formati da bit e a sua volta emette dati digitali ma il mondo esterno è fatto di variabili continue sia nel \textit{tempo} che in \textit{ampiezza} cioè hanno una continuità di valori.
+
+Dunque in un dominio \textbf{analogico} i segnali sono \textit{continui} nel tempo e nell'ampiezza nel senso che possono assumere, in ogni istante di tempo, un qualsiasi valore tra un valore minimo e uno massimo. Al contrario, in un dominio \textbf{digitale} i segnali sono \textit{discreti} nel tempo e nell'ampiezza, ovvero riportano il valore del segnale a certi istanti di tempo (\textit{campionamento}) con un intervallo limitato di possibili valori (\textit{quantizzazione}). Le grandezze che trattano sono caratterizzate da parole composte da un certo numero di bit che quindi non possono assumere qualsiasi valore ma solo determinati valori.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{adda_conversione.png}
+\end{figure}
+
+Una qualsiasi grandezza analogica, prima di entrare in un circuito digitale, deve essere trasformata in una opportuna grandezza elettrica (tutto questo viene fatto dal \textbf{trasduttore}) che è poi la grandezza che verrà convertita tramite un convertitore AD. Il segnale discreto così ottenuto rappresenterà l'ingresso dei sistema digitale che, a sua volta, produrrà un'uscita digitale che verrà convertita in un segnale analogico tramite un convertitore DA e questo segnale, tramite un \textbf{attuatore}, verrà usato per controllare la grandezza fisica.
+
+La discretizzazione di un segnale introduce i concetti di \textbf{campionamento} e \textbf{quantizzazione}. Campionare un segnale significa estrarre un valore del segnale tra quelli che può assumere con continuità ad un certo istante temporale. Un segnale campionato viene poi quantizzato.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{sampl_quant.png}
+\end{figure}
+\\In un processo di conversione AD e DA, la natura discreta del segnale digitale gioca un ruolo fondamentale: i possibili valori relativi a specifici istanti di tempo (campionamento) sono \textit{finiti} in numero e separati tra loro da uno step size. Con il campionamento il segnale continuo viene sostituito con i suoi valori assunti in determinati istanti di tempo (esistono dei circuiti che fanno questa operazione e si chiamano \textit{sample and old}, sono dei circuiti che leggono un ingresso analogico e, quando gli viene obbligato di campionare, sganciano l'ingresso mantenendo l'uscita costante). Dopo aver discretizzato il tempo si procede alla discretizzazione del valore tramite la quantizzazione con la quale i campioni sono sostituiti con i valori più vicini ai \textit{livelli di quantizzazione}. Il numero di livelli di quantizzazione dipende dal numero di bit con cui si rappresenta la variabile convertita.
+
+Il numero di bit corrisponde alla \textbf{risoluzione}, definita come la minima variazione del segnale di input analogico che comporta la variazione di un bit nel codice digitale (la regola è valida sia per i ADC che per DAC: solamente i ruoli di input e output sono invertiti).
+\newpage
+Spesso per costruire un convertitore AD si può usare un convertitore DA.
 \section{Convertitori DA}
 \subsection{R-2R}
 \subsection{Syntesizer}
