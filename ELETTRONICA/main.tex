@@ -1540,15 +1540,136 @@ La discretizzazione di un segnale introduce i concetti di \textbf{campionamento}
 \\In un processo di conversione AD e DA, la natura discreta del segnale digitale gioca un ruolo fondamentale: i possibili valori relativi a specifici istanti di tempo (campionamento) sono \textit{finiti} in numero e separati tra loro da uno step size. Con il campionamento il segnale continuo viene sostituito con i suoi valori assunti in determinati istanti di tempo (esistono dei circuiti che fanno questa operazione e si chiamano \textit{sample and old}, sono dei circuiti che leggono un ingresso analogico e, quando gli viene obbligato di campionare, sganciano l'ingresso mantenendo l'uscita costante). Dopo aver discretizzato il tempo si procede alla discretizzazione del valore tramite la quantizzazione con la quale i campioni sono sostituiti con i valori più vicini ai \textit{livelli di quantizzazione}. Il numero di livelli di quantizzazione dipende dal numero di bit con cui si rappresenta la variabile convertita.
 
 Il numero di bit corrisponde alla \textbf{risoluzione}, definita come la minima variazione del segnale di input analogico che comporta la variazione di un bit nel codice digitale (la regola è valida sia per i ADC che per DAC: solamente i ruoli di input e output sono invertiti).
-\newpage
-Spesso per costruire un convertitore AD si può usare un convertitore DA.
+
+\section{Formati}
+Per la gestione dei dati analogici che verranno poi convertiti in formato digitale ci sono diverse possibilità per assegnare ad un range di valori analogici i corrispettivi valori digitali.
+
+Si definisce inizialmente \textbf{dV} la quantità chiamata \textbf{quanto di quantizzazione} che indica il minimo valore analogico che produce un cambiamento digitale. Questa quantità dipende dall'estensione del \textbf{fondo scala}, indicato con $V_{\textit{fs}}$ (cioè quanto spazio viene dedicato ai valori analogici che possono entrare nel convertitore e che entrando definiscono il minimo e il massimo valore), e dallo spazio dei numeri rappresentati con un certo numero \textit{n} di bit che è ovviamente $2^n$. Date queste due quantità si definisce:
+\begin{equation}
+    dV = \frac{V_{\textit{fs}}}{2^n}
+    \label{dv}
+\end{equation}
+Ogni convertitore ha un proprio range che è l'escursione massima che un segnale in input o output può avere e che è l'estensione del fondo scala $V_{\textit{fs}}$: se il convertitore è bipolare (accetta tensioni negative e positive) allora il fondo scala è diviso in due parti, altrimenti, se è monopolare, accetta valori solo positivi.
+
+Si deve ora definire dove si colloca l'ingresso rispetto al risultato che si ha in uscita e anche come viene codificata la parola digitale dal mondo analogico a quello digitale e viceversa.
+
+Nel caso di un convertitore AD si considera una certa tensione $V_{in}$ che si vuole convertire in una parola digitale. La conversione può essere effettuata in molti modi, quello più semplice consiste nel considerare solo i valori \textit{positivi} associando al valore $0\,V$ (il riferimento di massa) la word 0, al valore di fondo scala positivo $+V_{\textit{fs}}$ il valore binario massimo generabile con gli \textit{n} bit a disposizione per comporre la word digitale e nel mezzo, da $0\,V$ a  $+V_{\textit{fs}}$ ci sono tutti i singoli valori per i quali ogni volta che ci si muove di 1 in digitale il corrispettivo valore analogico è cresciuto della quantità \textit{dV}. Questa assegnazione di soli valori positivi e con un numero binario che a sua volta ha una rappresentazione solo positiva (è un intero senza segno) è la tipica rappresentazione utilizzata nei convertitori che si trovano all'interno dei microcontrollori (questi hanno degli ADC il cui pin di ingresso è sensibile in un range che va da $0\,V$ a $V_{\textit{ref}}$ che corrisponde generalmente alla tensione di alimentazione positiva $V_{dd}$ che generalmente vale $3,3\,V$) e viene chiamata \textbf{straight binary}.
+
+Un'altra possibilità è quella di considerare anche i valori negativi e per farlo l'escursione totale viene divisa in due: $[+V_{\textit{fs}}/2 , 0\,V]$ e $[0\,V, -V_{\textit{fs}}/2]$ con il fondo scala totale che rimane comunque invariato. Si deve quindi ora scegliere con quale metodo si rappresentano sia i numeri positivi che quelli negativi. Ci sono essenzialmente due possibili formati: il formato\textbf{offset binary}, che è ancora un intero senza segno, e il formato \textbf{complemento a 2}. Col formato \textit{offset binary} si assegna la word 0 alla tensione minima $-V_{\textit{fs}}/2$ e la word massima fatta da tutti 1 alla tensione massima $+V_{\textit{fs}}/2$. È semplice perché assomiglia alla modalità straight binary ma non è il più comodo perché la versione digitale della tensione $0\,V$ è un valore digitale che non corrisponde allo 0 ma alla metà della dinamica per cui, per risalire al vero valore del segnale si deve sottrarre al valore digitale un offset pari a $2^{n-1}$. Con il formato del \textit{complemento a 2} la rappresentazione è quasi identica a quella del formato precedente con la sola differenza che i numeri negativi iniziano con 1 mentre quelli positivi con 0. Così facendo, come per il formato straight binary, la tensione di $0\,V$ corrisponde alla word 0. Questa rappresentazione rende più facili i calcoli matematici eseguiti da un microprocessore perché permette di riconoscere i valori negativi come numeri negativi e viceversa e quindi è quella più utilizzata in questi casi. Per passare tra i due formati basta cambiare l'ultimo bit.
+
+Bisogna fare attenzione quando si usa un certo convertitore perché si deve possibilmente far sì che la tensione di ingresso copra il più possibile tutto il fondo scala, questo perché, se per caso si condiziona male l'amplificatore di ingresso e $V_{in}$ si muove solo in un intervallo molto più piccolo di quello supportato dal convertitore, si utilizzerà una piccola parte della dinamica del convertitore che significa direttamente che si userà una minima parte dei numeri quantizzati a disposizione quindi non si sfrutterà in modo adeguato le potenzialità del convertitore e inevitabilmente si sprecherà la sua risoluzione. Se per esempio il segnale va solo da $0\,V$ a $0,25\,V$ si utilizzerà solo il $25\%$ della dinamica analogica di ingresso e i numeri digitali saranno anch'essi 1/4 di quelli che sarebbero stati disponibili se si avesse utilizzato tutta la dinamica possibile e quindi di fatto si useranno 2 bit in meno del convertitore.
+
 \section{Convertitori DA}
+Un convertitore digitale analogico deve convertire una grandezza binaria in un numero analogico di uscita, per farlo ci sono diversi metodi possibili.
+
+Per il primo metodo si suppone di avere un amplificatore operazionale in uscita che ha quattro rami entranti al suo interno tramite il piedino negativo che viene tenuto dall'amplificatore stesso a $0\,V$ perché il piedino positivo è a $0\,V$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45,angle=0]{da_converter.png}
+    \caption{Convertitore DA}
+\end{figure}
+\\La corrente che scorre attraverso la \textit{resistenza di feedback} $R_{f} = 1\,k\Omega$ (che collega l'uscita e il piedino negativo dell'amplificatore) è la somma delle correnti che passano dalle quattro resistenze che si trovano nei quattro rami entranti nel piedino negativo. Quando l'interruttore è attaccato, la corrente che scorre in queste resistenze è pari al rapporto tra una certa tensione di riferimento (in questo caso $5\,V$) e il valore della specifica resistenza, quindi $I_{1} = \frac{5\,V}{1\,k\Omega}$, $I_{2} = \frac{5\,V}{2\,k\Omega}$, $I_{3} = \frac{5\,V}{4\,k\Omega}$ e $I_{4} = \frac{5\,V}{8\,k\Omega}$ (si nota che la corrente è scalata per potenze del 2). La corrente $I = I_{1} + I_{2} + I_{3} + I_{4}$ passa attraverso la resistenza di feedback $R_{f}$ (quindi viene moltiplicata per $1\,k\Omega$) e diventa tensione. La tensione che così si ottiene sull'uscita dell'amplificatore dipende quindi da quali interruttori sono attaccati, ovvero:
+\begin{equation}
+    V_{out} = \frac{V_{\textit{ref}}}{2^n}
+\end{equation}
+con \textit{n} il numero di bit che si stanno considerando. Il bit 0 (cioè D) è quello più significativo, quindi fornisce il valore più grande (infatti $R_{1} = 1\,k\Omega$ che fornisce $V_{out} = 5\,V$), gli altri bit forniscono 1/2 1/4 e così via della tensione di riferimento; A è il bit meno significativo. Dunque le correnti entranti nell'amplificatore e la tensione uscente dallo stesso sono proporzionali a potenze del 2 data una certa tensione di riferimento $V_{\textit{ref}}$. Il guadagno dell'amplificatore è \textbf{negativo} perché nel piedino negativo la tensione è di $0\,V$ e la corrente scorre verso l'uscita dell'amplificatore; infatti $V_{out}$ è definita come $-V_{\textit{ref}}$ moltiplicata per la somma dei prodotti tra il reciproco dell'i-esima resistenza in ingresso (senza considerare il \textit{k}) e lo stato dell'i-esimo interruttore, cioè:
+\begin{equation}
+    V_{out} = -V_{\textit{ref}} \cdot (1 \times D + \frac{1}{2} \times C + \frac{1}{4} \times B + \frac{1}{8} \times A)
+\end{equation}
+Il fondo scala di questo dispositivo è dato dalla massima tensione di uscita generabile che si ottiene quando tutti i bit sono a 1 quindi:
+\begin{equation}
+    V_{\textit{fs}} = -V_{\textit{ref}} \cdot (1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8}) = -5\,V \cdot (1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8}) = -9,375\,V
+\end{equation}
+Lo step di quantizzazione è dato dalla \eqref{dv}:
+\begin{equation}
+    dV = \frac{9,375\,V}{2^{4} - 1} = 0,625\,V
+\end{equation}
+Per costruire un convertitore di questo tipo si deve avere una tensione di riferimento \textbf{stabile} (questo in realtà vale per ogni buon convertitore) perché il dato convertito viene convertito confrontandolo con il riferimento e quindi se esso è instabile lo sarà anche il dato convertito. Questo tipo di convertitore ha però anche altri problemi: per aumentare la risoluzione (quindi avere più bit) si devono aggiungere ulteriori resistenze che devono avere valori precisi che in più devono scalare come le potenze del 2 e questo non è un processo banale perché per ottenere i valori delle resistenze precisi si mette un certo numero di resistenze \textit{in serie} il che diventa facilmente una situazione non gestibile, inoltre anche l'amplificatore operazionale deve essere un oggetto lineare e preciso e infine gli switch che precedono le varie resistenze non sono \textit{ideali} ma avranno una propria resistenza interna che si somma allo specifico valore della resistenza in serie e dunque diventa ancora più difficile rispettare l'andamento secondo la potenze del 2 nei rami che precedono l'amplificatore. 
+
+Quindi il problema di questa prima tipologia di convertitore DA è che è difficile mantenere un'elevata precisione con diversi valori delle resistenze, la soluzione a questo problema sono i circuiti di tipo \textbf{R-2R}.
+
 \subsection{R-2R}
-\subsection{Syntesizer}
+È un circuito in cui è necessario sintetizzare solo \textit{due} valori di resistenza: \textit{R} e \textit{2R} dove realizzare \textit{2R} è facile perché basta mettere in serie due resistenze \textit{R}. Come sei vede in figura \ref{r2r} gli interruttori non sono più singoli (acceso o spento) ma sono in realtà degli \textit{switch} quindi le resistenze che sono \textit{2R} o sono collegate alla linea OUT1 collegata a terra (quindi è un nodo a massa reale) oppure alla linea OUT2 di ingresso dell'operazionale (quindi è un nodo a massa virtuale in cui si sommano tutte le correnti per definire l'ingresso dell'amplificatore).
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45,angle=0]{r_2r.png}
+    \caption{Convertitore DA R-2R}
+    \label{r2r}
+\end{figure}
+\\Il nodo superiore di ciascuno switch (quindi il nodo inferiore di ciascuna resistenza \textit{2R}) è comunque a massa: o a quella reale (linea OUT1) o a massa virtuale (linea OUT2); dunque la posizione dello switch non conta granché se non nel fatto che, poiché nel nodo superiore di ciascuno switch si vedono sempre $0\,V$, due resistenze \textit{2R} affiancate (hanno lo stesso valore) messe in \textit{parallelo} è come se fossero una resistenza unica di valore pari alla loro metà.
+
+Se per esempio le \textit{2R} valgono $20\,k\Omega$ messe in parallelo è come se fossero una resistenza unica da $10\,k\Omega$. Dunque, nel nodo superiore della resistenza \textit{2R} (quella con switch S-8) si vedono $10\,k\Omega$ (le prime due resistenze $2R$ da destra messe in parallelo) verso massa a cui si somma la resistenza a sinistra da $10\,k\Omega$ tornando quindi ad avere $20\,k\Omega$ che, messi in parallelo con la terza resistenza \textit{2R} permettono di tornare a vedere $10\,k\Omega$ verso massa.
+
+Si nota dunque che in \textit{tutti} i nodi del circuito (anche sull'ingresso) si vede sempre la \textit{stessa} resistenza. La corrente in ingresso vale $I = \frac{V_{\textit{ref}}}{10\,k\Omega}$, la corrente che scorre verso il basso (verso S-1) è $I/2$ mentre quella che scorre verso destra (verso la resistenza da $10\,k\Omega$) è ancora $I/2$, nel nodo successivo si divide in $I/4$ e $I/4$ e così via nei nodi successivi. Ogni volta che la corrente attraverso uno dei nodi \textit{superiori} si divide in due perché vede $20\,k\Omega$ verso massa su entrambi i lati dei nodi. Ci si è quindi ricondotti alla situazione precedente in cui si hanno delle resistenze in cui scorre corrente per potenze del 2. A questo punto basta solo configurare gli switch per decidere se prendere o meno una certa corrente mandandola a massa o nel conteggio per la corrente in ingresso all'amplificatore. La configurazione degli switch è pilotata dai bit: al bit più significativo corrisponde la corrente $I/2$ quindi lo switch più a sinistra più vicino all'ingresso.
+
+Continua ad essere rilevante il fatto che gli switch non sono ideali e quindi nella definizione della resistenza \textit{2R} bisogna tenere conto della loro resistenza interna.
+
+Questo è il moto migliore per ottenere un DAC. L'accuratezza del dispositivo dipende da quanto sono buoni l'operazionale e gli switch perché questa bontà determina di quanto ci si discosta dalla curva ideale di conversione che, essendo un DAC, tra la parola digitale e la corrispettiva $V_{out}$ la curva ideale è esattamente lineare perché idealmente per ogni valore digitale c'è un valore che è la sua rappresentazione in analogico. Sicuramente non si avrà mai una retta ma è più probabile avere una qualche curva. Dal valore ideale che ci si aspetta (quello lunga la curva ideale) ci si discosta ottenendo un valore reale e quindi ci sarà un certo errore che è l'accuratezza del dispositivo. Per valutare l'accuratezza del dispositivo si usano due valori: l'\textbf{errore full scale}, definito come la massima differenza tra il valore ideale e quello reale (espresso in percentuale rispetto al fondo scala o in bit), l'\textbf{errore di linearità} definito come la massima differenza tra le ampiezze degli step ideali e quelli reali.
+
+Riassumendo, il segnale in uscita da un DAC è campionato e quantizzato. Il tempo di campionamento corrisponde al tempo che trascorre da un valore analogico in uscita e il successivo (che rappresenta la nuova parola digitale). La risoluzione della quantizzazione corrisponde al numero di bit usati nel processo di conversione.
+
+\subsection{Sintetizzatore}
+Si considera l'esempio di sintetizzatore di forme d'onda.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{syntesizer_struttura.png}
+    \caption{Struttura del sintetizzatore}
+\end{figure}
+Il contatore a 15 bit clockato scorre gli indirizzi di lettura di una memoria EPROM a 8 bit in uscita e il dato letto viene campionato dal registro clockato e infine il dato digitale arriva al DAC che produce il dato analogico in uscita.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{syntesizer_segnali.png}
+    \caption{Segnali che guidano il sintetizzatore}
+\end{figure}
+\\Sul fronte di salita del clock l'uscita dell'EPROM è campionata. Il valore emesso dal DAC dura un colpo di clock: il registro si aggiorna solo quando il clock passa sul fronte di salita.
+
 \section{Convertitori AD}
-\subsection{Digital ramp}
+Spesso per costruire un convertitore AD si può usare un convertitore DA. I problemi della conversione da analogico a digitale sono gli stessi della conversione opposta: il primo aspetto fondamentale è quello di definire gli intervalli di fondo scala.
+
+Si considera un sensore di temperatura che converte $1^{\circ}\,C$ in $20\,mV$ e che lavora nel range $[-50^{\circ}\,C , 50^{\circ}\,C]$ per cui il range di ingresso dell'ADC è tra $-1\,V$ e $1\,V$. Si considera un ADC a 8 bit che converte nell'intervallo tra $0\,V$ e $10\,V$. Se si collega direttamente il sensore al convertitore non si leggono i valori negativi perdendo quindi metà dinamica del segnale, usando così solo il $10\%$ del fondo scala con una risoluzione di $2^{\circ}\,C$ (perché $10\,V / 2^{8} \approx 40\,mV$ e $40\,mV / 20\,mV = 2$) e non utilizzando 3,5 bit  degli 8 disponibili. Se si somma $1\,V$ ai valori del sensore il segnale viene mappato da $0\,V$ a $2\,V$ e non si hanno perdite ma si usa il $20\%$ del fondo scala e la risoluzione rimane invariata a $2^{\circ}\,C$; tuttavia ora si usano 6,5 bit degli 8 disponibili. Se infine si somma $1\,V$ e si moltiplica per 5 il segnale viene così mappato da $0\,V$ a $10\,V$, si usa il $100\%$ del fondo scala e la risoluzione è di $0,4^{\circ}\,C$ (perché per $1^{\circ}\,C$ si ha $20 \cdot 5\,mV = 100\,mV$ e $40 / 100 = 0.4$).
+
+Si nota che si deve sempre cercare di fare il match tra l'ingresso analogico e il valore del fondo scala fino a raggiungere il livello di prestazione voluto. Si deve controllare che il sistema misuri con la giusta risoluzione e si devono frapporre circuiti operazionali tra il sensore e il convertitore. 
+
+\subsection{Rampa digitale}
+È quello più semplice da realizzare. È composto da un contatore e una parte di logica di decodifica che serve per generare il clock che fa contare il contatore facendogli generare una rampa digitale che viene poi convertita in un segnale analogico da un DAC. La rampa convertita in un segnale analogico viene poi confrontata, tramite un amplificatore operazionale messo in configurazione di \textit{comparatore}, con la tensione di ingresso $V_{a}$ che è quella che si vuole effettivamente convertire in formato digitale.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{digital_ramp_adc.png}
+    \caption{Struttura di un ADC a rampa digitale}
+\end{figure}
+\\Il contatore all'inizio parte da 0 quindi il numero è 0 e la tensione ottenuta tramite il DAC è di $0\,V$ che viene confrontata con il valore $V_{a} > 0\,V$ (la dinamica è solo positiva). Se $V_{a} > V_{ax}$ l'uscita dell'operazionale è \textit{alta} e fintanto che rimane tale, la porta AND, quando le viene applicato un certo impulso positivo, ha ingressi 1 - clock - 1 e uscita uguale al \textit{clock}. Ad un certo punto, la rampa generata dal DAC \textit{intercetta} il valore $V_{a}$ per cui l'uscita del comparatore diventa \textit{bassa}. Con l'uscita del comparatore bassa, gli ingressi della porta AND diventano 0 - clock - 1, quindi l'uscita di clock si ferma e la conversione è conclusa. Viene ora portata fuori l'uscita dell'operazionale chiamata $\overline{EOC}$ che quando va giù indica che la rampa digitale ha raggiunto il valore analogico $V_{a}$. Il valore contato fino al momento in cui la rampa digitale intercetta il valore analogico è il risultato della conversione.
+
+Questo convertitore ha però un problema: per fare una conversione intera ci possono volere fino ad un massimo di $2^n$ colpi di clock rendendolo dunque un convertitore molto \textit{lento}. Inoltre, non solo si deve creare tutta la rampa, ma il tempo di conversione $t_c$ (dallo start fino ad arrivare a fine conversione) \textit{dipende} dal valore convertito: non si sa quando finirà la conversione. Per di più $V_{a}$ non viene campionato quando si decide di iniziare la conversione ma viene preso nell'istante in cui la conversione finisce.
+
 \subsection{Approssimazioni successive}
+La stessa struttura che compone l'ADC a rampa digitale può essere utilizzata in modo più intelligente per definire un'ulteriore tipologia di ADC chiamata convertitore per approssimazioni successive o \textbf{SAR}. La struttura, come si vede in figura \ref{succapprox}, è la stessa: ci sono il comparatore e il DAC ma, invece di avere un contatore, si usa un \textit{registro}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{approx_succ1.png}
+    \caption{Struttura di un ADC per approssimazioni successive}
+    \label{succapprox}
+\end{figure}
+\\Questo registro invece di contare un bit dopo l'altro, applica un algoritmo di \textbf{bisezione} e questo può farlo senza problemi perché trovare quando $V_{c} > V_{i}$ non è altro che una operazione di ricerca che può essere condotta utilizzando un qualsiasi algoritmo di ricerca.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{approx_succ3.png}
+    \caption{Algoritmo applicato dal registro}
+    \label{bisezione}
+\end{figure}
+\\In particolar modo si utilizza proprio la bisezione perché è la più semplice da implementare in quanto basta dividere lo spazio di conversione in due sotto intervalli ad ogni iterazione. Per dividerlo semplicemente si considera un bit alla volta nei bit scritti nel SAR che sono quelli che si stanno convertendo. Si parte considerando il bit \textit{più significativo} che divide lo spazio di conversione in due. In base al risultato del confronto si stabilisce il valore del bit: se $V_{i} > \frac{V_{\textit{reff}}}{2}$, significa che il bit deve stare a 1 e si deve considerare l'intervallo superiore, in caso contrario deve essere settato a 0 e si considera l'altro intervallo. Si procede poi col bit successivo restringendo sempre di più lo spazio di conversione.
+
+Mediante questo utilizzo più intelligente della struttura dell'ADC a rampa digitale si passa dall'impiegare fino ad un massimo di $2^n$ colpi di clock, ad impiegarne al massimo \textit{n}.
+
+Il metodo converge esponenzialmente. Il fatto che il tempo di conversione è molto più breve può essere sfruttato in due modi: a parità di risoluzione (quindi stesso numero di bit) si può andare molto più veloce, oppure a parità di tempo si può avere maggiore risoluzione ma aumentando il numero di bit aumenta anche la complessità della logica e del DAC e quindi anche il tempo di lavoro del DAC.
+
 \subsection{Flash ADC}
+I convertitori flash sono \textit{molto veloci} e di fatto sono costruiti al contrario rispetto a come vengono costruiti i convertitori DAC con il resistenze. È composto da una serie molto lunga di resistenze messe a formare una specie di partitore successivo e su ognuna delle quali cade una certa tensione per cui si creano dei punti intermedi che hanno tensione diversa.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{flash_adc.png}
+    \caption{Struttura di un flash ADC}
+\end{figure}
+\\I valori analogici di tensione generati dalla stringa di resistenze entrano negli ingressi positivi di alcuni compratori (uno per ciascun valore di tensione) che ricevono nel loro ingresso negativo la medesima tensione analogica $V_{a}$ che è la tensione che si vuole codificare.
 
 \chapter{Dispositivi digitali programmabili}
 A differenza delle porte logiche che eseguono sempre la stessa funzione, i \textbf{dispositivi digitali programmabili} possono essere programmati per poter eseguire determinate attività e hanno diversi gradi di complessità:
