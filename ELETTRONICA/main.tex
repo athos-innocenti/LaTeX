@@ -1515,11 +1515,84 @@ In generale, ciascuna famiglia offre un diverso compromesso tra tutte queste car
 Di solito, si può ottenere maggior velocità al costo di un maggior consumo di potenza. Nel caso di un circuito CMOS la velocità è la resistenza equivalente a ciascuno dei due MOS ma è anche la capacità in uscita. Dunque la velocità è definita come $\tau = R \cdot C$. Al contrario, la potenza dipende dal fatto che, ad un certo punto, i due MOS, nel passare da alto a basso, vanno in cross conduzione il che causa una perdita di potenza che è proporzionale a $V_{dd}^{2}/2R$.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.33,angle=0]{family_comparison.png}
+    \includegraphics[scale=0.3,angle=0]{family_comparison.png}
     \caption{Confronto tra famiglie logiche}
 \end{figure}
 
-\section{Circuiti logici integrati}
+\section{Interconnessione di circuiti logici}
+Il primo problema che si affronta è quello di dover settare un certo valore in input ad un circuito. Finora si è supposto che l'ingresso di circuito logico sia guidato dall'uscita di un altro circuito logico e sotto questa supposizione il problema si riduce allo studio delle tensioni di ingresso e d'uscita alte e basse. Tuttavia non è sempre così: capita spesso che gli ingressi di un circuito provengano dal mondo esterno e alcune volte questi ingressi sono banalmente degli \textbf{interruttori} o \textbf{pulsanti}. Un pulsante non è altro che un interruttore che, quando viene premuto, chiude il circuito e quando viene rilasciato riapre il circuito; al contrario un interruttore quando viene premuto lascia il circuito chiuso e per aprirlo deve essere nuovamente premuto. In ogni caso, possono essere entrambi assimilati ad un \textit{contatto} che viene chiuso e aperto; non sono quindi dispositivi logici che generano una tensione.
+
+Ci si chiede quindi come si può utilizzare uno switch per metterlo in ingresso ad un circuito logico e quindi trasformarlo poi in un valore logico 0 o 1. Come prima cosa, normalmente si assume che il valore 1 corrisponda alla tensione alta $V_{cc}$ e il valore 0 alla tensione bassa \textit{Gnd} di $0\,V$. Inoltre, \textit{non} si può prendere una qualsiasi porta logica e porre un interruttore nel suo ingresso perché con tale configurazione quando lo switch è \textit{aperto} l'ingresso rimarrebbe \textit{fluttuante - floating}, ovvero sarebbe \textit{indefinito} perché non si può stabilire con esattezza se è alto o basso; questo almeno vale sicuramente per tutte le famiglie logiche che hanno un ingresso di tipo CMOS. Per poter risolvere questa indeterminazione ci sono due possibilità (ce ne sarebbe una terza basata sull'utilizzo di due interruttori ma non è una soluzione semplice da gestire):
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{ic_input.png}
+    \caption{Possibili interruttori in input}
+\end{figure}
+\\La soluzione \textit{A} prevede di utilizzare un interruttore nel ramo inferiore di ingresso e una resistenza di \textit{pull-up} nel ramo superiore (verso la tensione di alimentazione) in modo tale che, se l'interruttore è \textit{aperto}, l'ingresso è portato circa al valore di alimentazione $V_{cc}$ dalla resistenza di pull-up e viene quindi riconosciuto come \textit{alto}. Se invece l'interruttore è \textit{chiuso} l'ingresso va a $0\,V$ perché vince il cortocircuito dell'interruttore sulla resistenza e quindi l'ingresso è riconosciuto come \textit{basso}.
+
+La soluzione \textit{B} ha una struttura speculare alla prima con l'interruttore nella parte superiore e la resistenza di \textit{pull-down} nella parte inferiore verso massa. Il funzionamento è quindi esattamente l'opposto: se l'interruttore è \textit{chiuso} l'ingresso è pari a $V_{cc}$ e viene considerato \textit{alto}; se invece l'interruttore è \textit{aperto} l'ingresso viene portato a circa $0\,V$ e viene riconosciuto come \textit{basso}.
+
+Tutto questo però è vero solo nel caso in cui il circuito integrato non ha nessuna corrente di ingresso. Questo è vero se il circuito è CMOS perché il suo ingresso è un condensatore in altissima impedenza che non assorbe corrente. Al contrario, non è vero se il circuito è TTL perché il suo ingresso è un transistor che ha una resistenza di pull-up verso $V_{cc}$ sulla base e una giunzione pn tra la base e l'emettitore. Quindi se l'ingresso è basso, scorre una corrente verso l'ingresso di circa $1\,mA$: serve $1\,mA$ per tenerlo giù perché è quella corrente che scorre nella resistenza di pull-up e nella giunzione base emettitore. Se si vuole tenere \textit{basso} l'ingresso TTL è conveniente utilizzare la soluzione \textit{A} perché quando si tira basso si chiude con l'interruttore garantendo di poter far scorrere una corrente di $1\,mA$ senza un'eccessiva caduta di tensione. Se invece si vuole tenere \textit{alto} l'ingresso TTL, poiché la corrente che scorre in ingresso è pochissima, non serve mettere un interruttore per tirare alto l'ingresso e quindi, anche in questo caso, si preferisce la soluzione \textit{A} (volendo si potrebbe omettere anche la resistenza). Poiché per un TTL conviene avere l'ingresso \textit{A} (pull-up + interruttore verso massa), allora \textit{tutti} i circuiti logici hanno un ingresso di questo tipo (per i CMOS andrebbe bene anche la soluzione \textit{B} ma si tende ad usare comunque la prima perché più generale nel senso che è applicabile a tutte le famiglie logiche).
+
+Si deve ora stabilire come si gestisce un \textbf{non ingresso}, cioè i pin di ingresso che non vengono utilizzati. I pin di input liberi in un CMOS sono posti ad una impedenza molto elevata quindi se si lascia l'ingresso libero esso si comporta come una resistenza molto grande e quindi basta pochissima corrente che scorre sul piedino per caricarlo a qualsiasi valore di tensione tra $0\,V$ e $V_{dd}$. Ma un valore di tensione intermedio (che non è logico) può portare entrambi i MOS in conduzione e se la corrente continua a scorrere può danneggiare il circuito. Nel caso TTL invece, i pin di input costituiscono l'emettitore di un BJT: la base corrispondente viene tirata verso l'alto internamente e i pin di ingresso non connessi sono sono tirati verso l'alto da una resistenza di pull-up e sono visti come un livello logico alto. 
+
+\subsection{Driver}
+Ogni output che guida un input deve garantire livelli di tensione alti e bassi \textit{corretti}, ovvero \textit{ammissibili} dal circuito che viene guidato. Inoltre, ogni output deve garantire una corrente di uscita alta e bassa \textit{adeguata} alle condizioni del circuito che viene guidato; ovvero deve poter gestire (quindi poter emettere o assorbire) la correnti correnti che servono a guidare i circuiti che stanno a valle. Questo si traduce nel fatto che il \textit{fan out} di una famiglia logica deve essere maggiore o uguale a 1, cioè ogni porta logica deve essere in grado di guidare almeno un ingresso simile a se stessa. Inoltre, quando si sceglie una certa famiglia logica con un certo stadio di uscita, lo si fa perché serve quella determinata corrente di uscita e in quelle condizioni di corrente di uscita i valori di tensione devono essere rispettati.
+
+Quando un porta logica di una certa famiglia logica viene collegata con altri dispositivi appartenenti alla medesima famiglia, le compatibilità delle correnti e delle tensioni sono immediatamente garantite; cioè le uscite di una famiglia logica sono direttamente compatibili con gli ingressi della medesima famiglia logica. Quando però si connetto famiglie logiche \textit{diverse} possono sorgere dei problemi: si deve garantire la \textit{cross compatibilità} tra le diverse famiglie logiche. In particolare ci si deve assicurare che i valori logici siano compatibili e quindi, considerando i valori garantiti, si deve essere sicuri che i valori garantiti delle uscite siano \textbf{compresi} negli intervalli ammissibili degli ingressi. In particolare questo significa che:
+\begin{align}
+    V_{oH_{min}} &> V_{iH_{min}}
+    \label{diseq1}\\
+    V_{oL_{max}} &< V_{iL_{max}}
+    \label{diseq2}
+\end{align}
+Queste relazioni portano a definire i due margini di rumore dove i valori di uscita sono quelli della famiglia logica del \textit{driver}, mentre i valori di ingresso sono quelli della famiglia logica del ricevitore.
+\begin{align}
+    \textit{NMH} &= V_{oH_{min}} - V_{iH_{min}}\\
+    \textit{NML} &= V_{iL_{max}} - V_{oL_{max}}
+\end{align}
+Si devono quindi verificare che questi margini di rumore siano entrambi \textit{positivi} e, una volta effettuata l'interconnessione, il minimo dei due determina l'\textit{affidabilità} dell'interconnessione creata. Se uno dei due è \textit{negativo} significa che il circuito potrebbe non funzionare. I valori corrispondenti al minimo e al massimo permettono di analizzare il caso peggiore per il design, non i valori tipici. Ogni circuito ha dunque degli intervalli $(V_{oL}, V_{oH})$ e $(V_{iL}, V_{iH})$ in ingresso e uscita per cui è garantita la compatibilità tra la due famiglie logiche. Questi intervalli sono influenzati dalla costruzione del circuito (specie dal drogaggio), della temperatura e dal voltaggio ($V_{cc}$), queste ultime due ovviamente controllabili.
+
+\subsection{Verifica della compatibilità}
+La compatibilità di ingresso e uscita può essere studiata a livello grafico sfruttando per esempio un grafico a barre orizzontali.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{io_v_lev_comp.png}
+\end{figure}
+\\Sull'asse orizzontale sono posti i volt, nella parte superiore sono rappresentati i due intervalli di uscita per la famiglia TTL (in questo caso è l'uscita) e nella parte inferiore è rappresentata la famiglia BiCMOS con ingressi TTL compatibili e sono indicati gli intervalli di ingresso. I due intervalli chiari rappresentano l'intervallo di uscita \textbf{garantito} $(V_{oL}, V_{oH})$ mentre i due intervalli scuri rappresentano l'intervallo di ingresso \textbf{ammissibile} $(V_{iL}, V_{iH})$. Le due frecce rivolte verso il basso indicano i valori \textit{tipici} (non garantiti) in uscita di $V_{oL}$ e $V_{oH}$ mentre quella rivolta verso l'alto rappresenta il valore \textit{tipico} di soglia in ingresso (per poter considerare l'ingresso come il livello logico alto). I valori tipici in uscita sono i valori attesi di tensione calcolati attraverso la media tra i dispositivi prodotti che lavorano a temperatura e tensione standard ($25^{\circ}$ e $5\,V$). Il valore di soglia in ingresso è un punto ideale, puramente indicativo, in cui si verifica la commutazione del segnale da basso ad alto. In realtà la commutazione avviene in un intervallo che contiene tale valore ed è un intervallo da evitare perché il valore del segnale non è ben definito. Il produttore semplicemente garantisce che tale valore di soglia è compreso tra $V_{iL_{max}}$ e $V_{iH_{min}}$.
+
+Tra le famiglie TTL e BiCMOS la compatibilità è assicurata perché l'intervallo garantito di uscita si trova all'interno dell'intervallo ammissibile di ingresso. Il margine che rimane tra l' intervallo di ingresso e quello di uscita non è altro che il margine di rumore. La porta logica BiCMOS modificata ha quindi un ingresso compatibile con una uscita TTL.
+
+Si considerano ora l'ingresso e l'uscita di una famiglia CMOS semplice a $5\,V$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.36,angle=0]{io_v_lev.png}
+\end{figure}
+\\Si nota che, rispetto alle famiglie bipolari, l'intervallo intermedio di ingresso (quello compreso tra $V_{iL_{max}}$ e $V_{iH_{min}}$) è abbastanza più ampio quindi c'è una parte di indeterminazione più ampia e rilavante. Questo di base non è una cosa positiva ma si deve considerare anche il margine di errore. Si nota infatti che, nonostante la finestra di ingresso sia più aperta e quindi accetta meno valori, si sono aperte anche le uscite che si sono spostate molto verso gli estremi rispetto alla famiglia TTL e lo hanno fatto talmente tanto che nonostante la $V_{iL_{max}}$ e $V_{iH_{min}}$ sono molto separate, il margine di rumore della famiglia CMOS a $5\,V$ è comunque maggiore di quello di una famiglia TTL proprio perché le sue uscite sono più forti (in tensione) nel portare livelli logici alti e bassi.
+
+Se invece si considera una famiglia CMOS a $3,3\,V$ (sia ingressi che uscite) si nota una situazione abbastanza simile alla prima considerata, cioè TTL con BiCMOS. Si nota anche che i margini di ingresso si estendono anche oltre le tensioni di alimentazione; questo perché l'ingresso CMOS, essendo un condensatore, ha un certo margine che gli permetti di spostarlo fuori dall'alimentazione senza che si rompa.
+
+Per analizzare la compatibilità si può usare anche una rappresentazione verticale della tensione:
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{compatibilita.png}
+\end{figure}
+\\I valori rappresentati sono quelli \textit{garantiti}. Confrontando le tre famiglie logiche si verifica che la famiglia TTL e la CMOS a $3,3\,V$ sono direttamente compatibili perché sono verificate la \eqref{diseq1} e \eqref{diseq2}: sono compatibili in entrambi i versi. Un integrato CMOS a $5\,V$ può guidare un ingresso TTL anch'esso a $5\,V$ ma non è vero in contrario: poiché la \eqref{diseq1} non è rispettata queste due famiglie logiche \textit{non} sono direttamente compatibili.
+
+\subsection{Precauzioni per la compatibilità}
+Per poter ottenere anche la compatibilità tra la famiglia TTL e la famiglia CMOS a $5\,V$ si deve gestire il caso critico rappresentato da una situazione in cui un circuito integrato TTL guida un circuito CMOS a $5\,V$. Il problema di questo caso è che non è garantita la \eqref{diseq1}.
+
+Una possibile soluzione consiste nell'introdurre un resistore di \textbf{pull-up} $R_{p}$. Questo resistore deve fornire una certa corrente $I_{oH}$ al CMOS in modo da effettivamente tirare verso l'alto il suo ingresso in un tempo ragionevolmente breve.
+
+Dato che l'ingresso del CMOS è un condensatore si ha dunque un circuito RC dove la costante di tempo per caricarlo è $\tau = R \cdot C$ e quindi, affinché $\tau$ sia piccolo, \textit{R} deve essere piccola. Più grande è \textit{R} e minore sarà il consumo di potenza in condizioni \textit{statiche}.
+
+Con l'uscita \textit{bassa}, la corrente deve essere mantenuta ad un livello \textit{sicuro} per lo stadio di uscita del dispositivo TTL.
+
+\section{Caratteristica di uscita}
+
+
+\section{Datasheet}
+
 
 \chapter{Convertitori DA e AD}
 L'operazione di \textbf{conversione} è un'operazione di trasformazione dell'informazione dal dominio analogico ad uno digitale. I dispositivi digitali lavorano in un dominio digitale: processano dati formati da bit e a sua volta emette dati digitali ma il mondo esterno è fatto di variabili continue sia nel \textit{tempo} che in \textit{ampiezza} cioè hanno una continuità di valori.
@@ -1666,10 +1739,28 @@ Il metodo converge esponenzialmente. Il fatto che il tempo di conversione è mol
 I convertitori flash sono \textit{molto veloci} e di fatto sono costruiti al contrario rispetto a come vengono costruiti i convertitori DAC con il resistenze. È composto da una serie molto lunga di resistenze messe a formare una specie di partitore successivo e su ognuna delle quali cade una certa tensione per cui si creano dei punti intermedi che hanno tensione diversa.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4,angle=0]{flash_adc.png}
+    \includegraphics[scale=0.38,angle=0]{flash_adc.png}
     \caption{Struttura di un flash ADC}
 \end{figure}
-\\I valori analogici di tensione generati dalla stringa di resistenze entrano negli ingressi positivi di alcuni compratori (uno per ciascun valore di tensione) che ricevono nel loro ingresso negativo la medesima tensione analogica $V_{a}$ che è la tensione che si vuole codificare.
+\\I valori analogici di tensione generati dalla stringa di resistenze entrano negli ingressi positivi di una serie di compratori (uno per ciascun valore di tensione) che ricevono nel loro ingresso negativo la medesima tensione analogica $V_{a}$ che è la tensione che si vuole codificare. La tensione $V_a$ sarà maggiore di un certo numero di comparatori e minore di altri: quando è \textit{minore} di un certo comparatore l'uscita di quest'ultimo è 1 mentre quando è \textit{maggiore} l'uscita del comparatore è 0:
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{flashadc2.png}
+    \caption{Uscite dei comparatori}
+\end{figure}
+\\Facendo ora la decodifica logica della sequenza di bit ottenuta dai comparatori tramite il \textbf{priority encoder} si ricava un numero binario che rappresenta il valore convertito in formato digitale della tensione analogica iniziale $V_a$.
+
+Un dispositivo di questo tipo \textit{non} ha bisogno di nessun tempo per poter effettuare la conversione se non quello richiesto dal comparatore e dal priority encoder per effettuare le loro operazioni. Non a caso sono i comparatori \textit{più veloci}.
+
+Pur essendo molto veloci sono anche molto \textit{costosi} e la loro \textit{dimensione} sul silicio cresce come $2^n$ che rappresenta il numero di bit: l'aggiunta di un solo bit fa raddoppiare le dimensioni dell'intero circuito.
+
+\subsection{Confronto tra gli ADC}
+Si considerano i tre convertitori AD considerati: a rampa digitale, ad approssimazioni successive e il modello flash.
+\begin{enumerate}
+    \item\textbf{Fattori} che influenzano il \textbf{tempo di conversione}: nel convertitore a rampa il tempo di conversione è influenzato dalla frequenza di clock con cui si contano gli scalini, dalla tensione di ingresso $V_a$ che si vuole convertire e dal numero di bit secondo cui il tempo di conversione va come $2^n$. Nel convertitore SAR (approssimazioni successive) il tempo è influenzato dalla frequenza di clock, non dipende invece dalla tensione di ingresso perché si completa sempre l'approssimazione successiva nello stesso numero di colpi di clock ma dipende dal numero di colpi di clock che è proporzionale (è esattamente) ad \textit{n}. Nel convertitore flash è influenzato solo indirettamente da \textit{n} questo perché più \textit{n} cresce e più il circuito diventa complesso e la decodifica lenta
+    \item\textbf{Tempo di campionamento}: nel convertitore a rampa il tempo di campionamento è nel momento in cui viene generato il segnale $\overline{EOC}$ dal comparatore. Nel SAR è nel momento in cui viene iniziata la conversione (il tempo di conversione corrisponde al tempo di campionamento). Nel convertitore Flash, per come è rappresentato, non c'è un tempo di campionamento perché è un dispositivo asincrono quindi si considera come tempo di campionamento l'instante di tempo in cui il segnale viene campionato da un registro esterno al convertitore
+    \item\textbf{Fattori} che influenzano la \textbf{risoluzione}: nel convertitore a rampa è determinata da quanto tempo si è disposti ad aspettare e dal massimo clock che si può mandare in ingresso. Nel SAR è dettata dalla dimensione del registro (quanti bit si possono mettere nel registro) e dalla precisione con cui viene realizzato il DAC. Nel convertitore Flash la risoluzione è influenzata (più che altro limitata) dal numero di resistenze e comparatori e quindi dallo spazio occupato sul silicio 
+\end{enumerate}
 
 \chapter{Dispositivi digitali programmabili}
 A differenza delle porte logiche che eseguono sempre la stessa funzione, i \textbf{dispositivi digitali programmabili} possono essere programmati per poter eseguire determinate attività e hanno diversi gradi di complessità:
