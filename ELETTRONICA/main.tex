@@ -1581,6 +1581,11 @@ Per analizzare la compatibilità si può usare anche una rappresentazione vertic
 
 \subsection{Precauzioni per la compatibilità}
 Per poter ottenere anche la compatibilità tra la famiglia TTL e la famiglia CMOS a $5\,V$ si deve gestire il caso critico rappresentato da una situazione in cui un circuito integrato TTL guida un circuito CMOS a $5\,V$. Il problema di questo caso è che non è garantita la \eqref{diseq1}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{comp_ttl_cmos.png}
+    \caption{Resistenza di pull-up per la compatibilità}
+\end{figure}
 
 Una possibile soluzione consiste nell'introdurre un resistore di \textbf{pull-up} $R_{p}$. Questo resistore deve fornire una certa corrente $I_{oH}$ al CMOS in modo da effettivamente tirare verso l'alto il suo ingresso in un tempo ragionevolmente breve.
 
@@ -1588,10 +1593,87 @@ Dato che l'ingresso del CMOS è un condensatore si ha dunque un circuito RC dove
 
 Con l'uscita \textit{bassa}, la corrente deve essere mantenuta ad un livello \textit{sicuro} per lo stadio di uscita del dispositivo TTL.
 
-\section{Caratteristica di uscita}
+\section{Caratteristiche dell'uscita}
+Non si possono utilizzare le uscite in modo arbitrario ma piuttosto le si devono considerare per quello che sono, cioè per come è fatto il circuito. Bisogna quindi considerare come è strutturato lo stadio di uscita in modo da capire che corrente si può guidare e come si può gestire l'uscita.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{caratteristiche_uscita.png}
+    \caption{Struttura delle uscite}
+    \label{outcar}
+\end{figure}
+\\Nel caso di un circuito TTL si sa che quando l'uscita è \textit{alta}, la parte alta del totem pole è attiva (circuito di \textit{sinistra} in figura \ref{outcar}) e fornisce una piccola quantità di corrente principalmente a causa della resistenza. Quando invece la porta logica TTL è \textit{bassa}, si vede solo l'uscita del collettore di un transistor (circuito di \textit{destra} in figura \ref{outcar}) che sappiamo funzionare bene.
 
+Nel caso CMOS, se l'uscita è \textit{alta}, è attivo solo il MOS della parte alta che è il P-MOS e che, quando è acceso, è rappresentato dalla resistenza di canale. Quando invece l'uscita è \textit{bassa}, è attivo solo l'N-MOS che si trova nella parte inferiore del circuito; anch'esso rappresentato dalla sua resistenza di canale.
+
+Quindi il caso MOS è effettivamente più semplice perché compaiono solo la resistenze di canale mentre nel caso TTL si ha un dispositivo più complesso con la risposta \textit{non lineare} del transistor. In ogni caso, l'uscita \textit{alta} si rappresenta come un generatore di tensione che genere la $V_{oH}$ seguito da una certa impedenza di uscita $Z_{out}$ (nel caso CMOS sarà la resistenza di canale p) mentre l'uscita \textit{bassa} si rappresenta come una semplice resistenza verso massa (nel caso CMOS corrisponde alla resistenza del canale n). Questi due modelli permettono di modellare in maniera semplice il carico permettendo di capire cosa succede al circuito quando l'ingresso si muove; quindi con il modello circuitale delle uscite si può studiare l'andamento del circuito in determinate condizioni.
+
+\subsection{Massime correnti di uscita}
+Nello studio di un circuito si devono determinare le massime correnti di uscita che devono comunque rispettare $V_{oL_{max}}$ $V_{oH_{min}}$ che sono rispettati solo fino ad una certa corrente di uscita massima. La famiglia TTL è caratterizzata da una forte \textit{asimmetria} tra $I_{oH_{max}}$ $I_{oL_{max}}$ a causa dell'asimmetria della struttura totem pole dell'uscita. Al contrario, le famiglie CMOS sono perfettamente \textit{simmetriche}. In generale non è solo la famiglia logica a definire la corrente di uscita ma è definita anche tramite la funzione: i buffer hanno, per costruzione, più corrente delle logiche semplici.
+
+\subsection{Correnti di uscita TTL}
+Il fatto che la famiglia TTL sia caratterizzata da una forte \textit{asimmetria} tra $I_{oH_{max}}$ $I_{oL_{max}}$ porta alla seguente considerazioni: quando si deve guidare un carico con un'uscita TTL non lo si guida mai con la corrente di uscita alta (circuito di \textit{sinistra} in figura \ref{ttlout}). Ad esempio se si deve accendere un LED (servono circa $10\,mA$) non lo si piloterà mai come nel circuito di sinistra con la corrente di uscita $I_{out}$ alta di un TTL (anche se è la cosa più logica): si deve fare in modo che il LED si accenda quando l'uscita è bassa; per questo si userà il secondo circuito.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35,angle=0]{correnti_uscita_ttl.png}
+    \caption{Uscita di un carico TTL}
+    \label{ttlout}
+\end{figure}
+\\Al contrario, quasi tutte le porte logiche TTL sono in grado di fare la soluzione rappresentata nel circuito di \textit{destra} in figura \ref{ttlout}: si prende corrente da un qualcosa che è attaccato alla tensione di alimentazione.
+
+Per una famiglia logica TTL, quando si deve guidare un carico in uscita che richiede una certa corrente, la soluzione da adottare è quella appendere il carico alla \textit{tensione di alimentazione} e tirarlo verso il \textit{basso} con la porta logica. Come detto prima: la soluzione che va bene per la TTL, va bene per qualsiasi altra porta logica quindi per guidare un carico su una porta logica CMOS si sfrutta il fatto che essa è simmetrica e quindi si può usare entrambe le configurazioni di figura \ref{ttlout} per accendere un LED anche se la realtà delle cose dice che la soluzione scelta è ancora quella di destra cioè il carico si accende attaccandolo con un pull-up alla tensione di alimentazione e tirandolo verso il basso con l'uscita della porta logica. Il modo comune che è stato scelto per guidare carichi non convenzionali (quindi non ingressi o uscite logiche) è quello di collegarli tramite pull-up alla tensione di alimentazione (mentre gli ingressi si è visto che, a causa delle TTL, si mettono solo pull-up e pulsanti verso il basso). All'interno di un circuito i LED sono attaccati all'alimentazione (e poi c'è la resistenza e vanno all'ingresso) è perché gli integrati TTL e bipolari funzionano meglio se devono tirare verso il basso e quindi per similitudine tutti i circuiti vengono progettati così.
+
+\subsection{Caratteristica di uscita}
+È vero che $V_{oL}$ $V_{oH}$ vengono specificate in relazione ad una corrente massima (quindi viene specificato un solo punto della caratteristica) ma alla fin fine l'uscita è un oggetto analogico anche se è un circuito digitale quello che processa l'informazione ma le componenti in sé sono componenti analogici per cui l'uscita avrà un qualcosa che è \textit{continuo}: la tensione di uscita è una funzione continua della corrente di uscita.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4,angle=0]{caratteristica_uscita_grafico.png}
+    \caption{Caratteristica di uscita}
+    \label{carrat}
+\end{figure}
+\\Il costruttore non indica come è fatta la curva della tensione di uscita alta e bassa ma in realtà questa curva di fatto esiste.
+
+Quando l'uscita TTL è alta si vede la resistenza di collettore e poi lo stadio totem pole per cui tendenzialmente si vede una caratteristica resistiva dovuta alla resistenza di collettore. Quando invece l'uscita TTL è bassa si vede il transistor di uscita in saturazione e infatti la curva della tensione di uscita non è altro che la curva del transistor (ma in quel caso era ribaltata: la tensione sulle \textit{X} e la corrente sulle \textit{Y}). Quindi si verifica che i dispositivi si comportano come previsto dal modello circuitale con il transistor in saturazione che poi va in regione attiva mentre la parte alta del totem pole ha un comportamento molto simile a quello di una resistenza.
+
+Per le famiglie CMOS, e in particolare per la famiglia AC a $5\,V$, la tensione di uscita alta e bassa sono praticamente delle rette senza nessuna particolare piega. Quindi si può dire che l'uscita è rappresentata sempre da una certa resistenza che può essere stimata ottenendo nel caso alto:
+\begin{equation*}
+    R = \frac{V}{I} = \frac{1\,V}{80\,mA} \approx 12,5\,\Omega
+\end{equation*}
+lo stesso si trova nella parte bassa (in cui compare il MOS a canale n) in cui si ricava $R \approx 10\,\Omega$. Discorso analogo per la famiglia LVC alimentata a $3,3\,V$ che ha una tendenza molto simile alla AC anche se ad un certo punto sopra si piega (mentre sotto rimane abbastanza lineare) e fa la forma del MOSFET a canale \textit{p} (si vede ancora meglio nelle famiglie LS a $5\,V$ e HC a $3\,V$ che però ha una pendenza abbastanza maggiore).
+
+Tramite questi grafici è quindi possibile stabilire quanto vale l'\textbf{impedenza di uscita} di una certa famiglia logica e si capisce anche come è fatta.
+
+Se si richiede la \textbf{caratteristica di uscita} di una famiglia logica essa è il grafico tensione - corrente riportato in figura \ref{carrat} (le famiglie più performanti hanno grafici più orizzontali mentre le famiglia più lasche a più bassa potenza hanno grafici più verticali che si chiudono prima). Se invece viene richiesta la \textbf{caratteristica ingresso - uscita} di una porta logica quello che viene richiesto è il grafico che ha la tensione di ingresso sulle \textit{X} e la tensione di uscita sulle \textit{Y}; è cioè la \textit{trans caratteristica} (i grafici nei capitoli 5 e 6).
+
+\subsection{Caratteristiche di uscita generali}
+In generale si può dire che i valori di $V_{oH}$ e $V_{oL}$, soprattutto quegli estremi, sono riferiti rispetto a valori di $I_{oH}$ $I_{oL}$ estremi ammissibili all'interno del datasheet. Quando aumenta $I_{out}$ ad un certo punto la tensione di uscita $V_{oH}$ diminuisce e la tensione $V_{oL} $\textit{crolla} secondo un comportamento non lineare a causa della saturazione del dispositivo di uscita: se è un MOSFET va propriamente in saturazione mentre se è un transistor va in regione attiva diretta uscendo dalla saturazione. Chiaramente questo è tanto più vero tanto più bassa è la resistenza del carico che richiede tante correnti di uscita.
 
 \section{Datasheet}
+Il datasheet fornisce una serie di informazioni tra cui: funzionalità, package utilizzabili, absolute maximun rating, condizioni operative raccomandate, caratteristiche elettriche, caratteristiche di swtiching e altre sezioni per componenti più complesse sull'uso del circuito.
+
+\subsection{Absolute maximun rating}
+Sono un insieme di parametri \textit{massimi in assoluto} che si possono applicare al circuito integrato per evitare che questo si rompa. Entro questi valori il circuito non subisce danni permanenti ma per garantire il funzionamento è opportuno mantenersi in un altro intervallo chiamato \textbf{ROC}. I valori che vengono forniti sono: le tensioni $V_{cc}$, $V_{i}$, $V_{o}$ e $V_{max}$, la corrente massima in ingresso e in uscita nei pin e la \textit{temperatura di stoccaggio}. Quest'ultima deve essere mantenuta anche quando il dispositivo è spento e dipende dalla meccanica del dispositivo, dai materiali di cui è costituito: si può avere infatti contrazione o espansione dei materiali, degradazione, scioglimento del silicio o, sopratutto, delle parti plastiche del package.
+
+\subsection{Condizioni operative raccomandate}
+Sono le condizioni raccomandate in cui è garantito il funzionamento del dispositivo. Vengono riportati i valori di $V_{cc}$ minimi e massimi e gli altri valori vengono riportati in corrispondenza di intervalli di $V_{cc}$. Sono riportati i valori delle tensioni di input e output minimi e massimi per i due possibili statiti logici insieme alle relative correnti di ingresso e uscita. Infine, viene indicata la temperatura minima e massima di funzionamento.
+
+\subsection{Caratteristiche elettriche - statiche}
+Forniscono informazioni su come variano $V_{oH}$ e $V_{oL}$ al variare di $I_{oH}$ e $I_{oL}$ che, a loro volta, variano in base alla resistenza di canale che dipende dalla tensione di alimentazione.
+
+Se $I_{oH}$ e $I_{oL}$ sono basse, $V_{oH}$ e $V_{oL}$ sono anch'esse basse indipendentemente dalla tensione di alimentazione $V_{cc}$. Nel caso di $V_{oH}$ viene riportato il valore minimo garantito mentre per $V_{oL}$ viene riportato il valore massimo garantito.
+
+È importante anche il valore tipico (calcolato a $3,3\,V$ e $25^{\circ}$C) della capacità in ingresso perché in genere la capacità del gate non dipende da $V_{cc}$ e dalla temperatura in gran misura e non è un parametro vincolante per la porta.
+
+Se $I_{oH}$ è massima, $V_{oH}$ è minima pari a $2\,V$ con una caduta di $1\,V$. Se invece $I_{oL}$ è massima, $V_{oL}$ è $0,55\,V$; quindi c'è una caduta diversa di tensione a parità di corrente e $V_{cc}$ cioè si ha un comportamento asimmetrico che dipende dalla resistenza.
+
+\subsection{Caratteristiche di commutazione - dinamiche}
+Si riporta in genere il tempo di propagazione, definito come la differenza di tempo tra la variazione dell'ingresso e dell'uscita, in funzione della tensione di alimentazione.
+
+\section{Scariche elettrostatiche}
+
+\section{Potenza contro frequenza}
+
+\section{Consumo di potenza}
+
 
 
 \chapter{Convertitori DA e AD}
